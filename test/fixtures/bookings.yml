@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date: 2015-02-28
+  start_time: 1
+  length: 1
+  name: MyString
+  phone: MyString
+  email: MyString
+  notes: MyString
+  activity_type: MyString
+  theatre_id: 
+
+two:
+  date: 2015-02-28
+  start_time: 1
+  length: 1
+  name: MyString
+  phone: MyString
+  email: MyString
+  notes: MyString
+  activity_type: MyString
+  theatre_id: 

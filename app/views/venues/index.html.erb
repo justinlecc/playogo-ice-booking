@@ -1,0 +1,36 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Venues</h1>
+
+<!--
+  Stripe checkout form.
+    -change data-key for deployment
+    -can customize (https://stripe.com/docs/checkout#integration-custom)
+    -hidden input 'stripeToken'
+-->
+
+<form id="payment-form" action="/venues/payment" method="POST">
+  <script
+    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+    data-key="pk_test_1Di5chkNtgIMHyHZ6pbKLOrD"
+    data-amount="2000"
+    data-name="Playogo"
+    data-description="2 widgets ($20.00)"
+    data-image="">
+  </script>
+  <input type="hidden" name="venue" value="KMAC">
+  <input type="hidden" name="theatre" value="Dom Cardillo">
+  <input type="hidden" name="date" value="2015-03-01">
+  <input type="hidden" name="start_time" value="21600">
+  <input type="hidden" name="length" value="3600">
+  <input type="hidden" name="amount" value="2000">
+  <input type="hidden" name="nav_date" value="2020-01-01">
+  <input type="hidden" name="first_name" value="Mooster">
+  <input type="hidden" name="last_name" value="Booster">
+  <input type="hidden" name="phone" value="3069753958">
+  <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
+</form>
+
+<br>
+
+<%= link_to 'New Venue', new_venue_path %>

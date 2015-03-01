@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler" version="0.29.0">
+  <page number="1" position="absolute" top="0" left="0" height="918" width="1188">
+    <fontspec id="0" size="21" family="Times" color="#000000"/>
+    <fontspec id="1" size="9" family="Times" color="#000000"/>
+    <fontspec id="2" size="9" family="Times" color="#000000"/>
+    <text top="4" left="0" width="253" height="23" font="0">Facility Booking Display</text>
+    <text top="42" left="6" width="29" height="11" font="1"><b>Book</b></text>
+    <text top="42" left="51" width="50" height="11" font="1"><b>Complex</b></text>
+    <text top="42" left="193" width="40" height="11" font="1"><b>Facility</b></text>
+    <text top="42" left="308" width="50" height="11" font="1"><b>Day from</b></text>
+    <text top="42" left="376" width="55" height="11" font="1"><b>Date from</b></text>
+    <text top="42" left="478" width="56" height="11" font="1"><b>Time from</b></text>
+    <text top="42" left="571" width="40" height="11" font="1"><b>Date to</b></text>
+    <text top="42" left="678" width="42" height="11" font="1"><b>Time to</b></text>
+
+    <text top="865" left="6" width="15" height="11" font="2">No</text>
+    <text top="865" left="51" width="32" height="11" font="2">Activa2</text>
+    <text top="865" left="193" width="89" height="11" font="2">Patrick J Doherty</text>
+    <text top="865" left="308" width="20" height="11" font="2">Tue</text>
+    <text top="865" left="376" width="66" height="11" font="2">10 Feb 2015</text>
+    <text top="865" left="478" width="50" height="11" font="2">10:00 PM</text>
+    <text top="865" left="571" width="66" height="11" font="2">10 Feb 2015</text>
+    <text top="865" left="678" width="49" height="11" font="2">11:00 PM</text>
+
+    <text top="865" left="6" width="15" height="11" font="2">No</text>
+    <text top="865" left="51" width="32" height="11" font="2">Activa</text>
+    <text top="865" left="193" width="89" height="11" font="2">Patrick J Doherty</text>
+    <text top="865" left="308" width="20" height="11" font="2">Tue</text>
+    <text top="865" left="376" width="66" height="11" font="2">10 Feb 2015</text>
+    <text top="865" left="478" width="50" height="11" font="2">10:00 AM</text>
+    <text top="865" left="571" width="66" height="11" font="2">10 Feb 2015</text>
+    <text top="865" left="678" width="49" height="11" font="2">01:00 PM</text>
+    <text top="906" left="0" width="37" height="11" font="2">Page 1</text>
+  </page>
+  <page number="3" position="absolute" top="0" left="0" height="918" width="1188">
+    <text top="15" left="0" width="201" height="11" font="1"><b>Facility Booking Display - continued</b></text>
+    <text top="41" left="6" width="15" height="11" font="2">No</text>
+    <text top="41" left="51" width="32" height="11" font="2">Activa</text>
+    <text top="41" left="193" width="89" height="11" font="2">Patrick J Doherty</text>
+    <text top="41" left="308" width="23" height="11" font="2">Mon</text>
+    <text top="41" left="376" width="65" height="11" font="2">16 Mar 2015</text>
+    <text top="41" left="478" width="49" height="11" font="2">02:00 PM</text>
+    <text top="41" left="571" width="65" height="11" font="2">16 Mar 2015</text>
+    <text top="41" left="678" width="50" height="11" font="2">03:00 PM</text>
+
+
+    <text top="41" left="6" width="15" height="11" font="2">No</text>
+    <text top="41" left="51" width="32" height="11" font="2">Activa</text>
+    <text top="41" left="193" width="89" height="11" font="2">Patrick J Doherty</text>
+    <text top="41" left="308" width="23" height="11" font="2">Mon</text>
+    <text top="41" left="376" width="65" height="11" font="2">17 Mar 2015</text>
+    <text top="41" left="478" width="49" height="11" font="2">02:00 PM</text>
+    <text top="41" left="571" width="65" height="11" font="2">17 Mar 2015</text>
+    <text top="41" left="678" width="50" height="11" font="2">03:00 PM</text>
+
+
+    <text top="41" left="6" width="15" height="11" font="2">No</text>
+    <text top="41" left="51" width="32" height="11" font="2">Activa</text>
+    <text top="41" left="193" width="89" height="11" font="2">Patrick J Doherty</text>
+    <text top="41" left="308" width="23" height="11" font="2">Mon</text>
+    <text top="41" left="376" width="65" height="11" font="2">16 Mar 2015</text>
+    <text top="41" left="478" width="49" height="11" font="2">07:00 AM</text>
+    <text top="41" left="571" width="65" height="11" font="2">16 Mar 2015</text>
+    <text top="41" left="678" width="50" height="11" font="2">01:00 PM</text>
+  </page>
+  <page number="4" position="absolute" top="0" left="0" height="918" width="1188">
+    <text top="15" left="0" width="201" height="11" font="1"><b>Facility Booking Display - continued</b></text>
+    <text top="906" left="0" width="37" height="11" font="2">Page 4</text>
+  </page>
+
+</pdf2xml>
