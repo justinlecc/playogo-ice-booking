@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+
+  get '/venues/:nav_date' => 'venues#index'
+  get '/venues' => 'venues#index'
+
+  post '/venues/ice_booking', to: 'venues#ice_booking'
+
   resources :venues
 
   # The priority is based upon order of creation: first created -> highest priority.

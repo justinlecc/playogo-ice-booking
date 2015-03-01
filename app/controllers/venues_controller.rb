@@ -1,7 +1,7 @@
 class VenuesController < ApplicationController
   before_action :set_venue, only: [:show, :edit, :update, :destroy]
 
-  
+
 
   # GET /venues
   # GET /venues.json
@@ -17,22 +17,23 @@ class VenuesController < ApplicationController
     scheduleTree = ScheduleTree.new("Playogo")
 
 
-    @venues.each do |venue|
-      venue.theatres.each do |theatre|
-        theatre.openings.each do |opening|
-          scheduleTree.addAvail(venue.name, theatre.name, opening.date.to_s, opening.start_time, opening.length)
-        end
-      end
-    end
+    # @venues.each do |venue|
+    #   venue.theatres.each do |theatre|
+    #     theatre.openings.each do |opening|
+    #       scheduleTree.addAvail(venue.name, theatre.name, opening.date.to_s, opening.start_time, opening.length)
+    #     end
+    #   end
+    # end
 
-    @scheduleTree = scheduleTree.to_json
+
+    @scheduleTree = Bookable::getBookable
 
   end
 
 
 
   # POST venues/payment
-  def process_booking
+  def ice_booking 
     # Params !! Protect against injection attack !!
     token = params[:stripeToken]
     email = params[:stripeEmail]
@@ -45,8 +46,10 @@ class VenuesController < ApplicationController
     name = params[:first_name] + " " + params[:last_name]
     phone_number = params[:phone]
 
+    puts "**** " + venue_name + " ****"
 
     theatre = Theatre.joins(:venue).where(venues: {"name" => venue_name}, :name => theatre_name)
+
     if (theatre.length != 1)
       ErrorLogging::log("payments#process_booking", \
                         "Selected: " + theatre.length.to_s + " theatres with query")
