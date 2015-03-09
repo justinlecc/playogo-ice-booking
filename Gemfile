@@ -1,15 +1,5 @@
 source 'https://rubygems.org'
 
-# Nokogiri (JL added)
-gem 'nokogiri', '~> 1.6.6.2'
-
-# Underscorejs (JL added)
-gem 'underscore-rails', '~> 1.7.0'
-
-# Stripe (JL added)
-gem 'stripe', '~> 1.20.0'
-
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
 # Use postgresql as the database for Active Record
@@ -50,5 +40,18 @@ group :development, :test do
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+
+  # Nokogiri (JL added)
+  gem 'nokogiri', '~> 1.6.6.2'
+
+  # Underscorejs (JL added)
+  gem 'underscore-rails', '~> 1.7.0'
+
+  # Stripe (JL added)
+  gem 'stripe', '~> 1.20.0'
+
+  # Bootstrap (JL added)
+  gem 'bootstrap-sass', '~> 3.2.0'
+  gem 'autoprefixer-rails'
 end
 

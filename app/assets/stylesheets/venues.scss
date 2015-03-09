@@ -1,3 +1,63 @@
 // Place all the styles related to the Venues controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+#day-nav-container {
+  width: 100%;
+  display: inline-block;
+
+  /* Clearfix */
+  .day-tabs:after {
+    display:block;
+    clear:both;
+    content:' ';
+  }
+
+  .day-tabs {
+    padding: 0;
+
+    li {
+      float:left;
+      list-style: none;
+      width:11%;
+      background: #7fb5da;
+      text-align: center;
+      padding-top: 9px;
+      padding-bottom: 9px;
+    }
+
+    a {
+      /*padding: 9px 15px;*/
+      display:inline-block;
+      border-radius: 3px 3px 0px 0px;
+      
+      font-size: 16px;
+      font-weight: 600;
+      color:#4c4c4c;
+      transition:all linear 0.15s;
+    }
+
+    a:hover {
+      background:#a7cce5;
+      text-decoration:none;
+    }
+
+  }
+
+  li.active, li.active:hover {
+    background:blue;
+    color:#4c4c4c;
+  }
+
+}
+
+
+div.hour {
+  float:left;
+}
+
+.clearfix {
+  float:none;
+  display:block;
+}

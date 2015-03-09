@@ -1,8 +1,11 @@
 class TheatreNode
-  attr_accessor :name, :days
+  attr_accessor :name, :days, :prime, :non_prime, :insurance
 
-  def initialize(name)
+  def initialize(name, prime, nonPrime, insurance)
     @name = name
+    @prime = prime
+    @non_prime = nonPrime
+    @insurance = insurance
     @days = []
   end
 

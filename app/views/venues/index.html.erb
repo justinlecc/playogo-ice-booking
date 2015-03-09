@@ -1,12 +1,104 @@
 <script> 
-  var json_schedule_tree = function () {
-    return <%= @scheduleTree.to_json.html_safe %>;
-  };
+  schedule_tree = JSON.parse('<%= @scheduleTree.to_json.html_safe %>');
 </script>
+
+<div class="container">
 
 <p id="notice"><%= notice %></p>
 
 <h1>Venues</h1>
+
+<div id="month-nav-container">
+
+</div>
+
+<div id="day-nav-container">
+
+</div>
+
+<div id="hours-row-container">
+
+</div>
+
+<div id="venue-rows-container">
+
+</div>
+
+<!--
+  Avails Schedule Month Navigation Template
+-->
+<script id="avails-month-template" type="text/template">
+  <h3>
+    <button class="btn btn-warning">current month</button>
+    <button class="btn btn-warning">date to date</button>
+  </h3>
+</script>
+
+<!--
+  Avails Schedule Day Navigation Template
+-->
+<script id="avails-days-template" type="text/template">
+  <ul class="day-tabs">
+    <li class="outer-tab"><a><span class="glyphicon glyphicon-backward"></span></a></li>
+    <li class="inner-tab">
+      <a>
+        Date Render
+      </a>
+    </li>
+    <li class="inner-tab">
+      <a>
+        Date Render
+      </a>
+    </li>
+    <li class="inner-tab">
+      <a>
+        Date Render
+      </a>
+    </li>
+    <li class="inner-tab">
+      <a>
+        Date Render
+      </a>
+    </li>
+    <li class="inner-tab">
+      <a>
+        Date Render
+      </a>
+    </li>
+    <li class="inner-tab">
+      <a>
+        Date Render
+      </a>
+    </li>
+    <li class="inner-tab">
+      <a>
+        Date Render
+      </a>
+    </li>
+    <li class="outer-tab"><a><span class="glyphicon glyphicon-forward"></span></a></li>
+  </ul>
+</script>
+
+<!--
+  Avails Schedule Hours Template
+-->
+<script id="avails-hours-template" type="text/template">
+  <div class="name-col"></div><div class="hour"></div><div class="hour"></div><div class="hour"></div><div class="hour"></div><div class="hour"></div><div class="hour"></div><div class="hour"></div><div class="hour"></div><div class="hour"></div><div class="hour"></div><div class="hour"></div><div class="hour"></div><div class="hour"></div><div class="hour"></div><div class="hour"></div><div class="hour"></div><div class="hour"></div><div class="hour"></div><div class="hour"></div><div class="clearfix"></div>
+</script>
+
+<!--
+  Avails Schedule Venue Row Template
+-->
+<script id="avails-venue-template" type="text/template">
+  <div>
+    <div>
+    </div>
+  </div>
+</script>
+
+
+
+<br>
 
 <!--
   Stripe checkout form.
@@ -41,3 +133,4 @@
 <br>
 
 <%= link_to 'New Venue', new_venue_path %>
+</div>

@@ -95,7 +95,14 @@ module Bookable
     venues.each do |venue|
       venue.theatres.each do |theatre|
         theatre.openings.each do |opening|
-          scheduleTree.addAvail(venue.name, theatre.name, opening.date.to_s, opening.start_time, opening.length)
+          scheduleTree.addAvail(venue.name, 
+                                {:name => theatre.name,    
+                                 :prime => theatre.price.prime,
+                                 :non_prime => theatre.price.non_prime,
+                                 :insurance => theatre.price.insurance},
+                                opening.date.to_s, 
+                                opening.start_time, 
+                                opening.length)
         end
       end
     end

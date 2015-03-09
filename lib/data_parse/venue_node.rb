@@ -6,12 +6,12 @@ class VenueNode
     @theatres = []
   end
 
-  def addAvail (theatreName, date, startTime, length)
+  def addAvail (theatreHash, date, startTime, length)
     # If theatreName matches on in @theatres, add the icetime to it.
     # Else, create the theatre and add the icetime.
     @theatres.each do |theatre|
 
-      if theatre.name == theatreName
+      if theatre.name == theatreHash[:name]
         theatre.addAvail(date, startTime, length)
         return
       end
@@ -19,7 +19,7 @@ class VenueNode
     end
 
     # theatreName not found in @facilities
-    new_theatre = TheatreNode.new(theatreName)
+    new_theatre = TheatreNode.new(theatreHash[:name],theatreHash[:prime],theatreHash[:non_prime],theatreHash[:insurance])
     new_theatre.addAvail(date, startTime, length)
     @theatres.push(new_theatre)
 

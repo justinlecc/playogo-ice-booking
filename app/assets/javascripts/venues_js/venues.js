@@ -4,17 +4,27 @@
 // window.addEventListener 'load', ->
 //   alert 'Hello solo!'
 //   return
+'use strict'
 
 window.addEventListener('load', function() {
-
     var modelModule = new createModelModule();
+    var viewModule = new createViewModule();
 
     /*
      * Initialize the VenueOpeningCollectionModel
      */
-    var venueOpeningCollectionModel = modelModule.loadVenueOpeningCollectionModel();
-    venueOpeningCollectionModel.setOpenings(json_schedule_tree()); // json_schedule_tree initialized in rendering
+    var availsCollectionModel = modelModule.loadAvailsCollectionModel();
+    availsCollectionModel.setAvails(schedule_tree); // schedule_tree from .erb view rendering
 
+    /*
+     * Initialize the AvailsScheduleModel
+     */
+    var availsScheduleModel = modelModule.loadAvailsScheduleModel();
+    availsScheduleModel.setDateRange(availsCollectionModel.getAvails());
 
-
+    /*
+     * Initialize the ScheduleRenderer
+     */
+    var scheduleRenderer = viewModule.loadScheduleRenderer();
+    scheduleRenderer.renderAll(availsScheduleModel.getCurrentDate(), availsCollectionModel.getAvails());
 });

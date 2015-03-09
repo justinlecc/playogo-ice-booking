@@ -6,16 +6,30 @@ class KitchenerDataParse
   end
 
   def treeToDatabase (availTree)
-    # Delete current avails
+    clear_data = 1
+    # Delete current openings
     Opening.delete_all
-    Theatre.delete_all
-    Venue.delete_all
+    if (clear_data)
+      Booking.delete_all
+      Price.delete_all
+      Theatre.delete_all
+      Venue.delete_all
+    end
 
     # Create new avails
     availTree.venues.each do |venue|
-      @cur_venue = Venue.create!({:name => venue.name});
+      if (clear_data) 
+        @cur_venue = Venue.create!({:name => venue.name});
+      else
+        @cur_venue = Venue.find({:name => venue.name});
+      end
       venue.theatres.each do |theatre|
-        @cur_theatre = Theatre.create!({:name => theatre.name, :venue => @cur_venue})
+        if (clear_data) 
+          @cur_theatre = Theatre.create!({:name => theatre.name, :venue => @cur_venue})
+          Price.create!({:prime => 20000, :non_prime => 15000, :insurance => 533, :theatre => @cur_theatre})
+        else
+          @cur_theatre = Theatre.find({:name => theatre.name, :venue => @cur_venue})
+        end
         theatre.days.each do |day|
           day.blocks.each do |block|
             Opening.create!({:start_time => block.start, 
