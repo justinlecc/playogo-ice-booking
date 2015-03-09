@@ -3,6 +3,8 @@
 var MONTH_NAMES = ["January", "February", "March", "April", "May", "June", 
                    "July", "August", "September", "October", "November", "December"];
 
+var NAME_COL_WIDTH_PCT = 33;
+
 // Returns monday of current day d (http://stackoverflow.com/questions/4156434/javascript-get-the-first-day-of-the-week-from-current-date)
 function getMonday(d) {
   d = new Date(d);
@@ -75,30 +77,52 @@ function createViewModule () {
      * Renders the hours row
      */ 
     renderHoursRow: function () {
+      /* Hard coded variables */
+      var start = 6;
+      var end = 24;
+      var NAME_COL_WIDTH_PCT = 33;
+
+      // Dom elements to be used
       var container = document.getElementById('hours-row-container');
       var template = document.getElementById('avails-hours-template');
-      var content = document.createElement('div');
-      content.innerHTML = template.innerHTML;
-      var hours = content.children;
+      var element;
 
-      // Fill divs with hours of day
-      var time = new Date();
-      var start = 6; /* hard coded start and end time */
-      time.setHours(start);
-      for (var i=0; i<hours.length - 1; i++) {
-        var h = time.getHours();
-        var postfix = '';
-        if (h % 2 == start % 2) {
-          postfix = ((h >= 12)? 'pm' : 'am');
-        }
-        hours[i].innerHTML = ((h + 11) % 12 + 1).toString() + postfix;
-        if (i % 2 == 1) {
-          hours[i].classList.add('odd');
-        }
-        time.setHours(time.getHours()+1);
-      }
+      // Name column
+      element = document.createElement('div');
+      element.className = 'name-col';
+      element.style.width = NAME_COL_WIDTH_PCT.toString() + '%';
+      container.appendChild(element);
 
-      container.appendChild(content);
+
+      element = document.createElement('div');
+      element.className = 'hour-col';
+      element.style.width =  (100-NAME_COL_WIDTH_PCT).toString() + '%';
+      container.appendChild(element);
+
+      // Hour columns
+      // var time = new Date();
+      // time.setHours(start);
+      // for (var i=start; i<end - 1; i++) {
+      //   var h = time.getHours();
+      //   // var postfix = '';
+      //   // if (h % 2 == start % 2) {
+      //   //   postfix = ((h >= 12)? 'pm' : 'am');
+      //   // }
+      //   //   hours[i].innerHTML = ((h + 11) % 12 + 1).toString() + postfix;
+      //   // if (i % 2 == 1) {
+      //   //   hours[i].classList.add('odd');
+      //   // }
+      //   element = document.createElement('div');
+      //   element.className = 'hour-col';
+      //   element.style.width =  (((name_col_width_px*2) / (end-start)) + .5).toString() + 'px';
+      //   container.appendChild(element);
+      //   time.setHours(time.getHours()+1);
+      // }
+
+      // Clearfix
+      element = document.createElement('div');
+      element.className = 'clearfix'
+      container.appendChild(element);
     },
 
     /*
@@ -106,23 +130,37 @@ function createViewModule () {
      */  
     renderVenueRows: function (schedule_tree) {
       var container = document.getElementById('venue-rows-container');
-      var template = document.getElementById('avails-venue-template');
+      //var template = document.getElementById('avails-venue-template');
       var venues = schedule_tree.venues;
 
       _.each(venues, function (venue) {
-        var content = document.createElement('div');
-        var venue_div = document.createElement('div');
-        venue_div.innerHTML = venue.name;
-        content.appendChild(venue_div);
+        var venue_row = document.createElement('div');
+        venue_row.className = 'venue-row';
+        var name_col = document.createElement('div');
+        name_col.className = 'name-col'
+        name_col.style.width = NAME_COL_WIDTH_PCT.toString() + '%'
+        name_col.innerHTML = venue.name;
+        venue_row.appendChild(name_col);
+
+        var sched_col = document.createElement('div');
+        sched_col.className = 'sched-col';
+        sched_col.style.width = (100-NAME_COL_WIDTH_PCT).toString() + '%';
+        venue_row.appendChild(sched_col);
+
+        var clearfix = document.createElement('div');
+        clearfix.className = 'clearfix';
+        venue_row.appendChild(clearfix);
+
+        container.appendChild(venue_row);
 
 
-        _.each(venue.theatres, function (theatre) {
-          var theatre_div = document.createElement('div');
-          theatre_div.innerHTML = theatre.name;
-          content.appendChild(theatre_div);
-        });
+        // _.each(venue.theatres, function (theatre) {
+        //   // var theatre_div = document.createElement('div');
+        //   // theatre_div.innerHTML = theatre.name;
+        //   // content.appendChild(theatre_div);
+        // });
 
-        container.appendChild(content);
+        //container.appendChild(row);
       });
       
     },
@@ -134,7 +172,7 @@ function createViewModule () {
      renderAll: function (current_date, schedule_tree) {
       this.renderMonthNav(current_date);
       this.renderDayNav(current_date);
-      this.renderHoursRow();
+      //this.renderHoursRow();
       this.renderVenueRows(schedule_tree);
      }
 

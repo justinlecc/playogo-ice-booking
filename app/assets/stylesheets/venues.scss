@@ -2,7 +2,9 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-
+/**
+* Day Navigation
+*/
 #day-nav-container {
   width: 100%;
   display: inline-block;
@@ -52,12 +54,38 @@
 
 }
 
-
-div.hour {
+/**
+* Hours display
+*/
+#hours-row-container {
+  width: 100%;
+}
+div.name-col {
+  height: 30px;
+  /*width: 25%;*/
   float:left;
+  background: blue;
+}
+
+div.hour-col {
+  height:30px;
+  float:left;
+  background: red;
+}
+
+div.sched-col {
+  height: 30px;
+  float:left;
+  background:red;
+}
+
+div.venue-row {
+  width:100%;
+
 }
 
 .clearfix {
-  float:none;
+  width:0px;
+  clear:both;
   display:block;
 }
