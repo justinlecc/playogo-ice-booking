@@ -11,6 +11,7 @@ class ActiveSupport::TestCase
     Theatre.delete_all
     Opening.delete_all
     Booking.delete_all
+    Price.delete_all
   end
 
   def drop_and_load_fixtures

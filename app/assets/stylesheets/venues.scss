@@ -61,8 +61,8 @@
   width: 100%;
 }
 div.name-col {
-  height: 30px;
-  /*width: 25%;*/
+  /*height: 30px;*/
+  /*width: 33%; set dynamically */
   float:left;
   background: blue;
 }
@@ -74,7 +74,7 @@ div.hour-col {
 }
 
 div.sched-col {
-  height: 30px;
+  /*height: 30px;*/
   float:left;
   background:red;
 }

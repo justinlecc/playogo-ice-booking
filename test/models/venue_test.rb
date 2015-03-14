@@ -31,8 +31,10 @@ class VenueTest < ActiveSupport::TestCase
     @opening1 = Opening.create!({:start_time => 6.hours, :length => 2.hour, :date => '2015-03-01', :theatre => @theatre1})
     # Bookings
     @booking1 = Booking.create!({:start_time => 6.hours, :length => 1.hour, :date => '2015-03-01', :theatre => @theatre1, :name => "Justin Blair", :phone => "3069753958", :email => "justin@playogo.com", :activity_type => "skating party", :notes => "Drinkers will serve time in the penalty box."})
+    # Price
+    @price1 = Price.create!({:prime => 20000, :non_prime => 10000, :insurance => 300, :theatre => @theatre1});
 
-    assert @venue1.valid? && @theatre1.valid? && @opening1.valid? && @booking1.valid?
+    assert @venue1.valid? && @theatre1.valid? && @opening1.valid? && @booking1.valid? && @price1.valid?
 
     # returns a schedule tree
     schedule = Bookable::getBookable
@@ -53,8 +55,10 @@ class VenueTest < ActiveSupport::TestCase
     @opening1 = Opening.create!({:start_time => 6.hours, :length => 2.hour, :date => '2015-03-01', :theatre => @theatre1})
     # Bookings
     @booking1 = Booking.create!({:start_time => 7.hours, :length => 1.hour, :date => '2015-03-01', :theatre => @theatre1, :name => "Justin Blair", :phone => "3069753958", :email => "justin@playogo.com", :activity_type => "skating party", :notes => "Drinkers will serve time in the penalty box."})
+    # Price
+    @price1 = Price.create!({:prime => 20000, :non_prime => 10000, :insurance => 300, :theatre => @theatre1});
 
-    assert @venue1.valid? && @theatre1.valid? && @opening1.valid? && @booking1.valid?
+    assert @venue1.valid? && @theatre1.valid? && @opening1.valid? && @booking1.valid? && @price1.valid?
 
     # returns a schedule tree
     schedule = Bookable::getBookable
@@ -75,9 +79,10 @@ class VenueTest < ActiveSupport::TestCase
     @opening1 = Opening.create!({:start_time => 10.hours, :length => 10.hour, :date => '2015-03-01', :theatre => @theatre1})
     # Bookings
     @booking1 = Booking.create!({:start_time => 12.hours, :length => 1.hour, :date => '2015-03-01', :theatre => @theatre1, :name => "Justin Blair", :phone => "3069753958", :email => "justin@playogo.com", :activity_type => "skating party", :notes => "Drinkers will serve time in the penalty box."})
+    # Price
+    @price1 = Price.create!({:prime => 20000, :non_prime => 10000, :insurance => 300, :theatre => @theatre1});
 
-
-    assert @venue1.valid? && @theatre1.valid? && @opening1.valid? && @booking1.valid?
+    assert @venue1.valid? && @theatre1.valid? && @opening1.valid? && @booking1.valid? && @price1.valid?
 
     # returns a schedule tree
     schedule = Bookable::getBookable
@@ -119,7 +124,10 @@ class VenueTest < ActiveSupport::TestCase
     @booking2 = Booking.create!({:start_time => 12.hours, :length => (2.hour + 30.minutes), :date => '2015-03-01', :theatre => @theatre1, :name => "Justin Blair", :phone => "3069753958", :email => "justin@playogo.com", :activity_type => "skating party", :notes => "Drinkers will serve time in the penalty box."})
     # @booking2 tests edge case of sliver
 
-    assert @venue1.valid? && @theatre1.valid? && @opening1.valid? && @booking1.valid? && @booking2.valid?
+    # Price
+    @price1 = Price.create!({:prime => 20000, :non_prime => 10000, :insurance => 300, :theatre => @theatre1});
+
+    assert @venue1.valid? && @theatre1.valid? && @opening1.valid? && @booking1.valid? && @booking2.valid? && @price1.valid?
 
     # returns a schedule tree
     schedule = Bookable::getBookable
@@ -144,8 +152,10 @@ class VenueTest < ActiveSupport::TestCase
     @opening1 = Opening.create!({:start_time => 14.hours, :length => 3.hour, :date => '2015-03-01', :theatre => @theatre1})
     # Bookings
     @booking1 = Booking.create!({:start_time => 11.hours, :length => (4.hour + 30.minutes), :date => '2015-03-01', :theatre => @theatre1, :name => "Justin Blair", :phone => "3069753958", :email => "justin@playogo.com", :activity_type => "skating party", :notes => "Drinkers will serve time in the penalty box."})
+    # Price
+    @price1 = Price.create!({:prime => 20000, :non_prime => 10000, :insurance => 300, :theatre => @theatre1});
 
-    assert @venue1.valid? && @theatre1.valid? && @opening1.valid? && @booking1.valid?
+    assert @venue1.valid? && @theatre1.valid? && @opening1.valid? && @booking1.valid? && @price1.valid?
 
     # returns a schedule tree
     schedule = Bookable::getBookable
@@ -171,8 +181,10 @@ class VenueTest < ActiveSupport::TestCase
     @opening1 = Opening.create!({:start_time => 10.hours, :length => 2.hour, :date => '2015-03-01', :theatre => @theatre1})
     # Bookings
     @booking1 = Booking.create!({:start_time => (10.hours + 30.minutes), :length => (1.hour), :date => '2015-03-01', :theatre => @theatre1, :name => "Justin Blair", :phone => "3069753958", :email => "justin@playogo.com", :activity_type => "skating party", :notes => "Drinkers will serve time in the penalty box."})
+    # Price
+    @price1 = Price.create!({:prime => 20000, :non_prime => 10000, :insurance => 300, :theatre => @theatre1});
 
-    assert @venue1.valid? && @theatre1.valid? && @opening1.valid? && @booking1.valid?
+    assert @venue1.valid? && @theatre1.valid? && @opening1.valid? && @booking1.valid? && @price1.valid?
 
     # returns a schedule tree
     schedule = Bookable::getBookable

@@ -13,6 +13,17 @@ function getMonday(d) {
   return new Date(d.setDate(diff));
 }
 
+// Returns the height of an element even when not rendered in the dom
+function getHeight(element)
+{
+    element.style.visibility = "hidden";
+    document.body.appendChild(element);
+    var height = element.offsetHeight + 0;
+    document.body.removeChild(element);
+    element.style.visibility = "visible";
+    return height;
+}
+
 function createViewModule () {
 
   /*
@@ -140,6 +151,7 @@ function createViewModule () {
         name_col.className = 'name-col'
         name_col.style.width = NAME_COL_WIDTH_PCT.toString() + '%'
         name_col.innerHTML = venue.name;
+        var name_col_height = getHeight(name_col);
         venue_row.appendChild(name_col);
 
         var sched_col = document.createElement('div');
@@ -152,6 +164,9 @@ function createViewModule () {
         venue_row.appendChild(clearfix);
 
         container.appendChild(venue_row);
+
+        sched_col.style.height = venue_row.offsetHeight + 'px';
+        alert();
 
 
         // _.each(venue.theatres, function (theatre) {
