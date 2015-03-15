@@ -1,0 +1,27 @@
+<p>Hi <%= @manager_name %>,</p>
+
+<p>We have a booking for you!</p>
+<h3>Where</h3>
+<p>
+  <b>Venue:</b> <%= @venue %><br>
+  <b>Theatre:</b> <%= @theatre %>
+</p>
+
+<h3>When</h3>
+<p>
+  <b>Date:</b> <%= @date.to_s %><br>
+  <b>Time:</b> <%= @start_time %> to <%= @end_time %>
+</p>
+
+<h3>Who</h3>
+<p><b>Name:</b> <%= @customer_name %><br>
+  <b>Phone:</b> <%= @customer_phone %><br>
+  <b>Email:</b> <%= @customer_email %><br>
+  <b>Activity:</b> <%= @activity_type %><br>
+  <b>Notes:</b> <%= @customer_notes %>
+</p>
+
+<br>
+
+<p>Enjoy my spam,<br>
+Jus</p>
