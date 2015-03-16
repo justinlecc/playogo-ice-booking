@@ -1,6 +1,6 @@
 <p>Hi <%= @manager_name %>,</p>
 
-<p>We have a booking for you!</p>
+<h3>We have a booking for you!</h3>
 <h3>Where</h3>
 <p>
   <b>Venue:</b> <%= @venue %><br>
@@ -9,8 +9,9 @@
 
 <h3>When</h3>
 <p>
-  <b>Date:</b> <%= @date.to_s %><br>
-  <b>Time:</b> <%= @start_time %> to <%= @end_time %>
+  <b>Date:</b> <%= @date.strftime("%A %e %b %Y") %><br>
+  <b>Time:</b> <%= (@date.to_datetime + @start_time.seconds).strftime("%l:%M%P") %> to 
+               <%= (@date.to_datetime + @start_time.seconds + @length.seconds).strftime("%l:%M%P") %>
 </p>
 
 <h3>Who</h3>
@@ -20,6 +21,8 @@
   <b>Activity:</b> <%= @activity_type %><br>
   <b>Notes:</b> <%= @customer_notes %>
 </p>
+
+<h3>Click <a href="google.com">here</a>(www.playogo.com/manager/confirm_booking/<%= @booking_id %>) to confirm this ice time.</h3>
 
 <br>
 

@@ -1,0 +1,32 @@
+<form id="confirm_request" action="/manager/confirm_request" method="POST">
+Venue:<br>
+<select name="theatre" form="confirm_request">
+  <% @venues.each do |venue, value| %>
+    <% value.each do |theatre|%>
+      <option value="<%= theatre[:id] %>"><%= venue + " - " + theatre[:name] %></option>
+    <% end %>
+  <% end %>
+</select>
+<br>
+Date:<br>
+<input type="date" name="date" value="<%= @date %>">
+<br>
+Start time:<br>
+<input type="text" name="start_time" value="<%= (Date.parse(@date) + @start_time.seconds).strftime("%l:%M%P") %>">
+<br>
+End time:<br>
+<input type="text" name="end_time" value="<%= (Date.parse(@date) + @start_time.seconds + @length.seconds).strftime("%l:%M%P") %>">
+<br>
+Contract number:<br>
+<input type="text" name="contract_id" value="">
+<br><br>
+<input type="hidden" name="booking_id" value="<%= @booking_id %>">
+<%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
+<input type="submit" value="Confirm booking">
+</form>
+
+<form id="cancel_request" action="/manager/cancel_request" method="POST">
+  <input type="hidden" name="booking_id" value="<%= @booking_id%>">
+  <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
+  <input type="submit" value="Cancel booking">
+</form>

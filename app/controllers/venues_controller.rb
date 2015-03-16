@@ -57,6 +57,8 @@ class VenuesController < ApplicationController
     end
     theatre = theatre.first
 
+    # TO DO: verify that booking is being made in place of an availability
+
     # Create "pending" booking
     b = Booking.create({:start_time => start_time, 
                         :length => length, 
@@ -98,6 +100,11 @@ class VenuesController < ApplicationController
         error_message += "start time: " + start_time.to_s + "\n"
         error_message += "length: " + length.to_s + "\n"
         ErrorLogging::log("payments#process_booking", error_message)
+
+        # Delete booking
+        b.delete 
+
+        # Redirect
         flash[:notice] = "Your card has been declined."
         redirect_to :back
       end
@@ -123,6 +130,12 @@ class VenuesController < ApplicationController
       end
 
     end
+
+    # Send manager email
+    ManagerMailer.ice_request(b.id).deliver_now
+
+    # Send customer email
+    CustomerMailer.ice_requested(b.id).deliver_now
 
     redirect_to '/venues/?date=' + params[:nav_date]
   end

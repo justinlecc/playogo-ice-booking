@@ -11,8 +11,11 @@ class TestData
   def loadData
     deleteData
 
+    # Onwners
+    @owner1 = Owner.create!({:name => "owner1", :manager_name => "Ashley", :manager_email => "justin_leclerc@hotmail.com"})
+
     # Venues
-    @venue1 = Venue.create!({:name => "venue1"})
+    @venue1 = Venue.create!({:name => "venue1", :owner => @owner1})
 
     # Theatres
     @theatre1 = Theatre.create!({:name => "theatre1", :venue => @venue1})
@@ -22,7 +25,7 @@ class TestData
     @opening1 = Opening.create!({:start_time => 6.hours, :length => 5.hour, :date => '2015-03-01', :theatre => @theatre1})
 
     # Bookings
-    @booking1 = Booking.create!({:start_time => 11.hours, :length => 1.hour, :date => '2015-03-01', :theatre => @theatre1, :name => 'Amellio Estives', :notes => 'Inner city hockey game.'})
+    @booking1 = Booking.create!({:start_time => 11.hours, :length => 1.hour, :date => '2015-03-01', :status => "paid", :theatre => @theatre1, :name => 'Amellio Estives', :notes => 'Inner city hockey game.'})
 
     # Price
     @price1 = Price.create!({:prime => 20000, :non_prime => 10000, :insurance => 300, :theatre => @theatre1});

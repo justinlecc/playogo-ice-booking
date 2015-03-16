@@ -1,9 +1,8 @@
 class ManagerMailer < ApplicationMailer
   default from: "justin_leclerc@hotmail.com"
   # layout 'mailer'
-  def ice_request
-    # Will be param
-    booking_id = Booking.first.id
+
+  def ice_request(booking_id)
 
     # Get booking
     booking = Booking.where({:id => booking_id})
@@ -12,18 +11,20 @@ class ManagerMailer < ApplicationMailer
     end
     booking = booking.first
 
+    # Get owner
+    owner = booking.theatre.venue.owner
+
     # Booking info
     @date = Date.parse(booking.date)
     @start_time = booking.start_time
-    @end_time = booking.end_time
     @length = booking.length
     @venue = booking.theatre.venue.name
     @theatre = booking.theatre.name
     @activity = booking.activity_type
 
     # Manager info
-    @manager_name = 'Ashley'
-    @manager_email = 'justin_leclerc@hotmail.com'
+    @manager_name = owner.manager_name
+    @manager_email = owner.manager_email
 
     # Customer info
     @customer_name = booking.name
@@ -31,8 +32,11 @@ class ManagerMailer < ApplicationMailer
     @customer_phone = booking.phone
     @customer_notes = booking.notes
 
+    # Booking id
+    @booking_id = booking.id
 
-
-    mail(:to => @manager_email, :subject => 'Welcome to My Awesome Site')
+    # Send
+    mail(:to => @manager_email, :subject => 'To manager')
+    
   end
 end

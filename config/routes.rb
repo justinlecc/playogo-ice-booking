@@ -7,6 +7,12 @@ Rails.application.routes.draw do
 
   resources :venues
 
+  get '/manager/confirm_booking/:booking_id', to: 'manager#respond_to_request'
+
+  post '/manager/confirm_request', to: 'manager#confirm_request'
+
+  post '/manager/cancel_request', to: 'manager#cancel_request'
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

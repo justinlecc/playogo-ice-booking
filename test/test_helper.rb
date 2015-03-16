@@ -7,6 +7,7 @@ class ActiveSupport::TestCase
   fixtures :all
 
   def drop_all
+    Owner.delete_all
     Venue.delete_all
     Theatre.delete_all
     Opening.delete_all

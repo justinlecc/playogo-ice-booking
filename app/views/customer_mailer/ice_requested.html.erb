@@ -1,0 +1,26 @@
+<p>Hi <%= @name %>,</p>
+
+<p>
+  Your ice time is being processed. <%= @owner %> will be processing your booking within the next 12 business hours. Thank you for your patience.
+</p>
+
+<p>Here are the details:</p>
+<p><b>Where:</b> <%= @venue %> - <%= @theatre %> </p>
+<p><b>When:</b> <%= (Time.zone.parse("12:00am") + @start_time.seconds).strftime("%l:%M%P") %> to 
+  <%= (Time.zone.parse("12:00am") + @start_time.seconds + @length.seconds).strftime("%l:%M%P") %> on 
+  <%= Date.parse(@date).strftime("%A %e %B %Y") %> </p>
+
+
+<p>
+  <b>Your next step:</b> wait for <%= @owner %> to follow up with you.
+</p>
+
+<p>
+  If there is a problem, please let us know by replying to this email.
+</p>
+
+
+<br>
+
+<p>Enjoy the day,<br>
+Jus</p>
