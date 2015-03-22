@@ -43,7 +43,7 @@ class VenuesController < ApplicationController
     start_time = params[:start_time].to_i
     length = params[:length].to_i
     amount = params[:amount].to_i
-    name = params[:first_name] + " " + params[:last_name]
+    name = params[:name]
     phone_number = params[:phone]
 
     puts "**** " + venue_name + " ****"
@@ -132,10 +132,10 @@ class VenuesController < ApplicationController
     end
 
     # Send manager email
-    ManagerMailer.ice_request(b.id).deliver_now
+    # ManagerMailer.ice_request(b.id).deliver_now
 
     # Send customer email
-    CustomerMailer.ice_requested(b.id).deliver_now
+    # CustomerMailer.ice_requested(b.id).deliver_now
 
     redirect_to '/venues/?date=' + params[:nav_date]
   end

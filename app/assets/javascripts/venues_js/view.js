@@ -82,6 +82,11 @@ function getTimeFromSeconds(seconds) {
   return time;
 }
 
+// Return the price given start time, end time, prime price and non prime price
+function getPrice (start_time, end_time, prime, non_prime) {
+  return prime;
+}
+
 /////////////////////////////////////////////////////////////////
 // View
 
@@ -92,6 +97,7 @@ function getTimeFromSeconds(seconds) {
   var TIME_SELECT = 'TIME_SELECT';
   var VENUE_POLICIES = 'VENUE_POLICIES';
   var INPUT_INFO = 'INPUT_INFO';
+  var REVIEW_INFO = 'REVIEW_INFO';
   var PAYMENT = 'PAYMENT';
 
 function createViewModule () {
@@ -340,7 +346,6 @@ function createViewModule () {
           time_options_str.push(getTimeFromSeconds(option));
         });
 
-        var price_per_hour = 200.34;
         // Initialize the slider
         $(".timeselect-slider").slider({
           range: true,
@@ -349,8 +354,11 @@ function createViewModule () {
           values: [ 0, 2 ],
           // What to do on change
           slide: function( event, ui ) {
-            $( "#modal-time-select" ).val( getTimeFromSeconds(time_options[ ui.values[ 0 ] ]) + " to " + getTimeFromSeconds(time_options[ ui.values[ 1 ] ]));
-            $( "#modal-time-select-price" ).val( '$' +  (price_per_hour * ((time_options[ ui.values[1] ] - time_options[ ui.values[0] ])/(60*60))).toString());
+            var start_time = time_options[ ui.values[ 0 ] ];
+            var end_time = time_options[ ui.values[ 1 ] ];
+            var price_per_hour = getPrice(start_time, end_time, info.selected_prime, info.selected_non_prime) / 100;
+            $( "#modal-selected-timerange" ).html( getTimeFromSeconds(time_options[ ui.values[ 0 ] ]) + " to " + getTimeFromSeconds(time_options[ ui.values[ 1 ] ]));
+            $( "#modal-selected-price" ).html( '$' +  (price_per_hour * ((time_options[ ui.values[1] ] - time_options[ ui.values[0] ])/(60*60))));
           }
         })
 
@@ -361,25 +369,17 @@ function createViewModule () {
         });
 
         // Initial ice time range
-        $( "#modal-time-select" ).val( getTimeFromSeconds(time_options[0]) +
+        $( "#modal-selected-timerange" ).html( getTimeFromSeconds(time_options[0]) +
         " to " + getTimeFromSeconds(time_options[1]) );
 
         // Initial ice time price
-        $( "#modal-time-select-price" ).val( '$' +  ( price_per_hour * ( (time_options[1] - time_options[0]) / (60*60) ) ).toString() );
-
-
-        // while (cur <= latest_end - 1*60*60 /* 1 hour */) {
-        //   console.log(cur);
-        //   var option = document.createElement('option');
-        //   option.setAttribute('value', cur.toString());
-        //   var hour = Math.floor(cur / (60 * 60));
-        //   var minute = (cur - (hour * 60 * 60)) / 60;
-        //   var date_to_print = new Date(Date.UTC(2015, 0, 1, hour, minute));
-        //   option.innerHTML = date_to_print.getUTCHours() + " : " + toPaddedString(date_to_print.getUTCMinutes());
-        //   select_starttime.appendChild(option);
-
-        //   cur += 30 * 60 /* 30 minutes */
-        // }
+        var start_time = time_options[ 0 ];
+        var end_time = time_options[ 2 ];
+        var price_per_hour = getPrice(start_time, end_time, info.selected_prime, info.selected_non_prime) / 100; 
+        $( "#modal-selected-price" ).html( '$' +  ( price_per_hour * ( (time_options[2] - time_options[0]) / (60*60) ) ).toString() 
+                                          + " (@ $" + price_per_hour + "/h)");
+        // Set venue
+        $( "#modal-selected-venue").html(info.selected_venue + " - " + info.selected_theatre);
 
         // Modal button
         var modal_btn = document.getElementById('booking-modal-btn-timeselect');
@@ -407,13 +407,86 @@ function createViewModule () {
 
         // Modal body
         var modal_body = document.getElementById('booking-modal-body');
-        modal_body.innerHTML = 'INPUT_INFO modal body content.';
+        var modal_body_template = document.getElementById('modal-body-inputinfo-template');
+        modal_body.innerHTML = modal_body_template.innerHTML;
 
         // Modal button
         var modal_btn = document.getElementById('booking-modal-btn-inputinfo');
         modal_btn.style.display = 'inline';
 
-      } else if (state == "input information") {
+      } else if (state == REVIEW_INFO) {
+
+        // Modal title
+        var modal_title = document.getElementById('booking-modal-title');
+        modal_title.innerHTML = 'Please confirm your booking details.';
+
+        // Modal body
+        var modal_body = document.getElementById('booking-modal-body');
+        var modal_body_template = document.getElementById('modal-body-reviewinfo-template');
+        modal_body.innerHTML = modal_body_template.innerHTML;
+
+
+        modal_body.children[0].innerHTML = info.selected_venue + " - " + info.selected_theatre;
+        modal_body.children[1].innerHTML = info.selected_date + " - " + info.selected_start_time + " - " + (info.selected_start_time + info.selected_length);
+        modal_body.children[2].innerHTML = "**total price**";
+        modal_body.children[3].innerHTML = info.customer_name;
+        modal_body.children[4].innerHTML = info.customer_phone;
+        modal_body.children[5].innerHTML = info.customer_notes;
+
+
+        // Modal button
+        var modal_btn = document.getElementById('booking-modal-btn-reviewinfo');
+        modal_btn.style.display = 'inline';
+
+
+      } else if (state == PAYMENT) {
+
+        var payment_form = document.getElementById('payment-form');
+        var inputs = payment_form.children;
+
+        // Fills in the following inputs
+        /*
+        <input type="hidden" name="stripeToken" value="">
+        <input type="hidden" name="stripeEmail" value="">
+        <input type="hidden" name="venue" value="">
+        <input type="hidden" name="theatre" value="">
+        <input type="hidden" name="date" value="">
+        <input type="hidden" name="start_time" value="">
+        <input type="hidden" name="length" value="">
+        <input type="hidden" name="amount" value="">
+        <input type="hidden" name="nav_date" value="">
+        <input type="hidden" name="name" value="">
+        <input type="hidden" name="phone" value="">
+        <input type="hidden" name="notes" value="">
+        */
+
+        // Stripe token and email filled out on payment
+
+        // Venue
+        inputs[2].value = info.selected_venue;
+        // Theatre
+        inputs[3].value = info.selected_theatre;
+        // Date
+        inputs[4].value = info.selected_date;
+        // Start time
+        inputs[5].value = info.selected_start_time;
+        // Length
+        inputs[6].value = info.selected_length;
+        // Amount
+        inputs[7].value = 20000;
+        // Nav date
+        inputs[8].value = info.navigation_date;
+        // Name
+        inputs[9].value = info.customer_name;
+        // Phone
+        inputs[10].value = info.customer_name;
+        // Notes
+        inputs[11].value = info.customer_notes;
+
+
+        // Close the modal
+        $('#booking-modal').modal('hide');
+
 
       }
     },

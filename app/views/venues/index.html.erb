@@ -29,6 +29,10 @@
           <button type="button" class="btn btn-default">Close</button>
           <button type="button" class="btn btn-primary">Save changes</button>
         </div>
+        <div id="booking-modal-btn-reviewinfo">
+          <button type="button" class="btn btn-default">Close</button>
+          <button id="stripe-checkout-btn" type="button" class="btn btn-primary">Pay</button>
+        </div>
       </div>
 
     </div>
@@ -41,28 +45,6 @@
 <div class="container">
 
 <p id="notice"><%= notice %></p>
-
-
-<!-- <div class="slider"></div>
-<p>
-  <label for="amount">Price range:</label>
-  <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
-</p> -->
-
-<script>
-// $(".slider").slider({
-//       range: true,
-//       min: 0,
-//       max: 5,
-//       values: [ 0, 1 ],
-//       slide: function( event, ui ) {
-//         $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
-//       }
-//     });
-// $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
-//       " - $" + $( "#slider-range" ).slider( "values", 1 ) );
-</script>
-
 
 <h1>Venues</h1>
 
@@ -149,18 +131,84 @@
 </script>
 
 <!--
-  Modal TIME_SELECT template
+  Modal TIME_SELECT body template
 -->
 <script id="modal-body-timeselect-template" type="text/template">
   <div class="timeselect-slider"></div>
-<p>
-  <label for="modal-time-select">You&#39;ve selected:</label>
-  <input type="text" id="modal-time-select" readonly style="border:0; color:#f6931f; font-weight:bold;">
-</p>
-<p>
-  <label for="modal-time-select-price">Total:</label>
-  <input type="text" id="modal-time-select-price" readonly style="border:0; color:#f6931f; font-weight:bold;">
-</p>
+  <br>
+  <p>
+    You&#39;ve selected <span id="modal-selected-timerange"></span>
+    at <span id="modal-selected-venue"></span>
+    for <span id="modal-selected-price"></span>.
+  </p>
+
+</script>
+
+
+<!--
+  Modal INPUT_INFO body template
+-->
+<script id="modal-body-inputinfo-template" type="text/template">
+  
+  <div class="form-group">
+    <label for="customer-name">Name</label>
+    <input type="text" class="form-control" id="customer-name" placeholder="Enter your first and last name">
+  </div>
+  <div class="form-group">
+    <label for="customer-phone">Phone</label>
+    <input type="text" class="form-control" id="customer-phone" placeholder="Enter phone number">
+  </div>
+  <div class="form-group">
+    <label for="customer-notes">Describe what the ice time is being used for</label>
+    <input type="text" class="form-control" id="customer-notes" placeholder="Eg. Pick up hockey game with around 15 players.">
+  </div>
+
+  <!--
+  <div class="form-group">
+    <label for="customer-phone">
+      Activity type
+    </label>
+    <input type="hidden" id="customer-phone">
+    <div class="radio">
+    <label>
+      <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+      Pickup hockey
+    </label>
+    </div>
+    <div class="radio">
+    <label>
+      <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+      Skating party
+    </label>
+    </div>
+    <div class="radio disabled">
+    <label>
+      <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">
+      On ice training
+    </label>
+  </div>
+  -->
+
+  </div>
+
+</script>
+
+<!--
+  Modal INFO_REVIEW body template
+-->
+<script id="modal-body-reviewinfo-template" type="text/template">
+
+  <p></p>
+
+  <p></p>
+
+  <p></p>
+
+  <p></p>
+
+  <p></p>
+
+  <p></p>
 </script>
 
 
@@ -173,26 +221,21 @@
     -can customize (https://stripe.com/docs/checkout#integration-custom)
     -hidden input 'stripeToken'
 -->
+<script src="https://checkout.stripe.com/checkout.js"></script>
 
 <form id="payment-form" action="/venues/ice_booking" method="POST">
-  <script
-    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-    data-key="pk_test_1Di5chkNtgIMHyHZ6pbKLOrD"
-    data-amount="2000"
-    data-name="Playogo"
-    data-description="2 widgets ($20.00)"
-    data-image="">
-  </script>
-  <input type="hidden" name="venue" value="venue1">
-  <input type="hidden" name="theatre" value="theatre1">
-  <input type="hidden" name="date" value="2015-03-01">
-  <input type="hidden" name="start_time" value="43200">
-  <input type="hidden" name="length" value="18000">
-  <input type="hidden" name="amount" value="2000">
-  <input type="hidden" name="nav_date" value="2020-01-01">
-  <input type="hidden" name="first_name" value="Mooster">
-  <input type="hidden" name="last_name" value="Booster">
-  <input type="hidden" name="phone" value="3069753958">
+  <input type="hidden" name="stripeToken" value="">
+  <input type="hidden" name="stripeEmail" value="">
+  <input type="hidden" name="venue" value="">
+  <input type="hidden" name="theatre" value="">
+  <input type="hidden" name="date" value="">
+  <input type="hidden" name="start_time" value="">
+  <input type="hidden" name="length" value="">
+  <input type="hidden" name="amount" value="">
+  <input type="hidden" name="nav_date" value="">
+  <input type="hidden" name="name" value="">
+  <input type="hidden" name="phone" value="">
+  <input type="hidden" name="notes" value="">
   <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
 </form>
 

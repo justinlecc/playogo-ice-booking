@@ -3,6 +3,14 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 /**
+* Global
+*/
+div.container {
+  overflow: hidden;
+}
+
+
+/**
 * Day Navigation
 */
 #day-nav-container {
@@ -60,12 +68,7 @@
 #hours-row-container {
   width: 100%;
 }
-div.name-col {
-  /*height: 30px;*/
-  /*width: 33%; set dynamically */
-  float:left;
-  background: blue;
-}
+
 
 div.hour-col {
   height:30px;
@@ -73,10 +76,30 @@ div.hour-col {
   background: red;
 }
 
+
+.clearfix {
+  width:0px;
+  clear:both;
+  display:block;
+}
+
+/**
+* Venue schedule
+*/
+/* columns of same height styles */
+
+div.name-col {
+  /*height: 30px;*/
+  /*width: 33%; set dynamically */
+  background: #939393;
+  padding-left: 5px;
+  max-width: 60px;
+  min-width: 60px;
+}
+
 div.sched-col {
   /*height: 30px;*/
-  float:left;
-  background:red;
+  background:#D3D3D3;
 }
 
 div.venue-row {
@@ -84,8 +107,33 @@ div.venue-row {
 
 }
 
-.clearfix {
-  width:0px;
-  clear:both;
-  display:block;
+.row-same-height {
+    display: table;
+    width: 100%;
+}
+
+.col-same-height {
+    display: table-cell;
+    float: none !important;
+}
+
+div.avail-block {
+  position:absolute;
+  background: blue;
+  height: 12px;
+}
+
+/**
+* Popover
+*/
+#popover-container {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: red;
+  display: none;
+}
+
+#booking-modal-btn-timeselect, #booking-modal-btn-policies, #booking-modal-btn-inputinfo {
+  display:none;
 }

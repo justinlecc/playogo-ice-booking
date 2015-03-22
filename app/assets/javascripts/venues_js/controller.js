@@ -30,6 +30,41 @@ function parseDate(input) {
   return new Date(parts[0], parts[1]-1, parts[2]); // Note: months are 0-based
 }
 
+// retrieves info from the schedule_tree
+function getFromScheduleTree(schedule_tree, item, venue, theatre) {
+  var return_value = false;
+
+  if ('prime' == item) {
+    _.each(schedule_tree.venues, function (iter_venue) {
+      if (venue == iter_venue.name) {
+        _.each(iter_venue.theatres, function (iter_theatre) {
+          if (theatre == iter_theatre.name) {
+            return_value = iter_theatre.prime;
+          }
+        })
+      }
+    })
+
+    if (!return_value) {
+      throw 'ERROR: did not find matching venue and theatre';
+    }
+  } else if ('non_prime' == item) {
+    _.each(schedule_tree.venues, function (iter_venue) {
+      if (venue == iter_venue.name) {
+        _.each(iter_venue.theatres, function (iter_theatre) {
+          if (theatre == iter_theatre.name) {
+            return_value = iter_theatre.non_prime;
+          }
+        })
+      }
+    })
+
+    if (!return_value) {
+      throw 'ERROR: did not find matching venue and theatre';
+    }
+  }
+  return return_value;
+};
 
 
 /////////////////////////////////////////////////////////////////////////
@@ -43,6 +78,7 @@ function createControllerModule () {
   var TIME_SELECT = 'TIME_SELECT';
   var VENUE_POLICIES = 'VENUE_POLICIES';
   var INPUT_INFO = 'INPUT_INFO';
+  var REVIEW_INFO = 'REVIEW_INFO';
   var PAYMENT = 'PAYMENT';
 
 
@@ -82,10 +118,13 @@ function createControllerModule () {
       // Customer info
       this.customer_name = '';
       this.customer_phone = '';
+      this.customer_notes = '';
 
       // Avail info
       this.selected_venue = '';
       this.selected_theatre = '';
+      this.selected_prime = '';
+      this.selected_non_prime = '';
       this.selected_date = '';
       this.selected_start_time = '';
       this.selected_length = '';
@@ -113,6 +152,8 @@ function createControllerModule () {
           this.selected_date = el.getAttribute("date");
           this.selected_start_time = el.getAttribute("start_time");
           this.selected_length = el.getAttribute("length"); /* need to get size from selection */
+          this.selected_prime = getFromScheduleTree(this.availsCollectionModel.getAvails(), 'prime', this.selected_venue, this.selected_theatre);
+          this.selected_non_prime = getFromScheduleTree(this.availsCollectionModel.getAvails(), 'non_prime', this.selected_venue, this.selected_theatre);
         }
 
         // Set the page state
@@ -123,7 +164,9 @@ function createControllerModule () {
                                                         selected_theatre: this.selected_theatre,
                                                         selected_date: this.selected_date,
                                                         selected_start_time: this.selected_start_time,
-                                                        selected_length: this.selected_length});
+                                                        selected_length: this.selected_length,
+                                                        selected_prime: this.selected_prime,
+                                                        selected_non_prime: this.selected_non_prime});
 
         // Activate the modal
         $('#booking-modal').modal();
@@ -142,9 +185,41 @@ function createControllerModule () {
         this.page_state = INPUT_INFO;
 
         // Render the modal content
-        this.scheduleRenderer.renderModal(INPUT_INFO);
+        this.scheduleRenderer.renderModal(INPUT_INFO, null);
 
+      } else if (REVIEW_INFO == next_page_state) {
+
+        // Set the page state
+        this.page_state = REVIEW_INFO;
+
+        // Render the modal content
+        this.scheduleRenderer.renderModal(REVIEW_INFO, {selected_venue: this.selected_venue,
+                                                        selected_theatre: this.selected_theatre,
+                                                        selected_date: this.selected_date,
+                                                        selected_start_time: this.selected_start_time,
+                                                        selected_length: this.selected_length,
+                                                        customer_name: this.customer_name,
+                                                        customer_phone: this.customer_phone,
+                                                        customer_notes: this.customer_notes});
+
+      } else if (PAYMENT == next_page_state) {
+
+        // Set the page state
+        this.page_state = PAYMENT;
+
+
+        // Render the modal content
+        this.scheduleRenderer.renderModal(PAYMENT, {selected_venue: this.selected_venue,
+                                                    selected_theatre: this.selected_theatre,
+                                                    selected_date: this.selected_date,
+                                                    selected_start_time: this.selected_start_time,
+                                                    selected_length: this.selected_length,
+                                                    customer_name: this.customer_name,
+                                                    customer_phone: this.customer_phone,
+                                                    customer_notes: this.customer_notes,
+                                                    navigation_date: this.availsScheduleModel.getCurrentDate()});
       }
+ 
     }
 
     /*
