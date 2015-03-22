@@ -53,5 +53,9 @@ group :development, :test do
   # Bootstrap (JL added)
   gem 'bootstrap-sass', '~> 3.2.0'
   gem 'autoprefixer-rails'
+
+  # JQuery UI (JL added)
+  gem 'jquery-ui-rails', '~> 5.0.3'
+  
 end
 

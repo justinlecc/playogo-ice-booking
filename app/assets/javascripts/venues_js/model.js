@@ -43,7 +43,11 @@ function createModelModule() {
     */
     var AvailsScheduleModel = function () {
         this.listeners = [];
-        this.current_date = new Date();
+
+        // Get dateless string
+        var date = new Date();
+        this.current_date = datelessString(date);
+
         this.earliest_date = null;
         this.latest_date = null;
     };
@@ -55,7 +59,7 @@ function createModelModule() {
             _.each(schedule_json.venues, function (venue) {
                 _.each(venue.theatres, function (theatre) {
                     _.each(theatre.days, function (day) {
-                        var cur = new Date(day.date);
+                        var cur = day.date;
                         if (earliest_date == null && latest_date == null) {
                             earliest_date = cur;
                             latest_date = cur;
@@ -70,8 +74,6 @@ function createModelModule() {
 
             this.earliest_date = earliest_date;
             this.latest_date = latest_date;
-            console.log(this.earliest_date);
-            console.log(this.latest_date);
         },
 
         getCurrentDate: function () {

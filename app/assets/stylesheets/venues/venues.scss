@@ -1,0 +1,139 @@
+// Place all the styles related to the Venues controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+/**
+* Global
+*/
+div.container {
+  overflow: hidden;
+}
+
+
+/**
+* Day Navigation
+*/
+#day-nav-container {
+  width: 100%;
+  display: inline-block;
+
+  /* Clearfix */
+  .day-tabs:after {
+    display:block;
+    clear:both;
+    content:' ';
+  }
+
+  .day-tabs {
+    padding: 0;
+
+    li {
+      float:left;
+      list-style: none;
+      width:11%;
+      background: #7fb5da;
+      text-align: center;
+      padding-top: 9px;
+      padding-bottom: 9px;
+    }
+
+    a {
+      /*padding: 9px 15px;*/
+      display:inline-block;
+      border-radius: 3px 3px 0px 0px;
+      
+      font-size: 16px;
+      font-weight: 600;
+      color:#4c4c4c;
+      transition:all linear 0.15s;
+    }
+
+    a:hover {
+      background:#a7cce5;
+      text-decoration:none;
+    }
+
+  }
+
+  li.active, li.active:hover {
+    background:blue;
+    color:#4c4c4c;
+  }
+
+}
+
+/**
+* Hours display
+*/
+#hours-row-container {
+  width: 100%;
+}
+
+
+div.hour-col {
+  height:30px;
+  float:left;
+  background: red;
+}
+
+
+.clearfix {
+  width:0px;
+  clear:both;
+  display:block;
+}
+
+/**
+* Venue schedule
+*/
+/* columns of same height styles */
+
+div.name-col {
+  /*height: 30px;*/
+  /*width: 33%; set dynamically */
+  background: #939393;
+  padding-left: 5px;
+  max-width: 60px;
+  min-width: 60px;
+}
+
+div.sched-col {
+  /*height: 30px;*/
+  background:#D3D3D3;
+}
+
+div.venue-row {
+  width:100%;
+
+}
+
+.row-same-height {
+    display: table;
+    width: 100%;
+}
+
+.col-same-height {
+    display: table-cell;
+    float: none !important;
+}
+
+div.avail-block {
+  position:absolute;
+  background: blue;
+  height: 12px;
+}
+
+/**
+* Popover
+*/
+#popover-container {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: red;
+  display: none;
+}
+
+#booking-modal-btn-timeselect, #booking-modal-btn-policies, #booking-modal-btn-inputinfo {
+  display:none;
+}

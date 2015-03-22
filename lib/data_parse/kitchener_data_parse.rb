@@ -1,5 +1,9 @@
 
 class KitchenerDataParse  
+  def getTheatreHash(theatre)
+    return {:prime => 20000, :non_prime => 15000, :insurance => 500, :name => theatre}
+  end
+
   def load
     xmlFile = 'kitchener_data.xml'
     treeToDatabase(xmlToTree(xmlFile))
@@ -103,7 +107,7 @@ class KitchenerDataParse
           date = start_datetime.strftime("%Y-%m-%d")
 
           # Add the availability to the Avail Tree
-          availTree.addAvail(venue, theatre, date, start_seconds, length)
+          availTree.addAvail(venue, getTheatreHash(theatre), date, start_seconds, length)
 
         end
 

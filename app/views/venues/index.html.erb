@@ -2,9 +2,67 @@
   schedule_tree = JSON.parse('<%= @scheduleTree.to_json.html_safe %>');
 </script>
 
+
+<!-- Modal -->
+<div class="modal fade" id="booking-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="booking-modal-title">Modal title</h4>
+      </div>
+      <div class="modal-body" id="booking-modal-body">
+        Test
+      </div>
+
+      <!-- Modal buttons -->
+      <div class="modal-footer" id="booking-modal-btns">
+        <div id="booking-modal-btn-timeselect">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+        <div id="booking-modal-btn-venuepolicies">
+          <button type="button" class="btn btn-default">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+        <div id="booking-modal-btn-inputinfo">
+          <button type="button" class="btn btn-default">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
 <div class="container">
 
 <p id="notice"><%= notice %></p>
+
+
+<!-- <div class="slider"></div>
+<p>
+  <label for="amount">Price range:</label>
+  <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+</p> -->
+
+<script>
+// $(".slider").slider({
+//       range: true,
+//       min: 0,
+//       max: 5,
+//       values: [ 0, 1 ],
+//       slide: function( event, ui ) {
+//         $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+//       }
+//     });
+// $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+//       " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+</script>
+
 
 <h1>Venues</h1>
 
@@ -21,6 +79,10 @@
 </div>
 
 <div id="venue-rows-container">
+
+</div>
+
+<div id="popover-container">
 
 </div>
 
@@ -87,13 +149,18 @@
 </script>
 
 <!--
-  Avails Schedule Venue Row Template
+  Modal TIME_SELECT template
 -->
-<script id="avails-venue-template" type="text/template">
-  <div>
-    <div>
-    </div>
-  </div>
+<script id="modal-body-timeselect-template" type="text/template">
+  <div class="timeselect-slider"></div>
+<p>
+  <label for="modal-time-select">You&#39;ve selected:</label>
+  <input type="text" id="modal-time-select" readonly style="border:0; color:#f6931f; font-weight:bold;">
+</p>
+<p>
+  <label for="modal-time-select-price">Total:</label>
+  <input type="text" id="modal-time-select-price" readonly style="border:0; color:#f6931f; font-weight:bold;">
+</p>
 </script>
 
 
