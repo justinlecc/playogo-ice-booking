@@ -102,10 +102,7 @@ div.sched-col {
   background:#D3D3D3;
 }
 
-div.venue-row {
-  width:100%;
 
-}
 
 .row-same-height {
     display: table;
@@ -121,6 +118,14 @@ div.avail-block {
   position:absolute;
   background: blue;
   height: 12px;
+}
+
+div.hour {
+  position:absolute;
+  text-align:center;
+  color:black;
+  width: 10px;
+  margin-left: -5px;
 }
 
 /**

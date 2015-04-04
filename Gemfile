@@ -56,6 +56,9 @@ group :development, :test do
 
   # JQuery UI (JL added)
   gem 'jquery-ui-rails', '~> 5.0.3'
+
+  # Touch Punch (JL added)
+  gem 'touchpunch-rails', '~> 1.0.3'
   
 end
 

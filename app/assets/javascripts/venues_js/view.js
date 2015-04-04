@@ -10,9 +10,9 @@ var NAME_COL_WIDTH_PCT = 33;
 // Returns monday of current day d (http://stackoverflow.com/questions/4156434/javascript-get-the-first-day-of-the-week-from-current-date)
 function getMonday(d) {
   d = new Date(d);
-  var day = d.getDay(),
-      diff = d.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
-  return new Date(d.setDate(diff));
+  var day = d.getUTCDay(),
+      diff = d.getUTCDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
+  return new Date(d.setUTCDate(diff));
 }
 
 // Pads integer with 0 if less than 10
@@ -80,11 +80,35 @@ function getTimeFromSeconds(seconds) {
   }
 
   return time;
+};
+
+// parse a date in yyyy-mm-dd format to UTC time
+function parseUTCDate(input) {
+  var parts = input.split('-');
+  // new Date(year, month [, day [, hours[, minutes[, seconds[, ms]]]]])
+  return new Date(Date.UTC(parts[0], parts[1]-1, parts[2])); // Note: months are 0-based
 }
+
 
 // Return the price given start time, end time, prime price and non prime price
 function getPrice (start_time, end_time, prime, non_prime) {
   return prime;
+}
+
+// Removing and adding classes
+function hasClass(ele,cls) {
+  return !!ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
+}
+
+function addClass(ele,cls) {
+  if (!hasClass(ele,cls)) ele.className += " "+cls;
+}
+
+function removeClass(ele,cls) {
+  if (hasClass(ele,cls)) {
+    var reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');
+    ele.className=ele.className.replace(reg,' ');
+  }
 }
 
 /////////////////////////////////////////////////////////////////
@@ -99,6 +123,11 @@ function getPrice (start_time, end_time, prime, non_prime) {
   var INPUT_INFO = 'INPUT_INFO';
   var REVIEW_INFO = 'REVIEW_INFO';
   var PAYMENT = 'PAYMENT';
+
+  /*
+   * Event types
+   */
+  var DATE_UPDATE = 'DATE_UPDATE';
 
 function createViewModule () {
 
@@ -124,40 +153,81 @@ function createViewModule () {
       content.innerHTML = template.innerHTML;
 
       // Month button
-      content.children[0].children[0].innerHTML = MONTH_NAMES[parseDate(current_date).getMonth()];
+      content.children[0].children[0].innerHTML = MONTH_NAMES[parseUTCDate(current_date).getUTCMonth()];
 
       // Week button *Need to update dropdown*
-      var monday = getMonday(parseDate(current_date)).getDate();
+      var monday = getMonday(parseUTCDate(current_date)).getUTCDate();
       content.children[0].children[1].innerHTML = monday.toString() + " - " + (monday+6).toString();
 
 
-      container.appendChild(content);
+      container.innerHTML = content.innerHTML;
     },
 
     /*
      * Renders the day nav
      */ 
-    renderDayNav: function (current_date) {
+    renderDayNav: function (current_date, controller) {
       var container = document.getElementById('day-nav-container');
-      var template = document.getElementById('avails-days-template');
-      var content = document.createElement('div');
+      var content = container;
+      var template = document.getElementById('day-nav-template');
       content.innerHTML = template.innerHTML;
+
       var tabs = content.children[0].children;
 
-      // Back and forward tab
+      // Set the current day of the month
+      var current_utc_date = parseUTCDate(current_date);
 
       // Day tabs
-      var start_week = getMonday(parseDate(current_date));
+      var start_week = getMonday(current_utc_date);
 
-      for (var i=1; i < tabs.length - 1; i++) {
-        tabs[i].children[0].innerHTML = start_week.getDate();
-        if (start_week.getDate() == parseDate(current_date).getDate()) {
-          tabs[i].classList.add('active');
+      // Days of the week
+      var days_of_week = [];
+
+      // Define event listener
+      var clickDayNav = function () {
+        var date = parseUTCDate(this.getAttribute('day').toString());
+        var current_day = current_utc_date;
+        console.log("Date getTime: " + (date.getTime()-1));
+        console.log("Cur day getTime: " + (current_day.getTime()-1));
+        var time_diff = date.getTime() - current_day.getTime();
+        if (time_diff % (1000 * 3600 * 24) != 0) {
+          throw "ERROR: difference in time was not a mod a full day."
         }
-        start_week.setDate(start_week.getDate() + 1);
+        var nav_value = time_diff / (1000 * 3600 * 24);
+        if (nav_value == 0) {
+          // do nothing
+        } else {
+          controller.changeDateByOffset(nav_value);
+        }
+      };
+
+      // Days of the week: Monday through Friday
+      for (var i=1; i < tabs.length - 1; i++) {
+
+        // Render the day tabs
+        tabs[i].children[0].innerHTML = start_week.getUTCDate();
+        if (start_week.getUTCDate() == current_utc_date.getUTCDate()) {
+          addClass(tabs[i],'active');
+        } else {
+          removeClass(tabs[i], 'active');
+        };
+
+        // Store date being represented
+        tabs[i].setAttribute('day', datelessString(start_week));
+
+        // Add event listener
+        tabs[i].addEventListener('click', clickDayNav);
+
+        start_week.setUTCDate(start_week.getUTCDate() + 1);
       }
+
+      // Week back button
+      tabs[0].setAttribute('day', datelessString(new Date(Date.UTC(current_utc_date.getUTCFullYear(), current_utc_date.getUTCMonth(), current_utc_date.getUTCDate()) - (7 * 86400000 /* one day in milliseconds */)))); // a week back
+      tabs[0].addEventListener('click', clickDayNav);
+      // Week forward button
+      tabs[8].setAttribute('day', datelessString(new Date(Date.UTC(current_utc_date.getUTCFullYear(), current_utc_date.getUTCMonth(), current_utc_date.getUTCDate()) + (7 * 86400000 /* one day in milliseconds */)))); // a week back
+      tabs[8].addEventListener('click', clickDayNav);
       
-      container.appendChild(content);
     },
 
     /*
@@ -215,26 +285,56 @@ function createViewModule () {
     /*
      * Renders the venue rows
      */  
-    renderVenueRows: function (schedule_tree, current_date) {
+    renderVenueRows: function (schedule_tree, current_date, controller) {
       // Relevent data
       var earliest_open = 6*60*60; // 6 hours
-      var latest_close = 25*60*60; // 25 hours
+      var latest_close = 25*60*60; // 25 hours (1am tomorrow)
       var time = latest_close - earliest_open;
 
       var container = document.getElementById('venue-rows-container');
+      container.innerHTML = '';
 
       var venues = schedule_tree.venues;
       _.each(venues, function (venue) {
-        // Venue
+
+        // Make venue
         var venue_row = document.createElement('div');
-        venue_row.className = 'venue-row';
+        venue_row.className = 'venue-row row';
         venue_row.innerHTML = venue.name;
         container.appendChild(venue_row);
 
+        // Make hours row
+        var hours_row_template = document.getElementById('avails-hours-template');
+        var hours_row = document.createElement('div');
+        hours_row.innerHTML = hours_row_template.innerHTML;
+        venue_row.appendChild(hours_row);
+
+        var cur_time = earliest_open;
+        var num_hours = (latest_close - earliest_open) / (60*60);
+        var i = 0;
+        var hours_col = hours_row.children[0].children[1];
+        var space = hours_col.offsetWidth; // width of hours col
+
+        while (cur_time <= latest_close) {
+
+          // Place the avail
+          var hour = document.createElement('div');
+          hour.className = 'hour';
+          hour.style.left = (space / num_hours)*i + 'px';
+          hour.style.top = '0px';
+          hour.innerHTML = (cur_time/(60*60)).toString();
+
+          hours_col.appendChild(hour);
+
+
+          cur_time += 60*60; // 1 hour
+          i++;
+        }
+
+        // Make theatres
         _.each(venue.theatres, function (theatre) {
-          // Theatre
+
           var theatre_row = document.createElement('div');
-          venue_row.className = 'theatre-row row';
           venue_row.appendChild(theatre_row);
 
           // Same height cols
@@ -244,7 +344,7 @@ function createViewModule () {
 
           // Theatre name
           var name_col = document.createElement('div');
-          name_col.className = 'name-col col-xs-3 col-same-height'
+          name_col.className = 'name-col col-xs-3 col-same-height';
           name_col.innerHTML = theatre.name;
           same_height.appendChild(name_col);
 
@@ -289,6 +389,11 @@ function createViewModule () {
                 avail_block.setAttribute('date', day.date);
                 avail_block.setAttribute('start_time', avail.start);
                 avail_block.setAttribute('length', avail.length);
+
+                // Set event listener
+                avail_block.addEventListener('click', function () {
+                  controller.changePageState(this, TIME_SELECT);
+                });
 
                 // Append
                 sched_col.appendChild(avail_block);
@@ -340,12 +445,6 @@ function createViewModule () {
           cur_time += 30 * 60;
         }
 
-        // Get time selection options in string form
-        var time_options_str = [];
-        _.each(time_options, function (option) {
-          time_options_str.push(getTimeFromSeconds(option));
-        });
-
         // Initialize the slider
         $(".timeselect-slider").slider({
           range: true,
@@ -354,23 +453,29 @@ function createViewModule () {
           values: [ 0, 2 ],
           // What to do on change
           slide: function( event, ui ) {
+            if (ui.values[0] + 1 >= ui.values[1]) {
+              return false;
+            }
             var start_time = time_options[ ui.values[ 0 ] ];
             var end_time = time_options[ ui.values[ 1 ] ];
             var price_per_hour = getPrice(start_time, end_time, info.selected_prime, info.selected_non_prime) / 100;
-            $( "#modal-selected-timerange" ).html( getTimeFromSeconds(time_options[ ui.values[ 0 ] ]) + " to " + getTimeFromSeconds(time_options[ ui.values[ 1 ] ]));
+
+            // Update time range in visible span and controller
+            var timerange_element = $( "#modal-selected-timerange" )
+            timerange_element.html( getTimeFromSeconds(time_options[ ui.values[ 0 ] ]) + " to " + getTimeFromSeconds(time_options[ ui.values[ 1 ] ]));
+            info.controller.specified_start_time = time_options[ ui.values[ 0 ] ];
+            info.controller.specified_length = time_options[ ui.values[ 1 ] ] - time_options[ ui.values[ 0 ] ];
+
+            // Update the price in the visible span
             $( "#modal-selected-price" ).html( '$' +  (price_per_hour * ((time_options[ ui.values[1] ] - time_options[ ui.values[0] ])/(60*60))));
           }
-        })
-
-        // Add pips with the labels set to "months"
-        .slider("pips", {
-          rest: "label",
-          labels: time_options_str
         });
 
         // Initial ice time range
         $( "#modal-selected-timerange" ).html( getTimeFromSeconds(time_options[0]) +
-        " to " + getTimeFromSeconds(time_options[1]) );
+        " to " + getTimeFromSeconds(time_options[2]) );
+        info.controller.specified_start_time = time_options[0];
+        info.controller.specified_length = time_options[2] - time_options[0];
 
         // Initial ice time price
         var start_time = time_options[ 0 ];
@@ -427,7 +532,7 @@ function createViewModule () {
 
 
         modal_body.children[0].innerHTML = info.selected_venue + " - " + info.selected_theatre;
-        modal_body.children[1].innerHTML = info.selected_date + " - " + info.selected_start_time + " - " + (info.selected_start_time + info.selected_length);
+        modal_body.children[1].innerHTML = info.selected_date + " - " + info.specified_start_time + " - " + (info.specified_start_time + info.specified_length);
         modal_body.children[2].innerHTML = "**total price**";
         modal_body.children[3].innerHTML = info.customer_name;
         modal_body.children[4].innerHTML = info.customer_phone;
@@ -445,7 +550,7 @@ function createViewModule () {
         var inputs = payment_form.children;
 
         // Fills in the following inputs
-        /*
+        /***************************************************
         <input type="hidden" name="stripeToken" value="">
         <input type="hidden" name="stripeEmail" value="">
         <input type="hidden" name="venue" value="">
@@ -458,9 +563,11 @@ function createViewModule () {
         <input type="hidden" name="name" value="">
         <input type="hidden" name="phone" value="">
         <input type="hidden" name="notes" value="">
-        */
+        ****************************************************/
 
         // Stripe token and email filled out on payment
+
+        alert("start time: " + info.specified_start_time);
 
         // Venue
         inputs[2].value = info.selected_venue;
@@ -469,9 +576,9 @@ function createViewModule () {
         // Date
         inputs[4].value = info.selected_date;
         // Start time
-        inputs[5].value = info.selected_start_time;
+        inputs[5].value = info.specified_start_time;
         // Length
-        inputs[6].value = info.selected_length;
+        inputs[6].value = info.specified_length;
         // Amount
         inputs[7].value = 20000;
         // Nav date
@@ -479,7 +586,7 @@ function createViewModule () {
         // Name
         inputs[9].value = info.customer_name;
         // Phone
-        inputs[10].value = info.customer_name;
+        inputs[10].value = info.customer_email;
         // Notes
         inputs[11].value = info.customer_notes;
 
@@ -487,6 +594,16 @@ function createViewModule () {
         // Close the modal
         $('#booking-modal').modal('hide');
 
+        // Open Checkout with further options
+        info.handler.open({
+            name: 'Playogo.com',
+            description: 'Ice time',
+            amount: 2000
+            
+        });
+
+        info.element.preventDefault();
+        alert("hold here");
 
       }
     },
@@ -494,13 +611,21 @@ function createViewModule () {
     /*
      * Renders the entire schedule
      */ 
-     renderAll: function (current_date, schedule_tree) {
+     renderAll: function (current_date, schedule_tree, controller) {
       this.renderMonthNav(current_date);
-      this.renderDayNav(current_date);
+      this.renderDayNav(current_date, controller);
       //this.renderHoursRow();
-      this.renderVenueRows(schedule_tree, current_date);
-     }
+      this.renderVenueRows(schedule_tree, current_date, controller);
+     },
 
+    /*
+     * Callback on event
+     */      
+    notify: function (event_type, params) {
+      if (DATE_UPDATE == event_type) {
+        params.scheduleRenderer.renderAll(params.current_date, params.schedule_tree, params.controller);
+      }
+    }
   });
 
   // /*

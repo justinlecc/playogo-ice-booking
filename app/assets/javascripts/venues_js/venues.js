@@ -42,17 +42,13 @@ window.addEventListener('load', function() {
      */
     var venueController = controllerModule.loadVenueController(availsCollectionModel, availsScheduleModel, scheduleRenderer);
     venueController.initializePage(schedule_tree); // schedule_tree from .erb view rendering
+    availsScheduleModel.controller = venueController;
 
-    /*
-     * Add event listeners to blocks
-     */
+    
 
-    // Click on avail block
-    _.each($('.avail-block'), function (el) {
-        el.addEventListener('click', function () {
-            venueController.changePageState(this, TIME_SELECT);
-        });
-    });
+
+    /////////////////////////////////////////////////////////////////////
+    // MODAL
 
     /*
      * Add event listeners to TIME_SELECT modal
@@ -61,6 +57,7 @@ window.addEventListener('load', function() {
     // TIME_SELECT continue
     var timeselect_continue_btn = document.getElementById('booking-modal-btn-timeselect').children[1];
     timeselect_continue_btn.addEventListener('click', function () {
+
         venueController.changePageState(null, VENUE_POLICIES);
     });
 
@@ -114,49 +111,57 @@ window.addEventListener('load', function() {
         venueController.changePageState(null, VENUE_POLICIES);
     });
 
+    // REVIEW_INFO payment button
+    var reviewinfo_continue_btn = document.getElementById('booking-modal-btn-reviewinfo').children[1];
+    reviewinfo_continue_btn.addEventListener('click', function (e) {
+        venueController.changePageState(e, PAYMENT);
+    });
+
     // Set up stripe handler
-    var payment_submited = false;
-    var handler = StripeCheckout.configure({
-        key: 'pk_test_1Di5chkNtgIMHyHZ6pbKLOrD',
-        token: function(token) {
-            payment_submited = true;
-            alert("TOKEN - payment_submited: " + payment_submited.toString());
-            // Update form
-            $( 'input[name="stripeToken"]' ).val(token.id);
-            $( 'input[name="stripeEmail"]' ).val(token.email);
+    // var payment_submited = false;
+    // var handler = StripeCheckout.configure({
+    //     key: 'pk_test_1Di5chkNtgIMHyHZ6pbKLOrD',
+    //     token: function(token) {
+    //         payment_submited = true;
+    //         alert("TOKEN - payment_submited: " + payment_submited.toString());
+    //         // Update form
+    //         $( 'input[name="stripeToken"]' ).val(token.id);
+    //         $( 'input[name="stripeEmail"]' ).val(token.email);
 
-            // Submit the form
-            document.getElementById('payment-form').submit();
-        },
-        closed: function () {
-            alert("CLOSED - payment_submited: " + payment_submited.toString());
-            if (payment_submited == true) {
-                payment_submited = false;
-            } else {
-                $('#booking-modal').modal('show');
-                venueController.changePageState(null, REVIEW_INFO);
-            }
-        }
+    //         //alert($( 'input[name="stripeEmail"]' ).val(token.email));
 
-    });
+    //         // Submit the form
+    //         document.getElementById('payment-form').submit();
+    //     },
+    //     closed: function () {
+    //         alert("CLOSED - payment_submited: " + payment_submited.toString());
+    //         if (payment_submited == true) {
+    //             payment_submited = false;
+    //         } else {
+    //             $('#booking-modal').modal('show');
+    //             venueController.changePageState(null, REVIEW_INFO);
+    //         }
+    //     }
 
-    // REVIEW_INFO pay button
-    $('#stripe-checkout-btn').on('click', function(e) {
-        venueController.changePageState(null, PAYMENT);
-        // Open Checkout with further options
-        handler.open({
-            name: 'Playogo.com',
-            description: 'Ice time',
-            amount: 2000,
+    // });
+
+    // // REVIEW_INFO pay button
+    // $('#stripe-checkout-btn').on('click', function(e) {
+    //     venueController.changePageState(null, PAYMENT);
+    //     // Open Checkout with further options
+    //     handler.open({
+    //         name: 'Playogo.com',
+    //         description: 'Ice time',
+    //         amount: 2000,
             
-        });
-        e.preventDefault();
-    });
+    //     });
+    //     e.preventDefault();
+    // });
 
-    // Close Checkout on page navigation
-    $(window).on('popstate', function() {
-        handler.close();
-    });
+    // // Close Checkout on page navigation
+    // $(window).on('popstate', function() {
+    //     handler.close();
+    // });
 
 
 });

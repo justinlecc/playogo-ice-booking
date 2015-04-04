@@ -45,9 +45,9 @@ class VenuesController < ApplicationController
     amount = params[:amount].to_i
     name = params[:name]
     phone_number = params[:phone]
+    notes = params[:notes]
 
-    puts "**** " + venue_name + " ****"
-
+    # Get the theatre
     theatre = Theatre.joins(:venue).where(venues: {"name" => venue_name}, :name => theatre_name)
 
     if (theatre.length != 1)
@@ -68,7 +68,7 @@ class VenuesController < ApplicationController
                         :name => name,
                         :phone => phone_number,
                         :email => email,
-                        :notes => nil
+                        :notes => notes
                         })
 
     if (!b)

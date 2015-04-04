@@ -5,15 +5,15 @@
 
 // Get a dateless string from date object
 var datelessString = function (date) {
-  var year = date.getFullYear();
+  var year = date.getUTCFullYear();
   year = year.toString();
-  var month = date.getMonth();
+  var month = date.getUTCMonth() + 1; // January is zero
   if (month < 10) {
       month = '0' + month.toString();
   } else {
       month = month.toString();
   }
-  var day = date.getDate();
+  var day = date.getUTCDate();
   if (day < 10) {
       day = '0' + day.toString();
   } else {
@@ -23,12 +23,14 @@ var datelessString = function (date) {
   return year + "-" + month + "-" + day;
 };
 
-// parse a date in yyyy-mm-dd format
-function parseDate(input) {
-  var parts = input.split('-');
-  // new Date(year, month [, day [, hours[, minutes[, seconds[, ms]]]]])
-  return new Date(parts[0], parts[1]-1, parts[2]); // Note: months are 0-based
+// Get a new date object incremented by days
+Date.prototype.addDays = function(days)
+{
+    var dat = new Date(this.valueOf());
+    dat.setDate(dat.getDate() + days);
+    return dat;
 }
+
 
 // retrieves info from the schedule_tree
 function getFromScheduleTree(schedule_tree, item, venue, theatre) {
@@ -81,6 +83,11 @@ function createControllerModule () {
   var REVIEW_INFO = 'REVIEW_INFO';
   var PAYMENT = 'PAYMENT';
 
+  /*
+   * Event types
+   */
+  var DATE_UPDATE = 'DATE_UPDATE';
+
 
   /*
    * Controller for the venues page
@@ -90,6 +97,14 @@ function createControllerModule () {
     this.availsCollectionModel = availsCollectionModel;
     this.availsScheduleModel = availsScheduleModel;
     this.scheduleRenderer = scheduleRenderer;
+
+    // Initialize controller listeners
+    this.listeners = [];
+    this.listeners.push(this.scheduleRenderer.notify);
+
+    // Listen to models
+    var self = this;
+    this.availsScheduleModel.addListener(self.notify);
   };
 
   _.extend(VenueController.prototype, {
@@ -97,14 +112,18 @@ function createControllerModule () {
      *  Initialize controller
      */
     initializePage: function (schedule_tree) {
+      // Controller reference
+      var self = this;
+
       // Set avails in collection model
       this.availsCollectionModel.setAvails(schedule_tree); 
 
-      // Set date range
+      // Set range and date
       this.availsScheduleModel.setDateRange(this.availsCollectionModel.getAvails());
+      this.availsScheduleModel.setCurrentDate('2015-02-10'); // for testing, should initialize actual date
 
-      // Set date
-      this.scheduleRenderer.renderAll('2015-02-10'/* TO DO: this.availsScheduleModel.getCurrentDate() */, this.availsCollectionModel.getAvails());
+      // Render page
+      this.scheduleRenderer.renderAll(this.availsScheduleModel.getCurrentDate(), this.availsCollectionModel.getAvails(), self);
 
       // Page flow state. Mainly used for modal flow logic.
       // States:
@@ -133,10 +152,56 @@ function createControllerModule () {
       this.specified_start_time = '';
       this.specified_length = '';
 
+      // Set up stripe handler
+      this.payment_submitted = false;
+      this.handler = StripeCheckout.configure({
+          key: 'pk_test_1Di5chkNtgIMHyHZ6pbKLOrD',
+          token: function(token) {
+              self.payment_submitted = true;
+              alert("TOKEN - payment_submited: " + self.payment_submitted.toString());
+              // Update form
+              $( 'input[name="stripeToken"]' ).val(token.id);
+              $( 'input[name="stripeEmail"]' ).val(token.email);
+
+              //alert($( 'input[name="stripeEmail"]' ).val(token.email));
+
+              // Submit the form
+              document.getElementById('payment-form').submit();
+          },
+          closed: function () {
+              alert("CLOSED - payment_submitted: " + self.payment_submitted.toString());
+              if (self.payment_submitted == true) {
+                  self.payment_submitted = false;
+              } else {
+                  $('#booking-modal').modal('show');
+                  self.changePageState(null, REVIEW_INFO);
+              }
+          }
+      });
+
+      // Close Checkout on page navigation
+      $(window).on('popstate', function() {
+        this.handler.close();
+      });
+
     },
 
+    notifyListeners: function (event_type, params) {
+      _.each(this.listeners, function (l) {
+        l(event_type, params);
+      });
+    },
 
+    notify: function (event_type, params) {
+      if (DATE_UPDATE == event_type) {
+        params.controller.notifyListeners(event_type, {controller: params.controller,
+                                                       schedule_tree: params.controller.availsCollectionModel.getAvails(),
+                                                       current_date: params.controller.availsScheduleModel.getCurrentDate(),
+                                                       scheduleRenderer: params.controller.scheduleRenderer});
+      }
+    },
 
+    
     /*
      *  Called when avail block is clicked. When passed as listener, should be wrapped in anon. function 
      *  so 'this' may refer to the controller.
@@ -160,13 +225,15 @@ function createControllerModule () {
         this.page_state = TIME_SELECT;
 
         // Render the modal content
+        var self = this;
         this.scheduleRenderer.renderModal(TIME_SELECT, {selected_venue: this.selected_venue,
                                                         selected_theatre: this.selected_theatre,
                                                         selected_date: this.selected_date,
                                                         selected_start_time: this.selected_start_time,
                                                         selected_length: this.selected_length,
                                                         selected_prime: this.selected_prime,
-                                                        selected_non_prime: this.selected_non_prime});
+                                                        selected_non_prime: this.selected_non_prime,
+                                                        controller: self});
 
         // Activate the modal
         $('#booking-modal').modal();
@@ -193,11 +260,14 @@ function createControllerModule () {
         this.page_state = REVIEW_INFO;
 
         // Render the modal content
+        var self = this;
         this.scheduleRenderer.renderModal(REVIEW_INFO, {selected_venue: this.selected_venue,
                                                         selected_theatre: this.selected_theatre,
                                                         selected_date: this.selected_date,
                                                         selected_start_time: this.selected_start_time,
                                                         selected_length: this.selected_length,
+                                                        specified_start_time: this.specified_start_time,
+                                                        specified_length: this.specified_length,
                                                         customer_name: this.customer_name,
                                                         customer_phone: this.customer_phone,
                                                         customer_notes: this.customer_notes});
@@ -209,24 +279,42 @@ function createControllerModule () {
 
 
         // Render the modal content
-        this.scheduleRenderer.renderModal(PAYMENT, {selected_venue: this.selected_venue,
+        this.scheduleRenderer.renderModal(PAYMENT, {element: el,
+                                                    handler: this.handler,
+                                                    selected_venue: this.selected_venue,
                                                     selected_theatre: this.selected_theatre,
                                                     selected_date: this.selected_date,
                                                     selected_start_time: this.selected_start_time,
                                                     selected_length: this.selected_length,
+                                                    specified_start_time: this.specified_start_time,
+                                                    specified_length: this.specified_length,
                                                     customer_name: this.customer_name,
                                                     customer_phone: this.customer_phone,
                                                     customer_notes: this.customer_notes,
                                                     navigation_date: this.availsScheduleModel.getCurrentDate()});
       }
  
-    }
+    },
 
     /*
-     *  Called when continue clicked on TIME_SELECT state modal or back on INPUT_INFO
+     * Callback method to update the specified start_time and length
      */
+    updateSpecifiedTimes: function (start_time, length) {
+      this.specified_start_time = start_time;
+      this.specified_length = length;
+    },
 
-
+    /*
+     * Change the date of the schedule model by offset
+     */
+    changeDateByOffset: function (offset) {
+      var current_date = parseUTCDate(this.availsScheduleModel.getCurrentDate());
+      var new_date = new Date();
+      new_date.setUTCFullYear(current_date.getUTCFullYear());
+      new_date.setUTCMonth(current_date.getUTCMonth());
+      new_date.setDate(current_date.getUTCDate() + offset);
+      this.availsScheduleModel.setCurrentDate(datelessString(new_date));
+    }
   });
 
 

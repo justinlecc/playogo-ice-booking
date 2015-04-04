@@ -2,6 +2,11 @@
 
 function createModelModule() {
 
+    /*
+     * Event types
+     */
+    var DATE_UPDATE = 'DATE_UPDATE';
+
 
     /*
      * VenueOpeningCollectionModel
@@ -42,12 +47,16 @@ function createModelModule() {
      *
     */
     var AvailsScheduleModel = function () {
+        this.controller = null;
+
         this.listeners = [];
 
-        // Get dateless string
+        // Get current date according to local timezone, convert to have UTC, and get dateless string from it
         var date = new Date();
+        date = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes()));
         this.current_date = datelessString(date);
 
+        // Initialize the date range of availabilities we have
         this.earliest_date = null;
         this.latest_date = null;
     };
@@ -82,6 +91,22 @@ function createModelModule() {
 
         setCurrentDate: function (date) {
             this.current_date = date;
+            // if statement for testing (set current date being used on initialization)
+            if (this.controller != null) {
+                this.notifyListeners(DATE_UPDATE, null);
+            }
+        },
+
+        addListener: function (listener) {
+            this.listeners.push(listener);
+        },
+
+        // Call callback listeners with event type and neccessary params
+        notifyListeners: function (event_type, params) {
+            var self = this;
+            _.each(self.listeners, function (l) {
+                l(event_type, {controller: self.controller});
+            })
         }
 
     });
