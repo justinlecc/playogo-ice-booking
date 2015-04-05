@@ -156,8 +156,8 @@ function createViewModule () {
       content.children[0].children[0].innerHTML = MONTH_NAMES[parseUTCDate(current_date).getUTCMonth()];
 
       // Week button *Need to update dropdown*
-      var monday = getMonday(parseUTCDate(current_date)).getUTCDate();
-      content.children[0].children[1].innerHTML = monday.toString() + " - " + (monday+6).toString();
+      // var monday = getMonday(parseUTCDate(current_date)).getUTCDate();
+      // content.children[0].children[1].innerHTML = monday.toString() + " - " + (monday+6).toString();
 
 
       container.innerHTML = content.innerHTML;
@@ -300,7 +300,9 @@ function createViewModule () {
         // Make venue
         var venue_row = document.createElement('div');
         venue_row.className = 'venue-row row';
-        venue_row.innerHTML = venue.name;
+        var venue_name = document.createElement('h5');
+        venue_name.innerHTML = venue.name;
+        venue_row.appendChild(venue_name);
         container.appendChild(venue_row);
 
         // Make hours row
@@ -317,15 +319,33 @@ function createViewModule () {
 
         while (cur_time <= latest_close) {
 
-          // Place the avail
           var hour = document.createElement('div');
-          hour.className = 'hour';
+          if (i % 2) {
+            hour.className = 'hour odd';
+          } else {
+            hour.className = 'hour';
+          }
           hour.style.left = (space / num_hours)*i + 'px';
           hour.style.top = '0px';
-          hour.innerHTML = (cur_time/(60*60)).toString();
+
+          var hour_str;
+          if (cur_time/(60*60) < 12) {
+            hour_str = (cur_time/(60*60)).toString();
+          } else if (cur_time/(60*60) == 12) {
+            hour_str = '12';
+          } else if (cur_time/(60*60) > 12 & cur_time/(60*60) < 24) {
+            hour_str = ((cur_time/(60*60)) - 12).toString();
+          } else if (cur_time/(60*60) == 24) {
+            hour_str = '12';
+          } else if (cur_time/(60*60) > 24 & cur_time/(60*60) < 30) {
+            hour_str = ((cur_time/(60*60)) - 24).toString(); 
+          } else {
+            throw "ERROR: Invalid time in renderVenueRows()";
+          }
+
+          hour.innerHTML = hour_str;
 
           hours_col.appendChild(hour);
-
 
           cur_time += 60*60; // 1 hour
           i++;
@@ -335,6 +355,7 @@ function createViewModule () {
         _.each(venue.theatres, function (theatre) {
 
           var theatre_row = document.createElement('div');
+          theatre_row.className = 'theatre-row';
           venue_row.appendChild(theatre_row);
 
           // Same height cols
@@ -352,6 +373,20 @@ function createViewModule () {
           var sched_col = document.createElement('div');
           sched_col.className = 'sched-col col-xs-9 col-same-height';
           same_height.appendChild(sched_col);
+
+          // Section divides
+          var cur_time = earliest_open;
+          var num_hours = (latest_close - earliest_open) / (60*60);
+          var i = 0;
+          var space = hours_col.offsetWidth; // width of hours col
+          while (cur_time <= latest_close) {
+            var divider = document.createElement('div');
+            divider.className = 'divider';
+            divider.style.left = (space / num_hours)*i + 'px';
+            sched_col.appendChild(divider);
+            cur_time += 60*60;
+            i++;
+          }
 
           // Days
           for (var i=0; i < theatre.days.length; i++) {

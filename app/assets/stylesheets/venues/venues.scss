@@ -2,11 +2,19 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+
+$pogo-blue: rgb(39,140,200);
+$dark-grey: #D8D8D8;
+$mid-grey: #E8E8E8; /*#D3D3D3*/
+$light-grey: #F0F0F0;
+
+
 /**
 * Global
 */
 div.container {
-  overflow: hidden;
+  /*overflow: hidden;*/
+  padding: 0;
 }
 
 
@@ -28,36 +36,35 @@ div.container {
     padding: 0;
 
     li {
+      color: black;
       float:left;
       list-style: none;
       width:11%;
-      background: #7fb5da;
+      background: transparent;
       text-align: center;
       padding-top: 9px;
       padding-bottom: 9px;
     }
 
-    a {
-      /*padding: 9px 15px;*/
-      display:inline-block;
-      border-radius: 3px 3px 0px 0px;
-      
-      font-size: 16px;
-      font-weight: 600;
-      color:#4c4c4c;
-      transition:all linear 0.15s;
-    }
-
-    a:hover {
+    li:hover {
       background:#a7cce5;
       text-decoration:none;
     }
 
-  }
+    a {
+      display:inline-block;
+      border-radius: 3px 3px 0px 0px;
+      font-size: 16px;
+      font-weight: 600;
+      transition: all linear 0.15s;
+    }
 
-  li.active, li.active:hover {
-    background:blue;
-    color:#4c4c4c;
+    li.active, li.active:hover {
+      background: $pogo-blue;
+      a {
+        color: white;
+      }
+    } 
   }
 
 }
@@ -65,8 +72,13 @@ div.container {
 /**
 * Hours display
 */
-#hours-row-container {
-  width: 100%;
+.hours-row {
+  border-top-width: 2px;
+  border-top-style: solid;
+  border-top-color: $pogo-blue;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  border-bottom-color: $pogo-blue;
 }
 
 
@@ -91,7 +103,7 @@ div.hour-col {
 div.name-col {
   /*height: 30px;*/
   /*width: 33%; set dynamically */
-  background: #939393;
+  background-color: transparent;
   padding-left: 5px;
   max-width: 60px;
   min-width: 60px;
@@ -99,9 +111,17 @@ div.name-col {
 
 div.sched-col {
   /*height: 30px;*/
-  background:#D3D3D3;
+  background-color: transparent;
 }
 
+div.divider {
+  border-left-width: 1px;
+  border-left-style: solid;
+  border-left-color: $dark-grey;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+}
 
 
 .row-same-height {
@@ -116,7 +136,8 @@ div.sched-col {
 
 div.avail-block {
   position:absolute;
-  background: blue;
+  z-index: 100;
+  background: $pogo-blue;
   height: 12px;
 }
 
@@ -126,6 +147,28 @@ div.hour {
   color:black;
   width: 10px;
   margin-left: -5px;
+  font-size: 8pt;
+}
+
+.odd {
+  display: none;
+}
+
+.venue-row {
+  margin-left: 0px;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  border-bottom-width: 5px;
+  border-bottom-style: solid;
+  border-bottom-color: $dark-grey;
+}
+
+.theatre-row:nth-child(2n) {
+  background-color: $light-grey;
+}
+
+.theatre-row:nth-child(2n+1) {
+  background-color: $mid-grey;
 }
 
 /**
