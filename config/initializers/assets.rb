@@ -12,3 +12,8 @@ Rails.application.config.assets.version = '1.0'
 
 # JL added for fonts by recomendation (http://stackoverflow.com/questions/10905905/using-fonts-with-rails-asset-pipeline)
 Rails.application.config.assets.precompile << /\.(?:svg|eot|woff|ttf)\z/
+
+# JL added for datebox at request of rails error in browser
+Rails.application.config.assets.precompile += %w( jqm-datebox.js )
+Rails.application.config.assets.precompile += %w( jqm-datebox.mode.calbox.js )
+Rails.application.config.assets.precompile += %w( jquery.mobile.datebox.i18n.en_US.utf8.js )

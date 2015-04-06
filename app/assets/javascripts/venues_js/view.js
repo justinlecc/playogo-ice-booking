@@ -255,31 +255,10 @@ function createViewModule () {
       element.style.width = NAME_COL_WIDTH_PCT.toString() + '%';
       container.appendChild(element);
 
-
       element = document.createElement('div');
       element.className = 'hour-col';
       element.style.width =  (100-NAME_COL_WIDTH_PCT).toString() + '%';
       container.appendChild(element);
-
-      // Hour columns
-      // var time = new Date();
-      // time.setHours(start);
-      // for (var i=start; i<end - 1; i++) {
-      //   var h = time.getHours();
-      //   // var postfix = '';
-      //   // if (h % 2 == start % 2) {
-      //   //   postfix = ((h >= 12)? 'pm' : 'am');
-      //   // }
-      //   //   hours[i].innerHTML = ((h + 11) % 12 + 1).toString() + postfix;
-      //   // if (i % 2 == 1) {
-      //   //   hours[i].classList.add('odd');
-      //   // }
-      //   element = document.createElement('div');
-      //   element.className = 'hour-col';
-      //   element.style.width =  (((name_col_width_px*2) / (end-start)) + .5).toString() + 'px';
-      //   container.appendChild(element);
-      //   time.setHours(time.getHours()+1);
-      // }
 
       // Clearfix
       element = document.createElement('div');
@@ -312,21 +291,25 @@ function createViewModule () {
         venue_row.appendChild(venue_name);
         container.appendChild(venue_row);
 
-        // Make hours row
+        /* Make hours row */
+        // set element details
         var hours_row_template = document.getElementById('avails-hours-template');
         var hours_row = document.createElement('div');
         hours_row.innerHTML = hours_row_template.innerHTML;
         venue_row.appendChild(hours_row);
         hours_row.style.borderTop = '2px solid ' + COLORS[color_iter % COLORS.length];
 
+        // prepare for printing hours
         var cur_time = earliest_open;
         var num_hours = (latest_close - earliest_open) / (60*60);
         var i = 0;
         var hours_col = hours_row.children[0].children[1];
         var space = hours_col.offsetWidth; // width of hours col
 
+        // print hours
         while (cur_time <= latest_close) {
 
+          // create hour element
           var hour = document.createElement('div');
           if (i % 2) {
             hour.className = 'hour odd';
@@ -336,20 +319,22 @@ function createViewModule () {
           hour.style.left = (space / num_hours)*i + 'px';
           hour.style.top = '4px'; 
 
-          var hour_str;
-          if (cur_time/(60*60) < 12) {
-            hour_str = (cur_time/(60*60)).toString();
-          } else if (cur_time/(60*60) == 12) {
-            hour_str = '12';
-          } else if (cur_time/(60*60) > 12 & cur_time/(60*60) < 24) {
-            hour_str = ((cur_time/(60*60)) - 12).toString();
-          } else if (cur_time/(60*60) == 24) {
-            hour_str = '12';
-          } else if (cur_time/(60*60) > 24 & cur_time/(60*60) < 30) {
-            hour_str = ((cur_time/(60*60)) - 24).toString(); 
-          } else {
-            throw "ERROR: Invalid time in renderVenueRows()";
-          }
+
+          // make hour (12 hour clock)
+          var hour_str = getTwelveHour(cur_time);
+          // if (cur_time/(60*60) < 12) {
+          //   hour_str = (cur_time/(60*60)).toString();
+          // } else if (cur_time/(60*60) == 12) {
+          //   hour_str = '12';
+          // } else if (cur_time/(60*60) > 12 & cur_time/(60*60) < 24) {
+          //   hour_str = ((cur_time/(60*60)) - 12).toString();
+          // } else if (cur_time/(60*60) == 24) {
+          //   hour_str = '12';
+          // } else if (cur_time/(60*60) > 24 & cur_time/(60*60) < 30) {
+          //   hour_str = ((cur_time/(60*60)) - 24).toString(); 
+          // } else {
+          //   throw "ERROR: Invalid time in renderVenueRows()";
+          // }
 
           hour.innerHTML = hour_str;
 

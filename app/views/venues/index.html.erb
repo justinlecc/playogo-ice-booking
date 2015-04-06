@@ -1,3 +1,5 @@
+<%= javascript_include_tag "jqm-datebox", "jqm-datebox.mode.calbox", "jquery.mobile.datebox.i18n.en_US.utf8" %>
+
 <script> 
   schedule_tree = JSON.parse('<%= @scheduleTree.to_json.html_safe %>');
 </script>
@@ -110,7 +112,6 @@
 <script id="avails-month-template" type="text/template">
   <h3>
     <div id="month" >current month</div>
-    <!--<button class="btn btn-warning">date to date</button>-->
   </h3>
 </script>
 

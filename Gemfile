@@ -57,6 +57,12 @@ group :development, :test do
   # JQuery UI (JL added)
   gem 'jquery-ui-rails', '~> 5.0.3'
 
+  # JQuery Mobile (JL added)
+  gem 'jquery_mobile_rails', '~> 1.4.5'
+
+  # Datebox (JL added)
+  gem 'jquery_mobile_datebox-rails', :git => 'https://github.com/Guidecase/jquery_mobile_datebox-rails.git'
+
   # Touch Punch (JL added)
   gem 'touchpunch-rails', '~> 1.0.3'
   
