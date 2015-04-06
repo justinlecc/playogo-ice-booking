@@ -312,7 +312,7 @@ function createControllerModule () {
       var new_date = new Date();
       new_date.setUTCFullYear(current_date.getUTCFullYear());
       new_date.setUTCMonth(current_date.getUTCMonth());
-      new_date.setDate(current_date.getUTCDate() + offset);
+      new_date.setUTCDate(current_date.getUTCDate() + offset);
       this.availsScheduleModel.setCurrentDate(datelessString(new_date));
     }
   });

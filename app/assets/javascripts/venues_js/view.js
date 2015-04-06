@@ -7,6 +7,8 @@ var MONTH_NAMES = ["January", "February", "March", "April", "May", "June",
 
 var NAME_COL_WIDTH_PCT = 33;
 
+var COLORS = ['#5AB1A8', '#F9A146', '#D04B3D'];
+
 // Returns monday of current day d (http://stackoverflow.com/questions/4156434/javascript-get-the-first-day-of-the-week-from-current-date)
 function getMonday(d) {
   d = new Date(d);
@@ -154,6 +156,9 @@ function createViewModule () {
 
       // Month button
       content.children[0].children[0].innerHTML = MONTH_NAMES[parseUTCDate(current_date).getUTCMonth()];
+      var calendar_icon = document.createElement('span');
+      calendar_icon.className = 'glyphicon glyphicon-calendar calendar-icon';
+      content.children[0].children[0].appendChild(calendar_icon);
 
       // Week button *Need to update dropdown*
       // var monday = getMonday(parseUTCDate(current_date)).getUTCDate();
@@ -222,10 +227,10 @@ function createViewModule () {
       }
 
       // Week back button
-      tabs[0].setAttribute('day', datelessString(new Date(Date.UTC(current_utc_date.getUTCFullYear(), current_utc_date.getUTCMonth(), current_utc_date.getUTCDate()) - (7 * 86400000 /* one day in milliseconds */)))); // a week back
+      tabs[0].setAttribute('day', datelessString(new Date(Date.UTC(current_utc_date.getUTCFullYear(), current_utc_date.getUTCMonth(), current_utc_date.getUTCDate()) - (1 * 86400000 /* one day in milliseconds */)))); // a day back
       tabs[0].addEventListener('click', clickDayNav);
       // Week forward button
-      tabs[8].setAttribute('day', datelessString(new Date(Date.UTC(current_utc_date.getUTCFullYear(), current_utc_date.getUTCMonth(), current_utc_date.getUTCDate()) + (7 * 86400000 /* one day in milliseconds */)))); // a week back
+      tabs[8].setAttribute('day', datelessString(new Date(Date.UTC(current_utc_date.getUTCFullYear(), current_utc_date.getUTCMonth(), current_utc_date.getUTCDate()) + (1 * 86400000 /* one day in milliseconds */)))); // a day back
       tabs[8].addEventListener('click', clickDayNav);
       
     },
@@ -290,6 +295,7 @@ function createViewModule () {
       var earliest_open = 6*60*60; // 6 hours
       var latest_close = 25*60*60; // 25 hours (1am tomorrow)
       var time = latest_close - earliest_open;
+      var color_iter = Math.round( Math.random() * 10 ); // can start randomly
 
       var container = document.getElementById('venue-rows-container');
       container.innerHTML = '';
@@ -301,6 +307,7 @@ function createViewModule () {
         var venue_row = document.createElement('div');
         venue_row.className = 'venue-row row';
         var venue_name = document.createElement('h5');
+        venue_name.className = 'venue-name';
         venue_name.innerHTML = venue.name;
         venue_row.appendChild(venue_name);
         container.appendChild(venue_row);
@@ -310,6 +317,7 @@ function createViewModule () {
         var hours_row = document.createElement('div');
         hours_row.innerHTML = hours_row_template.innerHTML;
         venue_row.appendChild(hours_row);
+        hours_row.style.borderTop = '2px solid ' + COLORS[color_iter % COLORS.length];
 
         var cur_time = earliest_open;
         var num_hours = (latest_close - earliest_open) / (60*60);
@@ -326,7 +334,7 @@ function createViewModule () {
             hour.className = 'hour';
           }
           hour.style.left = (space / num_hours)*i + 'px';
-          hour.style.top = '0px';
+          hour.style.top = '4px'; 
 
           var hour_str;
           if (cur_time/(60*60) < 12) {
@@ -417,6 +425,7 @@ function createViewModule () {
                 avail_block.style.left = space_before_avail.toString() + 'px';
                 avail_block.style.top = top_offset.toString() + 'px';
                 avail_block.style.width = space_of_avail.toString() + 'px';
+                avail_block.style.backgroundColor = COLORS[color_iter % COLORS.length];
 
                 // Set the values of avail
                 avail_block.setAttribute('venue', venue.name);
@@ -438,6 +447,7 @@ function createViewModule () {
             }
           }
         });
+        color_iter++;
       });
     },
 

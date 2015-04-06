@@ -4,19 +4,46 @@
 
 
 $pogo-blue: rgb(39,140,200);
+$pogo-yellow: #F9A146;
+$pogo-teal: #5AB1A8;
+$pogo-red: #D04B3D;
 $dark-grey: #D8D8D8;
 $mid-grey: #E8E8E8; /*#D3D3D3*/
 $light-grey: #F0F0F0;
 
 
+
+
 /**
 * Global
 */
+body {
+  font-family: 'CooperHewitt';
+  font-weight: 400;
+  background-color: white;
+}
+
+.playogo-logo {
+  height: 22px;
+}
+
+.navbar-brand {
+  height: 22px!important;
+}
+
 div.container {
-  /*overflow: hidden;*/
   padding: 0;
 }
 
+#month {
+  text-align: center;
+  font-family: 'CooperHewitt';
+  font-weight: 600;
+  padding: 16px;
+  .calendar-icon {
+    padding: 5px;
+  }
+}
 
 /**
 * Day Navigation
@@ -34,7 +61,7 @@ div.container {
 
   .day-tabs {
     padding: 0;
-
+    margin-bottom: 0px;
     li {
       color: black;
       float:left;
@@ -47,16 +74,21 @@ div.container {
     }
 
     li:hover {
-      background:#a7cce5;
-      text-decoration:none;
+      background-color: $pogo-yellow;
+      transition: all linear 0.15s;
+      border-radius: 3px 3px 3px 3px;
+      /*text-decoration:none;*/
+      a {
+        color: white;
+        background-color: transparent;
+      }
     }
 
     a {
+      font-family: 'CooperHewitt';
+      font-weight: 200;
       display:inline-block;
-      border-radius: 3px 3px 0px 0px;
-      font-size: 16px;
-      font-weight: 600;
-      transition: all linear 0.15s;
+      font-size: 14px;
     }
 
     li.active, li.active:hover {
@@ -73,20 +105,25 @@ div.container {
 * Hours display
 */
 .hours-row {
-  border-top-width: 2px;
+/*  border-top-width: 1px;
   border-top-style: solid;
-  border-top-color: $pogo-blue;
-  border-bottom-width: 2px;
+  border-top-color: $pogo-blue; now being created dynamically*/
+  border-bottom-width: 0px;
   border-bottom-style: solid;
   border-bottom-color: $pogo-blue;
+  background-color: white;
+}
+
+div.hours-col {
+  padding:4px;
 }
 
 
-div.hour-col {
+/*div.hour-col {
   height:30px;
   float:left;
   background: red;
-}
+}*/
 
 
 .clearfix {
@@ -101,10 +138,8 @@ div.hour-col {
 /* columns of same height styles */
 
 div.name-col {
-  /*height: 30px;*/
-  /*width: 33%; set dynamically */
   background-color: transparent;
-  padding-left: 5px;
+  padding: 5px;
   max-width: 60px;
   min-width: 60px;
 }
@@ -156,11 +191,16 @@ div.hour {
 
 .venue-row {
   margin-left: 0px;
-  margin-top: 20px;
-  margin-bottom: 30px;
+  margin-top: 0px;
+  margin-bottom: 15px;
   border-bottom-width: 5px;
   border-bottom-style: solid;
   border-bottom-color: $dark-grey;
+}
+
+.venue-name {
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 
 .theatre-row:nth-child(2n) {

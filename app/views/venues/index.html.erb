@@ -109,7 +109,7 @@
 -->
 <script id="avails-month-template" type="text/template">
   <h3>
-    <button class="btn btn-warning">current month</button>
+    <div id="month" >current month</div>
     <!--<button class="btn btn-warning">date to date</button>-->
   </h3>
 </script>
@@ -119,7 +119,7 @@
 -->
 <script id="day-nav-template" type="text/template">
   <ul class="day-tabs">
-    <li class="outer-tab"><a><span class="glyphicon glyphicon-backward"></span></a></li>
+    <li class="outer-tab"><a><span class="glyphicon glyphicon-chevron-left"></span></a></li>
     <li class="inner-tab">
       <a>
         Date Render
@@ -155,7 +155,7 @@
         Date Render
       </a>
     </li>
-    <li class="outer-tab"><a><span class="glyphicon glyphicon-forward"></span></a></li>
+    <li class="outer-tab"><a><span class="glyphicon glyphicon-chevron-right"></span></a></li>
   </ul>
 </script>
 
@@ -164,10 +164,10 @@
 -->
 <script id="avails-hours-template" type="text/template">
     <div class="row-same-height hours-row">
-      <div class="name-col col-xs-3 col-same-height">
+      <div class="hours-col col-same-height">
         <span class="glyphicon glyphicon-time"></span>
       </div>
-      <div class="sched-col col-xs-9 col-same-height">
+      <div class="hours-col col-xs-9 col-same-height">
       </div>
     </div>
 </script>
@@ -281,7 +281,7 @@
   <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
 </form>
 
-<p><%= @scheduleTree.to_json %></p>
+
 <br>
 
 <%= link_to 'New Venue', new_venue_path %>

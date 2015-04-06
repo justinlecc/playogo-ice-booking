@@ -25,5 +25,6 @@ module PlayogoV1
 
     # JL added for loading library files
     config.autoload_paths += Dir["#{config.root}/lib/**/"]
+
   end
 end
