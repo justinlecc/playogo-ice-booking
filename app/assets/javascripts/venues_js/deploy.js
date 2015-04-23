@@ -2,6 +2,12 @@
 
 window.addEventListener('load', function () {
 
-  alert(deploy_js);
+  if ('VENUES' == deploy_js) {
+    deployVenues();
+  } else {
+    throw "ERROR: In view js deployment, unrecognized view type.";
+  }
+  
+
 
 });
