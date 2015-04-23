@@ -15,7 +15,7 @@ class ManagerMailer < ApplicationMailer
     owner = booking.theatre.venue.owner
 
     # Booking info
-    @date = Date.parse(booking.date)
+    @date = Date.parse(booking.date) #daylight savings?
     @start_time = booking.start_time
     @length = booking.length
     @venue = booking.theatre.venue.name

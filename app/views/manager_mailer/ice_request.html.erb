@@ -1,28 +1,28 @@
 <p>Hi <%= @manager_name %>,</p>
 
-<h3>We have a booking for you!</h3>
+<p>We have a booking for you.</p>
 <h3>Where</h3>
 <p>
-  <b>Venue:</b> <%= @venue %><br>
-  <b>Theatre:</b> <%= @theatre %>
+  Venue: <%= @venue %><br>
+  Theatre: <%= @theatre %>
 </p>
 
 <h3>When</h3>
 <p>
-  <b>Date:</b> <%= @date.strftime("%A %e %b %Y") %><br>
-  <b>Time:</b> <%= (@date.to_datetime + @start_time.seconds).strftime("%l:%M%P") %> to 
+  Date: <%= @date.strftime("%A %e %b %Y") %><br>
+  Time: <%= (@date.to_datetime + @start_time.seconds).strftime("%l:%M%P") %> to 
                <%= (@date.to_datetime + @start_time.seconds + @length.seconds).strftime("%l:%M%P") %>
 </p>
 
 <h3>Who</h3>
-<p><b>Name:</b> <%= @customer_name %><br>
-  <b>Phone:</b> <%= @customer_phone %><br>
-  <b>Email:</b> <%= @customer_email %><br>
-  <b>Activity:</b> <%= @activity_type %><br>
-  <b>Notes:</b> <%= @customer_notes %>
+<p>Name: <%= @customer_name %><br>
+  Phone: <%= @customer_phone %><br>
+  Email: <%= @customer_email %><br>
+  Activity: <%= @activity_type %><br>
+  Notes: <%= @customer_notes %>
 </p>
 
-<h3>Click <a href="google.com">here</a>(www.playogo.com/manager/confirm_booking/<%= @booking_id %>) to confirm this ice time.</h3>
+<h3>Click <a href="www.playogo.com/manager/confirm_booking/<%= @booking_id %>">here</a>(localhost:3000/manager/confirm_booking/<%= @booking_id %>) to confirm this ice time.</h3>
 
 <br>
 

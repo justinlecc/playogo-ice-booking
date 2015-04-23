@@ -7,7 +7,8 @@ var MONTH_NAMES = ["January", "February", "March", "April", "May", "June",
 
 var NAME_COL_WIDTH_PCT = 33;
 
-var COLORS = ['#5AB1A8', '#F9A146', '#D04B3D'];
+//var COLORS = ['#D04B3D', '#5AB1A8' /*teal*/, /*'#2F3F4F' grey,*/ '#FFAF65'/*orange, darker:'#F9A146'*/];
+var COLORS = ['#169EF1'];
 
 // Returns monday of current day d (http://stackoverflow.com/questions/4156434/javascript-get-the-first-day-of-the-week-from-current-date)
 function getMonday(d) {
@@ -155,10 +156,10 @@ function createViewModule () {
       content.innerHTML = template.innerHTML;
 
       // Month button
-      content.children[0].children[0].innerHTML = MONTH_NAMES[parseUTCDate(current_date).getUTCMonth()];
+      content.children[0].innerHTML = MONTH_NAMES[parseUTCDate(current_date).getUTCMonth()];
       var calendar_icon = document.createElement('span');
       calendar_icon.className = 'glyphicon glyphicon-calendar calendar-icon';
-      content.children[0].children[0].appendChild(calendar_icon);
+      content.children[0].appendChild(calendar_icon);
 
       // Week button *Need to update dropdown*
       // var monday = getMonday(parseUTCDate(current_date)).getUTCDate();
@@ -276,20 +277,42 @@ function createViewModule () {
       var time = latest_close - earliest_open;
       var color_iter = Math.round( Math.random() * 10 ); // can start randomly
 
+      // Get container
       var container = document.getElementById('venue-rows-container');
       container.innerHTML = '';
 
+      // Iterate for each venue in schedule_tree
       var venues = schedule_tree.venues;
       _.each(venues, function (venue) {
 
-        // Make venue
+        /* Make venue container */
         var venue_row = document.createElement('div');
         venue_row.className = 'venue-row row';
-        var venue_name = document.createElement('h5');
-        venue_name.className = 'venue-name';
-        venue_name.innerHTML = venue.name;
-        venue_row.appendChild(venue_name);
         container.appendChild(venue_row);
+        venue_row.style.backgroundColor = COLORS[color_iter % COLORS.length];
+
+        /* Venue name row */
+        var venue_name_row = document.createElement('div');
+        venue_name_row.className = 'venue-name-row';
+        venue_row.appendChild(venue_name_row);
+
+        // Same height cols
+        var same_height = document.createElement('div');
+        same_height.className = 'row-same-height';
+        venue_name_row.appendChild(same_height);
+
+        // Name column
+        var venue_name_col = document.createElement('div');
+        venue_name_col.className = 'venue-name-col col-xs-12 col-same-height';
+        venue_name_col.innerHTML = venue.name;
+        same_height.appendChild(venue_name_col);
+
+        // Extra space (for future venue attributes; not currently used)
+        // var venue_extras_col = document.createElement('div');
+        // venue_extras_col.className = 'venue-extras-col col-xs-9 col-same-height';
+        // same_height.appendChild(venue_extras_col);
+
+
 
         /* Make hours row */
         // set element details
@@ -319,22 +342,8 @@ function createViewModule () {
           hour.style.left = (space / num_hours)*i + 'px';
           hour.style.top = '4px'; 
 
-
           // make hour (12 hour clock)
           var hour_str = getTwelveHour(cur_time);
-          // if (cur_time/(60*60) < 12) {
-          //   hour_str = (cur_time/(60*60)).toString();
-          // } else if (cur_time/(60*60) == 12) {
-          //   hour_str = '12';
-          // } else if (cur_time/(60*60) > 12 & cur_time/(60*60) < 24) {
-          //   hour_str = ((cur_time/(60*60)) - 12).toString();
-          // } else if (cur_time/(60*60) == 24) {
-          //   hour_str = '12';
-          // } else if (cur_time/(60*60) > 24 & cur_time/(60*60) < 30) {
-          //   hour_str = ((cur_time/(60*60)) - 24).toString(); 
-          // } else {
-          //   throw "ERROR: Invalid time in renderVenueRows()";
-          // }
 
           hour.innerHTML = hour_str;
 
@@ -597,8 +606,6 @@ function createViewModule () {
 
         // Stripe token and email filled out on payment
 
-        alert("start time: " + info.specified_start_time);
-
         // Venue
         inputs[2].value = info.selected_venue;
         // Theatre
@@ -616,7 +623,7 @@ function createViewModule () {
         // Name
         inputs[9].value = info.customer_name;
         // Phone
-        inputs[10].value = info.customer_email;
+        inputs[10].value = info.customer_phone;
         // Notes
         inputs[11].value = info.customer_notes;
 

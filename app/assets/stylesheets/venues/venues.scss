@@ -2,8 +2,10 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-
-$pogo-blue: rgb(39,140,200);
+/**
+* Colors
+*/
+$pogo-blue: #169EF1;
 $pogo-yellow: #F9A146;
 $pogo-teal: #5AB1A8;
 $pogo-red: #D04B3D;
@@ -11,14 +13,11 @@ $dark-grey: #D8D8D8;
 $mid-grey: #E8E8E8; /*#D3D3D3*/
 $light-grey: #F0F0F0;
 
-
-
-
 /**
-* Global
+* Globals (shoud go to application.css)
 */
 body {
-  font-family: 'CooperHewitt';
+  font-family: 'source sans pro'; /*'CooperHewitt';*/
   font-weight: 400;
   background-color: white;
 }
@@ -35,13 +34,38 @@ div.container {
   padding: 0;
 }
 
-#month {
+/**
+* Step
+*/
+.step-container {
   text-align: center;
-  font-family: 'CooperHewitt';
-  font-weight: 600;
-  padding: 16px;
-  .calendar-icon {
-    padding: 5px;
+  font-size: 14pt;
+  div { /* vertical alignment div */
+    div.spacer {
+      height: 150px;
+    }
+  }
+}
+
+/**
+* Month nav
+*/
+#month-nav-container{
+  text-align: center;
+  #month {
+    /*text-align: center;*/
+    font-family: 'source sans pro';
+    font-weight: 400;
+    font-size: 18pt;
+    /*background-color: $light-grey;*/
+    /*border-color: $dark-grey;*/
+    padding-top: 0px;
+    padding-bottom: 2px;
+    margin-bottom: 20px;
+    /*font-size: 18pt;*/
+    .calendar-icon {
+      padding: 10px;
+    }
   }
 }
 
@@ -69,12 +93,12 @@ div.container {
       width:11%;
       background: transparent;
       text-align: center;
-      padding-top: 9px;
-      padding-bottom: 9px;
+      /*padding-top: 9px;
+      padding-bottom: 9px;*/
     }
 
     li:hover {
-      background-color: $pogo-yellow;
+      background-color: $light-grey;
       transition: all linear 0.15s;
       border-radius: 3px 3px 3px 3px;
       /*text-decoration:none;*/
@@ -86,13 +110,14 @@ div.container {
 
     a {
       font-family: 'CooperHewitt';
-      font-weight: 200;
+      font-weight: 300;
       display:inline-block;
       font-size: 14px;
     }
 
     li.active, li.active:hover {
       background: $pogo-blue;
+      border-radius: 25px;
       a {
         color: white;
       }
@@ -105,13 +130,13 @@ div.container {
 * Hours display
 */
 .hours-row {
-/*  border-top-width: 1px;
-  border-top-style: solid;
-  border-top-color: $pogo-blue; now being created dynamically*/
   border-bottom-width: 0px;
   border-bottom-style: solid;
   border-bottom-color: $pogo-blue;
   background-color: white;
+/*  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: $pogo-blue; now being created dynamically*/
 }
 
 div.hours-col {
@@ -137,11 +162,15 @@ div.hours-col {
 */
 /* columns of same height styles */
 
+
+
+
 div.name-col {
   background-color: transparent;
   padding: 5px;
   max-width: 60px;
   min-width: 60px;
+  font-size: 8pt;
 }
 
 div.sched-col {
@@ -191,16 +220,22 @@ div.hour {
 
 .venue-row {
   margin-left: 0px;
-  margin-top: 0px;
-  margin-bottom: 15px;
+  margin-top: 15px;
+  margin-bottom: 25px;
   border-bottom-width: 5px;
   border-bottom-style: solid;
   border-bottom-color: $dark-grey;
+  padding-top: 2px;
+
+  /*background-color: $pogo-teal;*/
+  /*border-top-left-radius: 4px 4px;
+  border-top-right-radius: 4px 4px;*/
 }
 
-.venue-name {
-  margin-top: 2px;
-  margin-bottom: 2px;
+.venue-name-col {
+  font-size: 14pt;
+  color: white;
+  font-weight: 200;
 }
 
 .theatre-row:nth-child(2n) {

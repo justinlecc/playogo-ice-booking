@@ -1,6 +1,6 @@
-<%= javascript_include_tag "jqm-datebox", "jqm-datebox.mode.calbox", "jquery.mobile.datebox.i18n.en_US.utf8" %>
 
-<script> 
+<script>
+  deploy_js = 'VENUES';
   schedule_tree = JSON.parse('<%= @scheduleTree.to_json.html_safe %>');
 </script>
 
@@ -47,6 +47,20 @@
 <div class="container">
 
 <p id="notice"><%= notice %></p>
+
+<!-- <div class="step-container" style="display: table; height: 300px; overflow: hidden;">
+   <div style="display: table-cell; vertical-align: middle;">
+    <div class="step">Welcome to the simplest way to book icetime</div>
+    <div class="spacer"></div>
+    <div class="step">STEP 1: Select a colored slot of available time</div>
+   </div>
+</div> -->
+
+<!-- <div class="step">STEP 1: Select a colored slot of available time</div> -->
+
+<!-- <div class="step">
+  
+</div> -->
 
 <div id="month-nav-container">
 
@@ -110,9 +124,7 @@
   Avails Schedule Month Navigation Template
 -->
 <script id="avails-month-template" type="text/template">
-  <h3>
-    <div id="month" >current month</div>
-  </h3>
+    <h3 id="month"></h3>
 </script>
 
 <!--

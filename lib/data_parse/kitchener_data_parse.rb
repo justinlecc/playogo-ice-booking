@@ -18,14 +18,24 @@ class KitchenerDataParse
       Price.delete_all
       Theatre.delete_all
       Venue.delete_all
+      Owner.delete_all
+    end
+
+    @kitchener = nil
+    if (clear_data)
+      @kitchener = Owner.create!({:name => "Kitchener",
+                                  :manager_name => "Ashley Kropf",
+                                  :manager_email => "playogosports@gmail.com"});
+    else
+      @kitchener = Owner.find({:name => "Kitchener"}).first;
     end
 
     # Create new avails
     availTree.venues.each do |venue|
       if (clear_data) 
-        @cur_venue = Venue.create!({:name => venue.name});
+        @cur_venue = Venue.create!({:name => venue.name, :owner => @kitchener});
       else
-        @cur_venue = Venue.find({:name => venue.name});
+        @cur_venue = Venue.find({:name => venue.name}).first;
       end
       venue.theatres.each do |theatre|
         if (clear_data) 

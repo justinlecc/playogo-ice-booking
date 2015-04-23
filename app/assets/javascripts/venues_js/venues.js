@@ -18,6 +18,8 @@ var PAYMENT = 'PAYMENT';
 
 
 window.addEventListener('load', function() {
+    alert(deploy_js);
+
     var modelModule = new createModelModule();
     var viewModule = new createViewModule();
     var controllerModule = new createControllerModule();

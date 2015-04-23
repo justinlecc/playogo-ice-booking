@@ -1,32 +1,58 @@
-<form id="confirm_request" action="/manager/confirm_request" method="POST">
-Venue:<br>
-<select name="theatre" form="confirm_request">
-  <% @venues.each do |venue, value| %>
-    <% value.each do |theatre|%>
-      <option value="<%= theatre[:id] %>"><%= venue + " - " + theatre[:name] %></option>
-    <% end %>
-  <% end %>
-</select>
-<br>
-Date:<br>
-<input type="date" name="date" value="<%= @date %>">
-<br>
-Start time:<br>
-<input type="text" name="start_time" value="<%= (Date.parse(@date) + @start_time.seconds).strftime("%l:%M%P") %>">
-<br>
-End time:<br>
-<input type="text" name="end_time" value="<%= (Date.parse(@date) + @start_time.seconds + @length.seconds).strftime("%l:%M%P") %>">
-<br>
-Contract number:<br>
-<input type="text" name="contract_id" value="">
-<br><br>
-<input type="hidden" name="booking_id" value="<%= @booking_id %>">
-<%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
-<input type="submit" value="Confirm booking">
-</form>
+<div class="container">
 
-<form id="cancel_request" action="/manager/cancel_request" method="POST">
-  <input type="hidden" name="booking_id" value="<%= @booking_id%>">
-  <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
-  <input type="submit" value="Cancel booking">
-</form>
+  <form id="confirm_request" action="/manager/confirm_request" method="POST">
+  
+    <div class="form-group">
+      <label for="venue-input">Venue</label>
+      <select id="venue-input" class="form-control" name="theatre" form="confirm_request">
+        <% @venues.each do |venue, value| %>
+          <% value.each do |theatre|%>
+            <option value="<%= theatre[:id] %>"><%= venue + " - " + theatre[:name] %></option>
+          <% end %>
+        <% end %>
+      </select>
+    </div>
+  
+    <div class="form-group">
+      <label for="date-input">Date (yyyy/mm/dd)</label>
+      <input id="date-input" class="form-control" type="text" name="date" value="<%= @date %>">
+    </div>
+
+    <div class="form-group">
+      <label for="start-time-input">Start time (H:MMam/pm)</label>
+        <input id="start-time-input" class="form-control" type="text" name="start_time" value="<%= (Date.parse(@date) + @start_time.seconds).strftime("%l:%M%P") %>">
+
+    </div>
+
+    <div class="form-group">
+      <label for="end-time-input">End time (H:MMam/pm)</label>
+      <input id="end-time-input" class="form-control" type="text" name="end_time" value="<%= (Date.parse(@date) + @start_time.seconds + @length.seconds).strftime("%l:%M%P") %>">
+    </div>
+
+    <div class="form-group">
+      <label for="contract-number-input">Contract Number</label>
+      <input id="contract-number-input" class="form-control" type="text" name="contract_id" placeholder="please enter">
+    </div>
+
+    <input type="hidden" name="booking_id" value="<%= @booking_id %>">
+    <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
+
+    <button type="submit" class="btn btn-primary">Confirm</button>
+  </form>
+
+  <br><br><br>
+
+  <p>If there is a problem with this booking request, it can be cancelled by clicking here.</p>
+  <form id="cancel_request" action="/manager/cancel_request" method="POST">
+
+    <input type="hidden" name="booking_id" value="<%= @booking_id%>">
+
+    <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
+
+    <button type="submit" class="btn btn-default">Cancel booking</button>
+  </form>
+</div>
+
+<script>
+alert("loading javascript that doesnt belong to this view");
+</script>
