@@ -312,8 +312,6 @@ function createViewModule () {
         // venue_extras_col.className = 'venue-extras-col col-xs-9 col-same-height';
         // same_height.appendChild(venue_extras_col);
 
-
-
         /* Make hours row */
         // set element details
         var hours_row_template = document.getElementById('avails-hours-template');
@@ -645,6 +643,10 @@ function createViewModule () {
       }
     },
 
+    renderMap: function () {
+      initializeMap(postal);
+    },
+
     /*
      * Renders the entire schedule
      */ 
@@ -653,6 +655,7 @@ function createViewModule () {
       this.renderDayNav(current_date, controller);
       //this.renderHoursRow();
       this.renderVenueRows(schedule_tree, current_date, controller);
+      this.renderMap();
      },
 
     /*

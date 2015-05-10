@@ -50,6 +50,8 @@ div.container {
 /**
 * Month nav
 */
+
+
 #month-nav-container{
   text-align: center;
   #month {
@@ -113,6 +115,16 @@ div.container {
       font-weight: 300;
       display:inline-block;
       font-size: 14px;
+      color:#4c4c4c;
+
+      display:inline-block;
+      border-radius: 3px 3px 0px 0px;
+      
+      transition:all linear 0.15s;
+    }
+    a:hover {
+      background:#a7cce5;
+      text-decoration:none;
     }
 
     li.active, li.active:hover {
@@ -141,6 +153,7 @@ div.container {
 
 div.hours-col {
   padding:4px;
+
 }
 
 
@@ -226,10 +239,7 @@ div.hour {
   border-bottom-style: solid;
   border-bottom-color: $dark-grey;
   padding-top: 2px;
-
-  /*background-color: $pogo-teal;*/
-  /*border-top-left-radius: 4px 4px;
-  border-top-right-radius: 4px 4px;*/
+  width:100%;
 }
 
 .venue-name-col {

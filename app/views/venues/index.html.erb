@@ -2,7 +2,10 @@
 <script>
   deploy_js = 'VENUES';
   schedule_tree = JSON.parse('<%= @scheduleTree.to_json.html_safe %>');
+  postal = '<%= @postal %>';
 </script>
+
+<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
 
 
 <!-- Modal -->
@@ -47,20 +50,6 @@
 <div class="container">
 
 <p id="notice"><%= notice %></p>
-
-<!-- <div class="step-container" style="display: table; height: 300px; overflow: hidden;">
-   <div style="display: table-cell; vertical-align: middle;">
-    <div class="step">Welcome to the simplest way to book icetime</div>
-    <div class="spacer"></div>
-    <div class="step">STEP 1: Select a colored slot of available time</div>
-   </div>
-</div> -->
-
-<!-- <div class="step">STEP 1: Select a colored slot of available time</div> -->
-
-<!-- <div class="step">
-  
-</div> -->
 
 <div id="month-nav-container">
 
@@ -108,17 +97,25 @@
   </ul>
 </div>
 
-<div id="hours-row-container">
+<div class="row">
+  <div id="venue-rows-container" class="col-sm-6">
 
-</div>
+  </div>
 
-<div id="venue-rows-container">
+  <div id="map" style="height: 300px" class="col-sm-6">
 
+  </div>
 </div>
 
 <div id="popover-container">
 
 </div>
+
+
+
+
+
+
 
 <!--
   Avails Schedule Month Navigation Template
@@ -173,7 +170,7 @@
 </script>
 
 <!--
-  Avails Schedule Hours Template
+  Avails Schedule hours-cols Template
 -->
 <script id="avails-hours-template" type="text/template">
     <div class="row-same-height hours-row">

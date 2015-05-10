@@ -10,7 +10,7 @@ class CustomerMailer < ApplicationMailer
     @length = booking.length
     email = booking.email
 
-    email = 'justin_leclerc@hotmail.com' # testing
+    email = 'playogosports@gmail.com' # testing
     # Send
     mail(:to => email, :subject => 'To customer')
   end
@@ -26,7 +26,7 @@ class CustomerMailer < ApplicationMailer
     @length = booking.length
     email = booking.email
 
-    email = 'justin_leclerc@hotmail.com' # testing
+    email = 'playogosports@gmail.com' # testing
     # Send
     mail(:to => email, :subject => 'To customer')
   end

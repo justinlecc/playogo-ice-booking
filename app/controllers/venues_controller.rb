@@ -5,14 +5,19 @@ class VenuesController < ApplicationController
 
   # GET /venues
   # GET /venues.json
+  # POST /venues
   def index
-    # handle params[:nav_date]
+
     @date = params[:nav_date]
     if !@date
       @date = Date.current.strftime("%Y-%m-%d")
-    end  
+      params[:nav_date] = @date
+    end
 
-    @venues = Venue.all
+    @postal = params[:postal]
+    if @postal == nil
+      @postal = 'N2H 1Z6' # the aud's postal code
+    end
 
     scheduleTree = ScheduleTree.new("Playogo")
 
@@ -98,6 +103,7 @@ class VenuesController < ApplicationController
         flash[:notice] = "Your card has been declined."
         redirect_to :back
       end
+      
       flash[:notice] = "Thank you for booking ice with us."
 
 
@@ -122,10 +128,10 @@ class VenuesController < ApplicationController
     end
 
     # Send manager email
-    # ManagerMailer.ice_request(b.id).deliver_now
+    ManagerMailer.ice_request(b.id).deliver_now
 
     # Send customer email
-    # CustomerMailer.ice_requested(b.id).deliver_now
+    CustomerMailer.ice_requested(b.id).deliver_now
 
     redirect_to '/venues/?date=' + params[:nav_date]
   end

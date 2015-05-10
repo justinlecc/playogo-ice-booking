@@ -1,17 +1,20 @@
 Rails.application.routes.draw do
 
+  root 'welcome#index'
+
   get '/venues/:nav_date' => 'venues#index'
   get '/venues' => 'venues#index'
+  post '/venues' => 'venues#index'
 
   post '/venues/ice_booking', to: 'venues#ice_booking'
-
-  resources :venues
 
   get '/manager/confirm_booking/:booking_id', to: 'manager#respond_to_request'
 
   post '/manager/confirm_request', to: 'manager#confirm_request'
 
   post '/manager/cancel_request', to: 'manager#cancel_request'
+
+  resources :venues
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

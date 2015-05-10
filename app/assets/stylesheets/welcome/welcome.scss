@@ -1,0 +1,108 @@
+/**
+* Colors
+*/
+$pogo-blue: #169EF1;
+$pogo-yellow: #F9A146;
+$pogo-teal: #5AB1A8;
+$pogo-red: #D04B3D;
+$dark-grey: #D8D8D8;
+$mid-grey: #E8E8E8; /*#D3D3D3*/
+$light-grey: #F0F0F0;
+
+div.welcome-background {
+  position:fixed;
+  top:0;
+  z-index: -1;
+  height:100%;
+  width:100%;
+ 
+  background: image-url("goallightpurple.jpg") no-repeat left center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+div.welcome-display {
+  background-color: transparent;
+  text-align: center;
+
+  padding: 0px;
+  margin-top: 100px;
+
+  h1, p {
+    font-family: 'source sans pro';
+    font-weight: 100;
+    color: white;
+  }
+
+  h1 {
+    font-size: 24pt;
+    margin-top: 10px;
+    margin-bottom: 0px;
+  }
+  p {
+    font-size: 12pt;
+    margin-bottom: 8px;
+  }
+
+  div.postal-input-container {
+    width: 80%;
+    max-width: 418px;
+    margin-top: 38px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+
+    input {
+      border-top-left-radius: 8px;
+      border-bottom-left-radius: 8px;
+    }
+
+    span {
+      border-top-right-radius: 8px!important;
+      border-bottom-right-radius: 8px!important;
+      button {
+        background-color: $pogo-blue;
+        border-color: $pogo-blue;
+        font-weight: 100;
+      }
+    }
+    
+  }
+}
+
+/*
+  Media Queries
+  -----------------------------------------------*/
+
+/* Portrait and landscape phone*/
+@media (min-width:534px){
+  div.welcome-display {
+    h1 {
+      font-size: 36pt;
+    }
+    p {
+      font-size: 14pt;
+      margin-bottom: 8px;
+    }
+  }
+}
+/* Landscape phone to portrait tablet */
+@media (min-width:768px){
+  div.welcome-display {
+    h1 {
+      font-size: 46pt;
+    }
+    p {
+      font-size: 14pt;
+      margin-bottom: 8px;
+    }
+  }
+}
+/* Large desktop */
+@media (min-width:1200px){
+  h1 {
+    color:red;
+  }
+}

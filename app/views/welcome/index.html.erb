@@ -1,0 +1,26 @@
+<script>
+  deploy_js = 'WELCOME';
+</script>
+
+<div class="welcome-background"></div>
+
+<div class="container">
+  <div class="jumbotron welcome-display">
+    <h1>Welcome to Playogo.</h1>
+    <h1>Let's find you some ice.</h1>
+    <!-- <p>Step 1: enter your postal code</p> -->
+
+      <div class="postal-input-container">
+        <p>Step 1: Enter your postal code</p>
+        <form action="/venues" method="get">
+          <div class="input-group input-group-lg">
+            <input type="text" class="form-control" name="postal" placeholder="eg. N2N 3S3">
+            <span class="input-group-btn">
+              <button class="btn btn-primary" type="submit">Search</button>
+            </span>
+          </div><!-- /input-group -->
+          
+        </form>
+      </div>
+  </div>
+</div>
