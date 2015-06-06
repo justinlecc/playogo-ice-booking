@@ -7,12 +7,12 @@ class ScheduleTree
     @venues = []
   end
 
-  def addAvail (venueName, theatreHash, date, startTime, length)
+  def addAvail (venueHash, theatreHash, date, startTime, length)
     # If venueName is in @venues, add the icetime.
     # Else, create the venue and add the icetime.
     @venues.each do |venue|
 
-      if venue.name == venueName
+      if venue.name == venueHash[:name]
         venue.addAvail(theatreHash, date, startTime, length)
         return
       end
@@ -20,7 +20,9 @@ class ScheduleTree
     end
 
     # venueName not found in @venues
-    new_venue = VenueNode.new(venueName)
+    puts venueHash[:name]
+    new_venue = VenueNode.new(venueHash[:name], venueHash[:lat], venueHash[:long], venueHash[:address])
+    puts 'hello'#venueHash[:name] + '*************'
     new_venue.addAvail(theatreHash, date, startTime, length)
     @venues.push(new_venue)
 

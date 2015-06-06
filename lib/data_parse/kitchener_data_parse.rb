@@ -4,6 +4,40 @@ class KitchenerDataParse
     return {:prime => 20000, :non_prime => 15000, :insurance => 500, :name => theatre}
   end
 
+  def getVenueLocationHash(venue) 
+    lat = nil
+    long = nil
+    address = nil
+    if (venue == "Activa")
+      lat = 43.422195
+      long = -80.471301
+      address = "135 Lennox Lewis Way, Kitchener, ON N2C 2V1"
+    elsif (venue == "Don McLaren Arena")
+      lat = 43.455620
+      long = -80.510346
+      address = "61 Green St, Kitchener, ON N2G 4K9"
+    elsif (venue == "Grand River Arena")
+      lat = 43.456834
+      long = -80.435159
+      address = "555 Heritage Dr Kitchener, ON N2B 3T9"
+    elsif (venue == "KMAC")
+      lat = 43.447354
+      long = -80.466996
+      address = "400 East Ave, Kitchener, ON N2H 1Z6"
+    elsif (venue ==  "Lions Arena")
+      lat = 43.413069
+      long = -80.483683
+      address = "20 Rittenhouse Rd. Kitchener, ON N2E 2M9"
+    elsif (venue ==  "Sportsworld")
+      lat = 43.411308
+      long = -80.396426
+      address = "35 Sportsworld Crossing Road, Kitchener, ON N2P 0A5"
+    else
+      throw "ERROR: Invalid venue name in getVenueLocationHash()"
+    end
+    return {:name => venue, :lat => lat, :long => long, :address => address}
+  end
+
   def load
     xmlFile = 'kitchener_data.xml'
     treeToDatabase(xmlToTree(xmlFile))
@@ -32,8 +66,13 @@ class KitchenerDataParse
 
     # Create new avails
     availTree.venues.each do |venue|
-      if (clear_data) 
-        @cur_venue = Venue.create!({:name => venue.name, :owner => @kitchener});
+      if (clear_data)
+        locationHash = getVenueLocationHash(venue.name) 
+        @cur_venue = Venue.create!({:name => venue.name, 
+                                    :owner => @kitchener,
+                                    :lat => venue.lat,
+                                    :long => venue.long, #locationHash[:long],
+                                    :address => venue.address })#locationHash[:address]});
       else
         @cur_venue = Venue.find({:name => venue.name}).first;
       end
@@ -117,7 +156,7 @@ class KitchenerDataParse
           date = start_datetime.strftime("%Y-%m-%d")
 
           # Add the availability to the Avail Tree
-          availTree.addAvail(venue, getTheatreHash(theatre), date, start_seconds, length)
+          availTree.addAvail(getVenueLocationHash(venue), getTheatreHash(theatre), date, start_seconds, length)
 
         end
 
