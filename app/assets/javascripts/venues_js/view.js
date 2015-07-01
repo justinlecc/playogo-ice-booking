@@ -651,11 +651,24 @@ function createViewModule () {
      * Renders the entire schedule
      */ 
      renderAll: function (current_date, schedule_tree, controller) {
+
       this.renderMonthNav(current_date);
+
       this.renderDayNav(current_date, controller);
-      //this.renderHoursRow();
-      this.renderVenueRows(schedule_tree, current_date, controller);
-      this.renderMap();
+
+      var self = this;
+      getLatLng(postal).then(function (lat, lng) {
+
+        sortVenueRows(schedule_tree, controller, lat, lng).then(function () {
+
+          self.renderVenueRows(schedule_tree, current_date, controller);
+
+        })
+
+      // TODO: sort out renderMap calls
+      // Currently this calls proceedure that leads to aquiring lat lng again.
+      }).then(this.renderMap); 
+
      },
 
     /*

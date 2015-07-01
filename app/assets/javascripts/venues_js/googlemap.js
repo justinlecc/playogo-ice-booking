@@ -1,3 +1,23 @@
+// returns a jQuery Defferend object
+function getLatLng(address) {
+  var geocoder = new google.maps.Geocoder();
+  var deferred = $.Deferred();
+
+  geocoder.geocode( { 'address': address}, function (results, status) {
+    if (status === google.maps.GeocoderStatus.OK) {
+      lat = results[0].geometry.location.lat();
+      lng = results[0].geometry.location.lng();
+      deferred.resolve(lat, lng);
+    } else {
+      alert("Geocode was not successful for the following reason: " + status);
+      deferred.reject(status);
+    }
+  });
+  return deferred;
+}
+
+
+
 function initializeMap (postalCode) {
 
   var LAT_LONG_RECIEVED = false;
