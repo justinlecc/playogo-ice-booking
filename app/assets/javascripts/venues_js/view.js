@@ -7,9 +7,6 @@ var MONTH_NAMES = ["January", "February", "March", "April", "May", "June",
 
 var NAME_COL_WIDTH_PCT = 33;
 
-//var COLORS = ['#D04B3D', '#5AB1A8' /*teal*/, /*'#2F3F4F' grey,*/ '#FFAF65'/*orange, darker:'#F9A146'*/];
-var COLORS = ['#169EF1'];
-
 // Returns monday of current day d (http://stackoverflow.com/questions/4156434/javascript-get-the-first-day-of-the-week-from-current-date)
 function getMonday(d) {
   d = new Date(d);
@@ -145,6 +142,24 @@ function createViewModule () {
 
   _.extend(ScheduleRenderer.prototype,{
     
+    /*
+     * Renders the date picker
+     */ 
+    renderDatePicker: function (current_date, controller){
+
+      var datePickerInput = $( "#datepicker" );
+
+      datePickerInput.datepicker();
+      datePickerInput.datepicker("option", "dateFormat", "yy-mm-dd");
+
+      datePickerInput.val(current_date);
+
+      // Define event listener
+      datePickerInput.change(function () {
+        controller.changeDateByValue(this.value);
+      });
+
+    },
 
     /*
      * Renders the month nav
@@ -157,9 +172,9 @@ function createViewModule () {
 
       // Month button
       content.children[0].innerHTML = MONTH_NAMES[parseUTCDate(current_date).getUTCMonth()];
-      var calendar_icon = document.createElement('span');
-      calendar_icon.className = 'glyphicon glyphicon-calendar calendar-icon';
-      content.children[0].appendChild(calendar_icon);
+      // var calendar_icon = document.createElement('span');
+      // calendar_icon.className = 'glyphicon glyphicon-calendar calendar-icon';
+      // content.children[0].appendChild(calendar_icon);
 
       // Week button *Need to update dropdown*
       // var monday = getMonday(parseUTCDate(current_date)).getUTCDate();
@@ -193,8 +208,8 @@ function createViewModule () {
       var clickDayNav = function () {
         var date = parseUTCDate(this.getAttribute('day').toString());
         var current_day = current_utc_date;
-        console.log("Date getTime: " + (date.getTime()-1));
-        console.log("Cur day getTime: " + (current_day.getTime()-1));
+        // console.log("Date getTime: " + (date.getTime()-1));
+        // console.log("Cur day getTime: " + (current_day.getTime()-1));
         var time_diff = date.getTime() - current_day.getTime();
         if (time_diff % (1000 * 3600 * 24) != 0) {
           throw "ERROR: difference in time was not a mod a full day."
@@ -271,6 +286,9 @@ function createViewModule () {
      * Renders the venue rows
      */  
     renderVenueRows: function (schedule_tree, current_date, controller) {
+      // Resolve when venue rows have been created
+      var deferred = $.Deferred();
+
       // Relevent data
       var earliest_open = 6*60*60; // 6 hours
       var latest_close = 25*60*60; // 25 hours (1am tomorrow)
@@ -289,7 +307,7 @@ function createViewModule () {
         var venue_row = document.createElement('div');
         venue_row.className = 'venue-row row';
         container.appendChild(venue_row);
-        venue_row.style.backgroundColor = COLORS[color_iter % COLORS.length];
+
 
         /* Venue name row */
         var venue_name_row = document.createElement('div');
@@ -304,7 +322,7 @@ function createViewModule () {
         // Name column
         var venue_name_col = document.createElement('div');
         venue_name_col.className = 'venue-name-col col-xs-12 col-same-height';
-        venue_name_col.innerHTML = venue.name;
+        venue_name_col.innerHTML = venue.name + " (" + venue.duration.text + ")";
         same_height.appendChild(venue_name_col);
 
         // Extra space (for future venue attributes; not currently used)
@@ -316,9 +334,10 @@ function createViewModule () {
         // set element details
         var hours_row_template = document.getElementById('avails-hours-template');
         var hours_row = document.createElement('div');
+        hours_row.className = 'hours_row';
         hours_row.innerHTML = hours_row_template.innerHTML;
         venue_row.appendChild(hours_row);
-        hours_row.style.borderTop = '2px solid ' + COLORS[color_iter % COLORS.length];
+
 
         // prepare for printing hours
         var cur_time = earliest_open;
@@ -417,7 +436,6 @@ function createViewModule () {
                 avail_block.style.left = space_before_avail.toString() + 'px';
                 avail_block.style.top = top_offset.toString() + 'px';
                 avail_block.style.width = space_of_avail.toString() + 'px';
-                avail_block.style.backgroundColor = COLORS[color_iter % COLORS.length];
 
                 // Set the values of avail
                 avail_block.setAttribute('venue', venue.name);
@@ -441,6 +459,10 @@ function createViewModule () {
         });
         color_iter++;
       });
+
+      // Resolve that the venue rows have been created
+      deferred.resolve();
+      return deferred;
     },
 
 
@@ -459,7 +481,7 @@ function createViewModule () {
 
         // Modal title
         var modal_title = document.getElementById('booking-modal-title');
-        modal_title.innerHTML = 'Please select a start and end time.';
+        modal_title.innerHTML = 'Select a start and end time.';
 
         // Modal body
         var modal_body = document.getElementById('booking-modal-body');
@@ -472,7 +494,7 @@ function createViewModule () {
 
         if (((latest_end - earliest_start) % (30 * 60)) != 0) {
           throw "ERROR: timeslot range is not a multiple of half hours. It's " + (latest_end - earliest_start).toString(); 
-        };
+        }
 
         // Get time selection options
         var time_options = [];
@@ -483,6 +505,8 @@ function createViewModule () {
         }
 
         // Initialize the slider
+        $(".timeselect-slider").append('<div class="ui-slider-handle"><div id="start-tooltip" data-tooltip="Start" class="range-handle"></div></div>');
+        $(".timeselect-slider").append('<div class="ui-slider-handle"><div id="end-tooltip" data-tooltip="Finish" class="range-handle"></div></div>');
         $(".timeselect-slider").slider({
           range: true,
           min: 0,
@@ -503,10 +527,25 @@ function createViewModule () {
             info.controller.specified_start_time = time_options[ ui.values[ 0 ] ];
             info.controller.specified_length = time_options[ ui.values[ 1 ] ] - time_options[ ui.values[ 0 ] ];
 
+            // Upadate time in tooltip
+            var startTooltip = $("#start-tooltip");
+            startTooltip.attr('data-tooltip', 'Start: ' + getTimeFromSeconds(time_options[ ui.values[ 0 ] ]));
+
+            var endTooltip = $("#end-tooltip");
+            endTooltip.attr('data-tooltip', 'End: ' + getTimeFromSeconds(time_options[ ui.values[ 1 ] ]));
+
             // Update the price in the visible span
             $( "#modal-selected-price" ).html( '$' +  (price_per_hour * ((time_options[ ui.values[1] ] - time_options[ ui.values[0] ])/(60*60))));
           }
         });
+
+        // Initial tooltip values
+        var startTooltip = $("#start-tooltip");
+        startTooltip.attr('data-tooltip', 'Start: ' + getTimeFromSeconds(time_options[0]));
+
+        var endTooltip = $("#end-tooltip");
+        endTooltip.attr('data-tooltip', 'End: ' + getTimeFromSeconds(time_options[2]));        
+
 
         // Initial ice time range
         $( "#modal-selected-timerange" ).html( getTimeFromSeconds(time_options[0]) +
@@ -645,15 +684,32 @@ function createViewModule () {
 
     renderMap: function () {
       initializeMap(postal);
+
+      var container = document.getElementById('venue-container');
+      var map = document.getElementById('map');
+      var container_height = container.clientHeight;
+      map.style.height = container_height.toString() + "px";
+      google.maps.event.trigger(map, 'resize');
+
+    },
+
+    renderSched: function(current_date, schedule_tree, controller) {
+
+      this.renderDatePicker(current_date, controller);
+      this.renderMonthNav(current_date);
+      this.renderDayNav(current_date, controller);
+      this.renderVenueRows(schedule_tree, current_date, controller);
+
     },
 
     /*
      * Renders the entire schedule
+     * ** Currently also renders map which should be refactored
      */ 
-     renderAll: function (current_date, schedule_tree, controller) {
+    renderAll: function (current_date, schedule_tree, controller) {
 
+      this.renderDatePicker(current_date, controller);
       this.renderMonthNav(current_date);
-
       this.renderDayNav(current_date, controller);
 
       var self = this;
@@ -661,13 +717,17 @@ function createViewModule () {
 
         sortVenueRows(schedule_tree, controller, lat, lng).then(function () {
 
-          self.renderVenueRows(schedule_tree, current_date, controller);
+          self.renderVenueRows(schedule_tree, current_date, controller).then(function () {
+
+            self.renderMap();
+
+          });
 
         })
 
       // TODO: sort out renderMap calls
       // Currently this calls proceedure that leads to aquiring lat lng again.
-      }).then(this.renderMap); 
+      });//.then(this.renderMap); 
 
      },
 
@@ -676,7 +736,7 @@ function createViewModule () {
      */      
     notify: function (event_type, params) {
       if (DATE_UPDATE == event_type) {
-        params.scheduleRenderer.renderAll(params.current_date, params.schedule_tree, params.controller);
+        params.scheduleRenderer.renderSched(params.current_date, params.schedule_tree, params.controller);
       }
     }
   });

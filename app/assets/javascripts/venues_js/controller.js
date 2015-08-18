@@ -314,7 +314,16 @@ function createControllerModule () {
       new_date.setUTCMonth(current_date.getUTCMonth());
       new_date.setUTCDate(current_date.getUTCDate() + offset);
       this.availsScheduleModel.setCurrentDate(datelessString(new_date));
+    },
+
+    /*
+     * Change the date of the schedule model by offset
+     */
+    changeDateByValue: function (date) {
+      console.log("Changing date to: " + date);
+      this.availsScheduleModel.setCurrentDate(date);
     }
+
   });
 
 

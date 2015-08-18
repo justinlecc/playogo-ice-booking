@@ -13,25 +13,55 @@ $dark-grey: #D8D8D8;
 $mid-grey: #E8E8E8; /*#D3D3D3*/
 $light-grey: #F0F0F0;
 
+
 /**
 * Globals (shoud go to application.css)
 */
+html {
+  height: 100%;
+}
+
 body {
+  height: 100%;
   font-family: 'source sans pro'; /*'CooperHewitt';*/
   font-weight: 400;
   background-color: white;
+}
+
+p{
+  font-family: 'source sans pro';
 }
 
 .playogo-logo {
   height: 22px;
 }
 
+.navbar {
+  margin-bottom: 0px;
+}
+
 .navbar-brand {
   height: 22px!important;
 }
 
-div.container {
+#notice {
+  margin:0px;
+}
+
+
+/**
+* Venue page
+*/
+#venue-container {
+/*  border-width: 5px;
+  border-color: red;
+  border-style: solid;*/
   padding: 0;
+  margin-left: 0px; 
+  margin-right: 0px; 
+  width: 100%;
+  height: calc(100% - 50px);
+
 }
 
 /**
@@ -48,9 +78,35 @@ div.container {
 }
 
 /**
-* Month nav
+* Venue options
+*/
+#datepicker{
+  position: relative;
+  z-index: 101;
+}
+
+/**
+* Schedule
 */
 
+.sched-row {
+  font-family: 'source sans pro';
+  margin-left: 0px;
+  margin-right: 0px;
+  height:100%;
+}
+
+#schedule {
+  height:100%;
+  overflow:scroll;
+  padding: 0;
+}
+
+
+
+/**
+* Month nav
+*/
 
 #month-nav-container{
   text-align: center;
@@ -74,6 +130,7 @@ div.container {
 /**
 * Day Navigation
 */
+
 #day-nav-container {
   width: 100%;
   display: inline-block;
@@ -111,7 +168,7 @@ div.container {
     }
 
     a {
-      font-family: 'CooperHewitt';
+      /*font-family: 'CooperHewitt';*/
       font-weight: 300;
       display:inline-block;
       font-size: 14px;
@@ -145,7 +202,9 @@ div.container {
   border-bottom-width: 0px;
   border-bottom-style: solid;
   border-bottom-color: $pogo-blue;
+  border-top: 2px solid $pogo-blue;
   background-color: white;
+
 /*  border-top-width: 1px;
   border-top-style: solid;
   border-top-color: $pogo-blue; now being created dynamically*/
@@ -240,6 +299,7 @@ div.hour {
   border-bottom-color: $dark-grey;
   padding-top: 2px;
   width:100%;
+  background: $pogo-blue;
 }
 
 .venue-name-col {
@@ -269,4 +329,85 @@ div.hour {
 
 #booking-modal-btn-timeselect, #booking-modal-btn-policies, #booking-modal-btn-inputinfo {
   display:none;
+}
+
+/**
+* Popover - Time Select
+*/
+
+.timeselect-slider {
+  margin-top: 60px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding:10px;
+}
+
+.timeselect-slider .ui-state-default {
+  background: none;
+}
+
+div.ui-slider-range.ui-widget-header.ui-corner-all {
+  background: $pogo-blue;
+}
+
+.timeselect-slider.ui-slider .ui-slider-handle {
+  width: 14px;
+  height: 18px;
+  margin-left: -5px;
+  top: -4px;
+  border: none;
+  background: none;
+}
+.timeselect-slider {
+  height: 10px;
+}
+
+.range-handle {
+
+  background-color: #fff;
+  border-radius: 100%;
+  cursor: move;
+  height: 40px;
+  left: -5px;
+  top: -8px;
+  position: absolute;
+  width: 40px;
+
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+
+}
+
+#modal-selected-timerange, #modal-selected-venue, #modal-selected-price {
+  color: $pogo-blue;
+}
+
+/*
+  Media Queries
+  -----------------------------------------------*/
+
+/* Portrait and landscape phone*/
+@media (min-width:534px){
+  #schedule {
+    padding:15px;
+  }
+  #map {
+    /*display:none;*/
+  }
+}
+
+@media (max-width:766px) {
+  #map {
+    display:none;
+  }
+}
+
+/* Landscape phone to portrait tablet */
+@media (min-width:768px){
+  
+}
+/* Large desktop */
+@media (min-width:1200px){
+
 }

@@ -47,7 +47,7 @@ function renderMap (lat, long) {
   // Display map
   var mapOptions = {
     center: new google.maps.LatLng(lat, long),
-    zoom: 11,
+    zoom: 10,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
 
