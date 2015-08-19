@@ -103,7 +103,7 @@ function deployVenues () {
     // REVIEW_INFO back button
     var reviewinfo_back_btn = document.getElementById('booking-modal-btn-reviewinfo').children[0];
     reviewinfo_back_btn.addEventListener('click', function () {
-        venueController.changePageState(null, VENUE_POLICIES);
+        venueController.changePageState(null, INPUT_INFO);
     });
 
     // REVIEW_INFO payment button

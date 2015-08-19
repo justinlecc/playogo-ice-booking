@@ -7,6 +7,33 @@ var MONTH_NAMES = ["January", "February", "March", "April", "May", "June",
 
 var NAME_COL_WIDTH_PCT = 33;
 
+// Returns a formated date of "January 1 2000" from "yyyy-mm-dd"
+function getFormattedDateStr(dateStr) {
+
+  var date  = dateStr.split('-');
+  var monthName = MONTH_NAMES[ parseInt(date[1]) - 1 ];
+  var day = date[1];
+
+  // 'st' postfix
+  if (parseInt(day) === 1 || parseInt(day) === 21 || parseInt(day) === 31) {
+    day = parseInt(day).toString() + "st";
+
+  // 'nd' postfix
+  } else if (parseInt(day) === 2 || parseInt(day) === 22) {
+    day = parseInt(day).toString() + "nd";
+
+  // 'rd' postfix
+  } else if (parseInt(day) === 3 || parseInt(day) === 23) {
+    day = parseInt(day).toString() + "rd";
+
+  // 'th' postfix
+  } else {
+    day = parseInt(day).toString() + "th";
+  }
+
+  return monthName + " " + day + " " + date[0];
+}
+
 // Returns monday of current day d (http://stackoverflow.com/questions/4156434/javascript-get-the-first-day-of-the-week-from-current-date)
 function getMonday(d) {
   d = new Date(d);
@@ -82,11 +109,34 @@ function getTimeFromSeconds(seconds) {
   return time;
 };
 
+function getHoursFromSeconds(seconds) {
+  return seconds / 3600;
+}
+
+function getHoursString(hours) {
+  if (hours === 1) {
+    return hours.toString() + " hour";
+  } else {
+    return hours.toString() + " hours";
+  }
+}
+
 // parse a date in yyyy-mm-dd format to UTC time
 function parseUTCDate(input) {
   var parts = input.split('-');
   // new Date(year, month [, day [, hours[, minutes[, seconds[, ms]]]]])
   return new Date(Date.UTC(parts[0], parts[1]-1, parts[2])); // Note: months are 0-based
+}
+
+// Returns a dollar string from cents integer
+function getDollarStr(cents){
+  var dollars         = parseInt(cents / 100);
+  var remaining_cents = Math.round(cents % 100);
+  if (remaining_cents < 10) {
+    remaining_cents = "0" + remaining_cents;
+  }
+
+  return "$" + dollars.toString() + "." + remaining_cents.toString();
 }
 
 
@@ -505,9 +555,10 @@ function createViewModule () {
         }
 
         // Initialize the slider
-        $(".timeselect-slider").append('<div class="ui-slider-handle"><div id="start-tooltip" data-tooltip="Start" class="range-handle"></div></div>');
-        $(".timeselect-slider").append('<div class="ui-slider-handle"><div id="end-tooltip" data-tooltip="Finish" class="range-handle"></div></div>');
-        $(".timeselect-slider").slider({
+        var slider = $(".timeselect-slider");
+        slider.append('<div class="ui-slider-handle"><div id="start-tooltip" data-tooltip="Start" class="range-handle"></div></div>');
+        slider.append('<div class="ui-slider-handle"><div id="end-tooltip" data-tooltip="Finish" class="range-handle"></div></div>');
+        slider.slider({
           range: true,
           min: 0,
           max: time_options.length - 1,
@@ -574,7 +625,8 @@ function createViewModule () {
 
         // Modal body
         var modal_body = document.getElementById('booking-modal-body');
-        modal_body.innerHTML = 'VENUE_POLICIES modal body content.';
+        modal_body.innerHTML = '<p>By booking this ice time with the City of Kitchener you agreeing to the following policies:</p><ol><li>Rescheduling an ice time must be done at least 3 business days before the scheduled date.</li><li>Ice bookings are non-refundable.</li></ol><p>Playogo will facilitate the booking of this ice time, however any further changes or concerns must be addressed with the City of Kitchener directly.</p>';
+
 
         // Modal button
         var modal_btn = document.getElementById('booking-modal-btn-venuepolicies');
@@ -606,14 +658,26 @@ function createViewModule () {
         var modal_body_template = document.getElementById('modal-body-reviewinfo-template');
         modal_body.innerHTML = modal_body_template.innerHTML;
 
+        // Modal body information
+        modal_body = $(modal_body);
+        modal_body.children('#review-customer-name').html(info.customer_name);
+        modal_body.children('#review-customer-phone').html(info.customer_phone);
+        modal_body.children('#review-use-description').html(info.customer_notes);
+        modal_body.children('#review-theatre').html(info.selected_venue + " - " + info.selected_theatre);
+        modal_body.children('#review-date').html(getFormattedDateStr(info.selected_date));
+        modal_body.children('#review-time').html(getTimeFromSeconds(info.specified_start_time) + " to " + getTimeFromSeconds(info.specified_start_time + info.specified_length));
 
-        modal_body.children[0].innerHTML = info.selected_venue + " - " + info.selected_theatre;
-        modal_body.children[1].innerHTML = info.selected_date + " - " + info.specified_start_time + " - " + (info.specified_start_time + info.specified_length);
-        modal_body.children[2].innerHTML = "**total price**";
-        modal_body.children[3].innerHTML = info.customer_name;
-        modal_body.children[4].innerHTML = info.customer_phone;
-        modal_body.children[5].innerHTML = info.customer_notes;
+        var priceStr = getDollarStr(info.specified_price) + " (" + getHoursString(getHoursFromSeconds(info.specified_length)) + " @ " + getDollarStr(info.selected_prime) + "/hr)"; 
+        modal_body.children('#review-price').html(priceStr);
 
+        var insuranceStr = getDollarStr(info.selected_insurance) + " (manditory by municipality policy)";
+        modal_body.children('#review-insurance').html(insuranceStr);
+
+        var taxStr   = getDollarStr(info.specified_tax) + " (13% HST)";
+        modal_body.children('#review-tax').html(taxStr);
+
+        var totalCostStr   = getDollarStr(info.specified_total_cost);
+        modal_body.children('#review-total-cost').html(totalCostStr); 
 
         // Modal button
         var modal_btn = document.getElementById('booking-modal-btn-reviewinfo');

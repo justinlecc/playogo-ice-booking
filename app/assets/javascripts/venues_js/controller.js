@@ -3,6 +3,8 @@
 /////////////////////////////////////////////////////////////////////////
 // Helpers
 
+var TAX_RATE = .13;
+
 // Get a dateless string from date object
 var datelessString = function (date) {
   var year = date.getUTCFullYear();
@@ -34,38 +36,55 @@ Date.prototype.addDays = function(days)
 
 // retrieves info from the schedule_tree
 function getFromScheduleTree(schedule_tree, item, venue, theatre) {
-  var return_value = false;
 
-  if ('prime' == item) {
+  var returnValue = false;
+
+  if ('prime' == item || 'non_prime' == item || 'insurance' == item) {
+
     _.each(schedule_tree.venues, function (iter_venue) {
+
       if (venue == iter_venue.name) {
+
         _.each(iter_venue.theatres, function (iter_theatre) {
+
           if (theatre == iter_theatre.name) {
-            return_value = iter_theatre.prime;
+
+
+
+            if ('prime' == item){
+            
+              returnValue = iter_theatre.prime;
+
+            } else if ('non_prime' == item) {
+
+              returnValue = iter_theatre.non_prime;
+
+            } else if ('insurance' == item) {
+
+              returnValue = iter_theatre.insurance;
+
+            } else {
+
+              throw "ERROR: unrecognized item type in getFromScheduleTree";
+
+            }
+
+
+            
           }
         })
       }
     })
-
-    if (!return_value) {
-      throw 'ERROR: did not find matching venue and theatre';
-    }
-  } else if ('non_prime' == item) {
-    _.each(schedule_tree.venues, function (iter_venue) {
-      if (venue == iter_venue.name) {
-        _.each(iter_venue.theatres, function (iter_theatre) {
-          if (theatre == iter_theatre.name) {
-            return_value = iter_theatre.non_prime;
-          }
-        })
-      }
-    })
-
-    if (!return_value) {
-      throw 'ERROR: did not find matching venue and theatre';
-    }
   }
-  return return_value;
+
+  if (!returnValue) {
+
+    throw 'ERROR: did not find matching venue and theatre';
+
+  }
+
+  return returnValue;
+
 };
 
 
@@ -135,22 +154,26 @@ function createControllerModule () {
       this.page_state = SEARCH;
 
       // Customer info
-      this.customer_name = '';
-      this.customer_phone = '';
-      this.customer_notes = '';
+      this.customer_name        = '';
+      this.customer_phone       = '';
+      this.customer_notes       = '';
 
       // Avail info
-      this.selected_venue = '';
-      this.selected_theatre = '';
-      this.selected_prime = '';
-      this.selected_non_prime = '';
-      this.selected_date = '';
-      this.selected_start_time = '';
-      this.selected_length = '';
+      this.selected_venue       = '';
+      this.selected_theatre     = '';
+      this.selected_prime       = '';
+      this.selected_non_prime   = '';
+      this.selected_insurance   = '';
+      this.selected_date        = '';
+      this.selected_start_time  = '';
+      this.selected_length      = '';
 
       // Booking info
       this.specified_start_time = '';
-      this.specified_length = '';
+      this.specified_length     = '';
+      this.specified_price      = '';
+      this.specified_tax        = '';
+      this.specified_total_cost = '';
 
       // Set up stripe handler
       this.payment_submitted = false;
@@ -194,9 +217,9 @@ function createControllerModule () {
 
     notify: function (event_type, params) {
       if (DATE_UPDATE == event_type) {
-        params.controller.notifyListeners(event_type, {controller: params.controller,
-                                                       schedule_tree: params.controller.availsCollectionModel.getAvails(),
-                                                       current_date: params.controller.availsScheduleModel.getCurrentDate(),
+        params.controller.notifyListeners(event_type, {controller:       params.controller,
+                                                       schedule_tree:    params.controller.availsCollectionModel.getAvails(),
+                                                       current_date:     params.controller.availsScheduleModel.getCurrentDate(),
                                                        scheduleRenderer: params.controller.scheduleRenderer});
       }
     },
@@ -219,6 +242,7 @@ function createControllerModule () {
           this.selected_length = el.getAttribute("length"); /* need to get size from selection */
           this.selected_prime = getFromScheduleTree(this.availsCollectionModel.getAvails(), 'prime', this.selected_venue, this.selected_theatre);
           this.selected_non_prime = getFromScheduleTree(this.availsCollectionModel.getAvails(), 'non_prime', this.selected_venue, this.selected_theatre);
+          this.selected_insurance = getFromScheduleTree(this.availsCollectionModel.getAvails(), 'insurance', this.selected_venue, this.selected_theatre);
         }
 
         // Set the page state
@@ -226,14 +250,16 @@ function createControllerModule () {
 
         // Render the modal content
         var self = this;
-        this.scheduleRenderer.renderModal(TIME_SELECT, {selected_venue: this.selected_venue,
-                                                        selected_theatre: this.selected_theatre,
-                                                        selected_date: this.selected_date,
+        this.scheduleRenderer.renderModal(TIME_SELECT, {selected_venue:      this.selected_venue,
+                                                        selected_theatre:    this.selected_theatre,
+                                                        selected_date:       this.selected_date,
                                                         selected_start_time: this.selected_start_time,
-                                                        selected_length: this.selected_length,
-                                                        selected_prime: this.selected_prime,
-                                                        selected_non_prime: this.selected_non_prime,
-                                                        controller: self});
+                                                        selected_length:     this.selected_length,
+                                                        selected_prime:      this.selected_prime,
+                                                        selected_non_prime:  this.selected_non_prime,
+                                                        selected_insurance:  this.selected_insurance,
+                                                        controller:          self
+                                                        });
 
         // Activate the modal
         $('#booking-modal').modal();
@@ -256,21 +282,35 @@ function createControllerModule () {
 
       } else if (REVIEW_INFO == next_page_state) {
 
+        if (this.page_state == INPUT_INFO) {
+
+          this.specified_price      = this.selected_prime * getHoursFromSeconds(this.specified_length);
+          this.specified_tax        = (this.specified_price + this.selected_insurance) * TAX_RATE;
+          this.specified_total_cost = this.specified_price + this.selected_insurance + this.specified_tax;
+
+        }
+
         // Set the page state
         this.page_state = REVIEW_INFO;
 
         // Render the modal content
         var self = this;
-        this.scheduleRenderer.renderModal(REVIEW_INFO, {selected_venue: this.selected_venue,
-                                                        selected_theatre: this.selected_theatre,
-                                                        selected_date: this.selected_date,
-                                                        selected_start_time: this.selected_start_time,
-                                                        selected_length: this.selected_length,
+        this.scheduleRenderer.renderModal(REVIEW_INFO, {selected_venue:       this.selected_venue,
+                                                        selected_theatre:     this.selected_theatre,
+                                                        selected_date:        this.selected_date,
+                                                        selected_start_time:  this.selected_start_time,
+                                                        selected_prime:       this.selected_prime,
+                                                        selected_non_prime:   this.selected_non_prime,
+                                                        selected_insurance:   this.selected_insurance,
+                                                        selected_length:      this.selected_length,
                                                         specified_start_time: this.specified_start_time,
-                                                        specified_length: this.specified_length,
-                                                        customer_name: this.customer_name,
-                                                        customer_phone: this.customer_phone,
-                                                        customer_notes: this.customer_notes});
+                                                        specified_length:     this.specified_length,
+                                                        specified_price:      this.specified_price,
+                                                        specified_tax:        this.specified_tax,
+                                                        specified_total_cost: this.specified_total_cost,
+                                                        customer_name:        this.customer_name,
+                                                        customer_phone:       this.customer_phone,
+                                                        customer_notes:       this.customer_notes});
 
       } else if (PAYMENT == next_page_state) {
 

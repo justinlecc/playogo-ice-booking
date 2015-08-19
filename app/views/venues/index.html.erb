@@ -28,7 +28,7 @@
         </div>
         <div id="booking-modal-btn-venuepolicies">
           <button type="button" class="btn btn-default">Back</button>
-          <button type="button" class="btn btn-primary">Agree</button>
+          <button type="button" class="btn btn-primary">I Agree</button>
         </div>
         <div id="booking-modal-btn-inputinfo">
           <button type="button" class="btn btn-default">Back</button>
@@ -55,6 +55,8 @@
 
 <div class="row sched-row">
   <div id="schedule" class="col-sm-8">
+
+    <h3>Select a blue block of open ice time</h3>
 
     <!--<p>Postal Code: <span id="postal-span"></span></p>-->
     <!--<script>document.getElementById('postal-span').innerHTML = postal</script>-->
@@ -223,7 +225,7 @@
     <input type="text" class="form-control" id="customer-phone" placeholder="Enter phone number">
   </div>
   <div class="form-group">
-    <label for="customer-notes">Describe what the ice time is being used for</label>
+    <label for="customer-notes">What are you using the ice for and how many people will be on it? (to be used by rink manager)</label>
     <input type="text" class="form-control" id="customer-notes" placeholder="Eg. Pick up hockey game with around 15 players.">
   </div>
 
@@ -262,17 +264,38 @@
 -->
 <script id="modal-body-reviewinfo-template" type="text/template">
 
-  <p></p>
+  <label for="review-customer-name">Name</label>
+  <p id="review-customer-name">Testing 123</p>
 
-  <p></p>
+  <label for="review-customer-phone">Phone</label>
+  <p id="review-customer-phone"></p>
 
-  <p></p>
+  <label for="review-use-description">Description of use</label>
+  <p id="review-use-description"></p>
 
-  <p></p>
+  <label for="review-theatre">Rink</label>
+  <p id="review-theatre"></p>
 
-  <p></p>
+  <label for="review-date">Date</label>
+  <p id="review-date"></p>
 
-  <p></p>
+  <label for="review-time">Timeslot</label>
+  <p id="review-time"></p>
+
+  <label for="review-price">Price</label>
+  <p id="review-price"></p>
+
+  <label for="review-insurance">Insurance</label>
+  <p id="review-insurance"></p>
+
+  <label for="review-tax">Tax</label>
+  <p id="review-tax"></p>
+
+  <label for="review-total-cost">Total Cost</label>
+  <p id="review-total-cost"></p>
+
+
+
 </script>
 
 
