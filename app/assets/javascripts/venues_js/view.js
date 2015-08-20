@@ -448,7 +448,7 @@ function createViewModule () {
           var num_hours = (latest_close - earliest_open) / (60*60);
           var i = 0;
           var space = hours_col.offsetWidth; // width of hours col
-          while (cur_time <= latest_close) {
+          while (cur_time < latest_close) {
             var divider = document.createElement('div');
             divider.className = 'divider';
             divider.style.left = (space / num_hours)*i + 'px';
@@ -558,19 +558,25 @@ function createViewModule () {
         var slider = $(".timeselect-slider");
         slider.append('<div class="ui-slider-handle"><div id="start-tooltip" data-tooltip="Start" class="range-handle"></div></div>');
         slider.append('<div class="ui-slider-handle"><div id="end-tooltip" data-tooltip="Finish" class="range-handle"></div></div>');
+
         slider.slider({
           range: true,
           min: 0,
           max: time_options.length - 1,
           values: [ 0, 2 ],
+          valueStore: 'test',
           // What to do on change
-          slide: function( event, ui ) {
-            if (ui.values[0] + 1 >= ui.values[1]) {
+          slide: function (event, ui) {
+            var self  = $(this)
+            var max = self.slider('option', 'max');
+            var min = self.slider('option', 'min');
+
+            if (ui.values[0] + 1 >= ui.values[1] || ui.values[0] < min || ui.values[1] > max) {
               return false;
-            }
+            } 
+
             var start_time = time_options[ ui.values[ 0 ] ];
             var end_time = time_options[ ui.values[ 1 ] ];
-            var price_per_hour = getPrice(start_time, end_time, info.selected_prime, info.selected_non_prime) / 100;
 
             // Update time range in visible span and controller
             var timerange_element = $( "#modal-selected-timerange" )
@@ -586,8 +592,10 @@ function createViewModule () {
             endTooltip.attr('data-tooltip', 'End: ' + getTimeFromSeconds(time_options[ ui.values[ 1 ] ]));
 
             // Update the price in the visible span
-            $( "#modal-selected-price" ).html( '$' +  (price_per_hour * ((time_options[ ui.values[1] ] - time_options[ ui.values[0] ])/(60*60))));
+            ;
+            $( "#modal-selected-price" ).html( getDollarStr(getHoursFromSeconds(end_time - start_time) * info.controller.selected_prime) + " (@ " + getDollarStr(info.controller.selected_prime) + "/h)");
           }
+
         });
 
         // Initial tooltip values
@@ -607,9 +615,9 @@ function createViewModule () {
         // Initial ice time price
         var start_time = time_options[ 0 ];
         var end_time = time_options[ 2 ];
-        var price_per_hour = getPrice(start_time, end_time, info.selected_prime, info.selected_non_prime) / 100; 
-        $( "#modal-selected-price" ).html( '$' +  ( price_per_hour * ( (time_options[2] - time_options[0]) / (60*60) ) ).toString() 
-                                          + " (@ $" + price_per_hour + "/h)");
+
+        $( "#modal-selected-price" ).html( getDollarStr(getHoursFromSeconds(end_time - start_time) * info.selected_prime)
+                                          + " (@ " + getDollarStr(info.selected_prime) + "/h)");
         // Set venue
         $( "#modal-selected-venue").html(info.selected_venue + " - " + info.selected_theatre);
 
@@ -705,8 +713,6 @@ function createViewModule () {
         <input type="hidden" name="notes" value="">
         ****************************************************/
 
-        // Stripe token and email filled out on payment
-
         // Venue
         inputs[2].value = info.selected_venue;
         // Theatre
@@ -718,7 +724,7 @@ function createViewModule () {
         // Length
         inputs[6].value = info.specified_length;
         // Amount
-        inputs[7].value = 20000;
+        inputs[7].value = info.specified_total_cost;
         // Nav date
         inputs[8].value = info.navigation_date;
         // Name
@@ -728,6 +734,8 @@ function createViewModule () {
         // Notes
         inputs[11].value = info.customer_notes;
 
+        // Email filled out in stripe window
+
 
         // Close the modal
         $('#booking-modal').modal('hide');
@@ -736,7 +744,7 @@ function createViewModule () {
         info.handler.open({
             name: 'Playogo.com',
             description: 'Ice time',
-            amount: 2000
+            amount: info.specified_total_cost
             
         });
 

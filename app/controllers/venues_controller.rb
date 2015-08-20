@@ -37,7 +37,7 @@ class VenuesController < ApplicationController
     date = params[:date]
     start_time = params[:start_time].to_i
     length = params[:length].to_i
-    amount = params[:amount].to_i
+    amount = params[:amount].to_i # needs to be verified to be the correct amount
     name = params[:name]
     phone_number = params[:phone]
     notes = params[:notes]
@@ -52,7 +52,8 @@ class VenuesController < ApplicationController
     end
     theatre = theatre.first
 
-    # TO DO: verify that booking is being made in place of an availability
+    # TODO: verify that booking is being made in place of an availability
+    # TODO: verify that 'amount' is the correct amount of money for the booking
 
     # Create "pending" booking
     b = Booking.create({:start_time => start_time, 

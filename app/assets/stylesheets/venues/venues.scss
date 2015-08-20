@@ -113,7 +113,7 @@ p{
   #month {
     /*text-align: center;*/
     font-family: 'source sans pro';
-    font-weight: 400;
+    font-weight: 300;
     font-size: 18pt;
     /*background-color: $light-grey;*/
     /*border-color: $dark-grey;*/
@@ -176,6 +176,8 @@ p{
 
       display:inline-block;
       border-radius: 3px 3px 0px 0px;
+
+      cursor: pointer;
       
       transition:all linear 0.15s;
     }
@@ -275,6 +277,7 @@ div.avail-block {
   z-index: 100;
   background: $pogo-blue;
   height: 12px;
+  cursor: pointer;
 }
 
 div.hour {
@@ -294,9 +297,13 @@ div.hour {
   margin-left: 0px;
   margin-top: 15px;
   margin-bottom: 25px;
+
   border-bottom-width: 5px;
   border-bottom-style: solid;
-  border-bottom-color: $dark-grey;
+  border-right-width: 2px;
+  border-right-style: solid;
+  border-color: $dark-grey;
+
   padding-top: 2px;
   width:100%;
   background: $pogo-blue;
@@ -329,6 +336,10 @@ div.hour {
 
 #booking-modal-btn-timeselect, #booking-modal-btn-policies, #booking-modal-btn-inputinfo {
   display:none;
+}
+
+.modal-body {
+  padding:30px;
 }
 
 /**
@@ -367,9 +378,9 @@ div.ui-slider-range.ui-widget-header.ui-corner-all {
 
   background-color: #fff;
   border-radius: 100%;
-  cursor: move;
+  cursor: grab;
   height: 40px;
-  left: -5px;
+  left: -10px;
   top: -8px;
   position: absolute;
   width: 40px;
@@ -378,6 +389,11 @@ div.ui-slider-range.ui-widget-header.ui-corner-all {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 
 }
+
+.range-handle:active {
+  cursor: grabbing;
+}
+
 
 #modal-selected-timerange, #modal-selected-venue, #modal-selected-price {
   color: $pogo-blue;

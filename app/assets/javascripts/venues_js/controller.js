@@ -284,9 +284,9 @@ function createControllerModule () {
 
         if (this.page_state == INPUT_INFO) {
 
-          this.specified_price      = this.selected_prime * getHoursFromSeconds(this.specified_length);
-          this.specified_tax        = (this.specified_price + this.selected_insurance) * TAX_RATE;
-          this.specified_total_cost = this.specified_price + this.selected_insurance + this.specified_tax;
+          this.specified_price      = Math.round(this.selected_prime * getHoursFromSeconds(this.specified_length));
+          this.specified_tax        = Math.round((this.specified_price + this.selected_insurance) * TAX_RATE);
+          this.specified_total_cost = Math.round(this.specified_price + this.selected_insurance + this.specified_tax);
 
         }
 
@@ -319,19 +319,23 @@ function createControllerModule () {
 
 
         // Render the modal content
-        this.scheduleRenderer.renderModal(PAYMENT, {element: el,
-                                                    handler: this.handler,
-                                                    selected_venue: this.selected_venue,
-                                                    selected_theatre: this.selected_theatre,
-                                                    selected_date: this.selected_date,
-                                                    selected_start_time: this.selected_start_time,
-                                                    selected_length: this.selected_length,
+        this.scheduleRenderer.renderModal(PAYMENT, {element:              el,
+                                                    handler:              this.handler,
+                                                    selected_venue:       this.selected_venue,
+                                                    selected_theatre:     this.selected_theatre,
+                                                    selected_date:        this.selected_date,
+                                                    selected_start_time:  this.selected_start_time,
+                                                    selected_length:      this.selected_length,
                                                     specified_start_time: this.specified_start_time,
-                                                    specified_length: this.specified_length,
-                                                    customer_name: this.customer_name,
-                                                    customer_phone: this.customer_phone,
-                                                    customer_notes: this.customer_notes,
-                                                    navigation_date: this.availsScheduleModel.getCurrentDate()});
+                                                    specified_length:     this.specified_length,
+                                                    specified_price:      this.specified_price,
+                                                    specified_tax:        this.specified_tax,
+                                                    specified_total_cost: this.specified_total_cost,
+                                                    customer_name:        this.customer_name,
+                                                    customer_phone:       this.customer_phone,
+                                                    customer_notes:       this.customer_notes,
+                                                    navigation_date:      this.availsScheduleModel.getCurrentDate()
+                                                   });
       }
  
     },
