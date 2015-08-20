@@ -62,52 +62,7 @@ function getHeight(element)
     return height;
 }
 
-// Returns a string representing a time of day.
-function getTimeFromSeconds(seconds) {
-  var d = new Date(Date.UTC(2015, 0, 1, 0, 0, seconds));
-  var hour = d.getUTCHours();
-  var minute = d.getUTCMinutes();
-  var morning;
-  var time = '';
 
-  // Morning hour
-  if (hour < 12) {
-    morning = true;
-    if (hour == 0) {
-      time += '12'
-    } else if (hour < 10) {
-      time += '0' + hour.toString();
-    } else {
-      time += hour.toString();
-    }
-  // Afternoon hour
-  } else {
-    morning = false;
-    if (hour == 12) {
-      time += '12';
-    } else {
-      time += parseInt(hour - 12);
-    }
-  }
-
-  time += ':';
-
-  // Minute
-  if (minute < 10) {
-    time += '0' + minute;
-  } else {
-    time += minute;
-  }
-
-  // am/pm
-  if (morning) {
-    time += 'am';
-  } else {
-    time += 'pm';
-  }
-
-  return time;
-};
 
 function getHoursFromSeconds(seconds) {
   return seconds / 3600;
@@ -384,7 +339,7 @@ function createViewModule () {
         // set element details
         var hours_row_template = document.getElementById('avails-hours-template');
         var hours_row = document.createElement('div');
-        hours_row.className = 'hours_row';
+        hours_row.className = 'hours-row';
         hours_row.innerHTML = hours_row_template.innerHTML;
         venue_row.appendChild(hours_row);
 

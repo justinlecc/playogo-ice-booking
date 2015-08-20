@@ -1,4 +1,4 @@
-// Make hour (12 hour clock)
+// make hour (12 hour clock)
 var getTwelveHour = function (seconds_from_midnight) {
   var hours_from_midnight = seconds_from_midnight / (60*60);
 
@@ -31,50 +31,3 @@ var getTwelveHour = function (seconds_from_midnight) {
 
   return hour_str;
 }
-
-// Returns a string representing a time of day.
-function getTimeFromSeconds(seconds) {
-  var d = new Date(Date.UTC(2015, 0, 1, 0, 0, seconds));
-  var hour = d.getUTCHours();
-  var minute = d.getUTCMinutes();
-  var morning;
-  var time = '';
-
-  // Morning hour
-  if (hour < 12) {
-    morning = true;
-    if (hour == 0) {
-      time += '12'
-    } else if (hour < 10) {
-      time += '0' + hour.toString();
-    } else {
-      time += hour.toString();
-    }
-  // Afternoon hour
-  } else {
-    morning = false;
-    if (hour == 12) {
-      time += '12';
-    } else {
-      time += parseInt(hour - 12);
-    }
-  }
-
-  time += ':';
-
-  // Minute
-  if (minute < 10) {
-    time += '0' + minute;
-  } else {
-    time += minute;
-  }
-
-  // am/pm
-  if (morning) {
-    time += 'am';
-  } else {
-    time += 'pm';
-  }
-
-  return time;
-};

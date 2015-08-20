@@ -152,6 +152,7 @@ p{
       width:11%;
       background: transparent;
       text-align: center;
+      cursor: pointer;
       /*padding-top: 9px;
       padding-bottom: 9px;*/
     }
@@ -177,7 +178,7 @@ p{
       display:inline-block;
       border-radius: 3px 3px 0px 0px;
 
-      cursor: pointer;
+      
       
       transition:all linear 0.15s;
     }
@@ -201,10 +202,8 @@ p{
 * Hours display
 */
 .hours-row {
-  border-bottom-width: 0px;
-  border-bottom-style: solid;
-  border-bottom-color: $pogo-blue;
-  border-top: 2px solid $pogo-blue;
+
+/*  border-top: 2px solid $pogo-blue;*/
   background-color: white;
 
 /*  border-top-width: 1px;
@@ -235,9 +234,51 @@ div.hours-col {
 * Venue schedule
 */
 /* columns of same height styles */
+#tablet-container-outer {
+  border-radius: 35px;
+  /* Drop shadow */
+  -webkit-box-shadow: 0px 0px 3px 1cpx $dark-grey;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  -moz-box-shadow:    0px 0px 3px 1cpx $dark-grey;  /* Firefox 3.5 - 3.6 */
+  box-shadow:         0px 0px 3px 1cpx $dark-grey;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+/*box-shadow: [horizontal offset] [vertical offset] [blur radius] [optional spread radius] [color];*/
+}
 
+#tablet-container-inner {
+  border-radius: 35px;
 
+  padding: 25px;
 
+  /* Curved edges */
+  -moz-box-shadow:    inset 0px 0px 15px $dark-grey;
+  -webkit-box-shadow: inset 0px 0px 15px $dark-grey;
+  box-shadow:         inset 0px 0px 15px $dark-grey;
+
+/*$dark-grey: #D8D8D8;
+  $mid-grey: #E8E8E8; 
+  $light-grey: #F0F0F0;*/
+
+}
+
+#venue-rows-container {
+  position: relative;
+}
+
+#venue-rows-container:before{
+  content:'';
+  position: absolute;
+  z-index: 100;
+  top:0px;
+  left:0px;
+  right:0px;
+  bottom:0px;
+  -moz-box-shadow:    inset 0px 0px 3px #838383;
+  -webkit-box-shadow: inset 0px 0px 3px #838383;
+  box-shadow:         inset 0px 0px 3px #838383;
+
+  /* Disable click events */
+  pointer-events: none;
+
+}
 
 div.name-col {
   background-color: transparent;
@@ -275,7 +316,7 @@ div.divider {
 div.avail-block {
   position:absolute;
   z-index: 100;
-  background: $pogo-blue;
+  background: $pogo-yellow;
   height: 12px;
   cursor: pointer;
 }
@@ -295,24 +336,28 @@ div.hour {
 
 .venue-row {
   margin-left: 0px;
-  margin-top: 15px;
-  margin-bottom: 25px;
+  /*margin-top: 15px;
+  margin-bottom: 25px;*/
+  margin-top: 0px;
+  margin-bottom: 0px;
 
-  border-bottom-width: 5px;
-  border-bottom-style: solid;
-  border-right-width: 2px;
-  border-right-style: solid;
+  border-bottom-width: 0px; /*5px;*/
+  /*border-bottom-style: solid;*/
+/*  border-right-width: 2px;
+  border-right-style: solid;*/
   border-color: $dark-grey;
 
-  padding-top: 2px;
   width:100%;
-  background: $pogo-blue;
+  
 }
 
 .venue-name-col {
   font-size: 14pt;
   color: white;
   font-weight: 200;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background: $pogo-blue;
 }
 
 .theatre-row:nth-child(2n) {
