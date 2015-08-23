@@ -51,7 +51,8 @@ group :development, :test do
   gem 'stripe', '~> 1.20.0'
 
   # Bootstrap (JL added)
-  gem 'bootstrap-sass', '~> 3.2.0'
+  # gem 'bootstrap-sass', '~> 3.2.0' (was using this version)
+  gem 'bootstrap-sass', '~> 3.3.3'
   gem 'autoprefixer-rails'
 
   # JQuery UI (JL added)

@@ -78,3 +78,17 @@ function getTimeFromSeconds(seconds) {
 
   return time;
 };
+
+// Returns the number of hours the seconds represents
+function getHoursFromSeconds(seconds) {
+  return seconds / 3600;
+}
+
+// Accepts float as input and outputs a string of the form "<hours> hour<s>"
+function getHoursString(hours) {
+  if (hours === 1) {
+    return hours.toString() + " hour";
+  } else {
+    return hours.toString() + " hours";
+  }
+}

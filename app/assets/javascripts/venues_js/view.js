@@ -1,138 +1,32 @@
 'use strict'
+
+
+
 //////////////////////////////////////////////////////////////
-// Helpers 
+// Globals
 
-var MONTH_NAMES = ["January", "February", "March", "April", "May", "June", 
-                   "July", "August", "September", "October", "November", "December"];
-
+/*
+ * The percentage of the schedule grid that the name column takes up
+ */
 var NAME_COL_WIDTH_PCT = 33;
 
-// Returns a formated date of "January 1 2000" from "yyyy-mm-dd"
-function getFormattedDateStr(dateStr) {
+/*
+ * Controller states (explanation of each below)
+ */
+var SEARCH = 'SEARCH';
+var TIME_SELECT = 'TIME_SELECT';
+var VENUE_POLICIES = 'VENUE_POLICIES';
+var INPUT_INFO = 'INPUT_INFO';
+var REVIEW_INFO = 'REVIEW_INFO';
+var PAYMENT = 'PAYMENT';
 
-  var date  = dateStr.split('-');
-  var monthName = MONTH_NAMES[ parseInt(date[1]) - 1 ];
-  var day = date[1];
-
-  // 'st' postfix
-  if (parseInt(day) === 1 || parseInt(day) === 21 || parseInt(day) === 31) {
-    day = parseInt(day).toString() + "st";
-
-  // 'nd' postfix
-  } else if (parseInt(day) === 2 || parseInt(day) === 22) {
-    day = parseInt(day).toString() + "nd";
-
-  // 'rd' postfix
-  } else if (parseInt(day) === 3 || parseInt(day) === 23) {
-    day = parseInt(day).toString() + "rd";
-
-  // 'th' postfix
-  } else {
-    day = parseInt(day).toString() + "th";
-  }
-
-  return monthName + " " + day + " " + date[0];
-}
-
-// Returns monday of current day d (http://stackoverflow.com/questions/4156434/javascript-get-the-first-day-of-the-week-from-current-date)
-function getMonday(d) {
-  d = new Date(d);
-  var day = d.getUTCDay(),
-      diff = d.getUTCDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
-  return new Date(d.setUTCDate(diff));
-}
-
-// Pads integer with 0 if less than 10
-function toPaddedString(num) {
-  if (num < 10) {
-    return '0' + parseInt(num);
-  } else {
-    return parseInt(num);
-  }
-}
-
-// Returns the height of an element even when not rendered in the dom
-function getHeight(element)
-{
-    element.style.visibility = "hidden";
-    document.body.appendChild(element);
-    var height = element.offsetHeight + 0;
-    document.body.removeChild(element);
-    element.style.visibility = "visible";
-    return height;
-}
-
-
-
-function getHoursFromSeconds(seconds) {
-  return seconds / 3600;
-}
-
-function getHoursString(hours) {
-  if (hours === 1) {
-    return hours.toString() + " hour";
-  } else {
-    return hours.toString() + " hours";
-  }
-}
-
-// parse a date in yyyy-mm-dd format to UTC time
-function parseUTCDate(input) {
-  var parts = input.split('-');
-  // new Date(year, month [, day [, hours[, minutes[, seconds[, ms]]]]])
-  return new Date(Date.UTC(parts[0], parts[1]-1, parts[2])); // Note: months are 0-based
-}
-
-// Returns a dollar string from cents integer
-function getDollarStr(cents){
-  var dollars         = parseInt(cents / 100);
-  var remaining_cents = Math.round(cents % 100);
-  if (remaining_cents < 10) {
-    remaining_cents = "0" + remaining_cents;
-  }
-
-  return "$" + dollars.toString() + "." + remaining_cents.toString();
-}
-
-
-// Return the price given start time, end time, prime price and non prime price
-function getPrice (start_time, end_time, prime, non_prime) {
-  return prime;
-}
-
-// Removing and adding classes
-function hasClass(ele,cls) {
-  return !!ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
-}
-
-function addClass(ele,cls) {
-  if (!hasClass(ele,cls)) ele.className += " "+cls;
-}
-
-function removeClass(ele,cls) {
-  if (hasClass(ele,cls)) {
-    var reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');
-    ele.className=ele.className.replace(reg,' ');
-  }
-}
+/*
+ * Event types
+ */
+var DATE_UPDATE = 'DATE_UPDATE';
 
 /////////////////////////////////////////////////////////////////
 // View
-
-  /*
-   * Controller states (explanation of each below)
-   */
-  var SEARCH = 'SEARCH';
-  var TIME_SELECT = 'TIME_SELECT';
-  var VENUE_POLICIES = 'VENUE_POLICIES';
-  var INPUT_INFO = 'INPUT_INFO';
-  var REVIEW_INFO = 'REVIEW_INFO';
-  var PAYMENT = 'PAYMENT';
-
-  /*
-   * Event types
-   */
-  var DATE_UPDATE = 'DATE_UPDATE';
 
 function createViewModule () {
 
@@ -152,41 +46,84 @@ function createViewModule () {
      */ 
     renderDatePicker: function (current_date, controller){
 
-      var datePickerInput = $( "#datepicker" );
+      // var datePickerInput = $("#datepicker");
 
-      datePickerInput.datepicker();
-      datePickerInput.datepicker("option", "dateFormat", "yy-mm-dd");
+      // datePickerInput.datepicker();
+      // datePickerInput.datepicker("option", "dateFormat", "yy-mm-dd");
 
-      datePickerInput.val(current_date);
+      // datePickerInput.val(current_date);
 
-      // Define event listener
-      datePickerInput.change(function () {
-        controller.changeDateByValue(this.value);
-      });
+      // // Define event listener
+      // datePickerInput.change(function () {
+      //   controller.changeDateByValue(this.value);
+      // });
 
     },
 
     /*
      * Renders the month nav
      */ 
-    renderMonthNav: function (current_date) {
+    renderMonthNav: function (current_date, controller) {
       var container = document.getElementById('month-nav-container');
       var template = document.getElementById('avails-month-template');
-      var content = document.createElement('div');
-      content.innerHTML = template.innerHTML;
 
-      // Month button
-      content.children[0].innerHTML = MONTH_NAMES[parseUTCDate(current_date).getUTCMonth()];
-      // var calendar_icon = document.createElement('span');
-      // calendar_icon.className = 'glyphicon glyphicon-calendar calendar-icon';
-      // content.children[0].appendChild(calendar_icon);
+      // Put template into container
+      container.innerHTML = template.innerHTML;
 
-      // Week button *Need to update dropdown*
-      // var monday = getMonday(parseUTCDate(current_date)).getUTCDate();
-      // content.children[0].children[1].innerHTML = monday.toString() + " - " + (monday+6).toString();
+      // Get month button
+      var month_button = container.children[1];
 
+      // Add month to month button
+      month_button.innerHTML = MONTH_NAMES[parseUTCDate(current_date).getUTCMonth()];
 
-      container.innerHTML = content.innerHTML;
+      // Add icon to month button
+      var calendar_icon = document.createElement('span');
+      calendar_icon.className = 'glyphicon glyphicon-calendar calendar-icon';
+      month_button.appendChild(calendar_icon);
+
+      // Add datepicker
+      $(month_button).click(function () {
+        var datepicker = $(document.getElementById("datepicker"));
+
+        if (datepicker.attr("state") === "closed") {
+          console.log("in closed case");
+          datepicker.datepicker({
+            dateFormat: "yy-mm-dd",
+            beforeShow: function(input, obj) {
+              var widget = $(input).datepicker('widget');
+              $(input).after(widget);
+              widget.css("top", "0px");
+              widget.css("left", "0px");
+            },
+            onClose: function(dateText, inst) {
+              console.log("onClose");
+              this.setAttribute("state", "closed");
+            }
+          });
+
+          datepicker.datepicker("setDate", current_date);
+
+          // Datepicker change event
+          datepicker.change(function () {
+            controller.changeDateByValue(this.value);
+          });
+
+          datepicker.datepicker("show");
+          var widget = datepicker.datepicker('widget');
+          widget.css("top", "24px");
+          widget.css("left", "0px");
+          datepicker.attr("state", "open");
+          console.log("should be open")
+
+        } else if (datepicker.attr("state") === "open") {
+          console.log("in open case");
+          datepicker.datepicker("hide");
+
+        } else {
+          throw "ERROR: Unidentified state in datepicker input";
+        }
+      });
+
     },
 
     /*
@@ -204,7 +141,7 @@ function createViewModule () {
       var current_utc_date = parseUTCDate(current_date);
 
       // Day tabs
-      var start_week = getMonday(current_utc_date);
+      var start_of_week = getMonday(current_utc_date);
 
       // Days of the week
       var days_of_week = [];
@@ -227,24 +164,34 @@ function createViewModule () {
         }
       };
 
-      // Days of the week: Monday through Friday
+      // Copy start of week date object for iteration
+      var iter_day = new Date(start_of_week.getTime());
+
+      // Days of the week: Monday through Sunday
       for (var i=1; i < tabs.length - 1; i++) {
 
         // Render the day tabs
-        tabs[i].children[0].innerHTML = start_week.getUTCDate();
-        if (start_week.getUTCDate() == current_utc_date.getUTCDate()) {
+        if (iter_day.getUTCDate() < start_of_week.getUTCDate()) {
+          tabs[i].children[0].innerHTML = DAYS_OF_WEEK[(iter_day.getUTCDate()+start_of_week.monthDays()) - start_of_week.getUTCDate()];
+        } else {
+          tabs[i].children[0].innerHTML = DAYS_OF_WEEK[iter_day.getUTCDate() - start_of_week.getUTCDate()];
+        }
+
+        tabs[i].children[1].innerHTML = iter_day.getUTCDate();
+
+        if (iter_day.getUTCDate() == current_utc_date.getUTCDate()) {
           addClass(tabs[i],'active');
         } else {
           removeClass(tabs[i], 'active');
         };
 
         // Store date being represented
-        tabs[i].setAttribute('day', datelessString(start_week));
+        tabs[i].setAttribute('day', datelessString(iter_day));
 
         // Add event listener
         tabs[i].addEventListener('click', clickDayNav);
 
-        start_week.setUTCDate(start_week.getUTCDate() + 1);
+        iter_day.setUTCDate(iter_day.getUTCDate() + 1);
       }
 
       // Week back button
@@ -627,7 +574,7 @@ function createViewModule () {
         modal_body.children('#review-customer-phone').html(info.customer_phone);
         modal_body.children('#review-use-description').html(info.customer_notes);
         modal_body.children('#review-theatre').html(info.selected_venue + " - " + info.selected_theatre);
-        modal_body.children('#review-date').html(getFormattedDateStr(info.selected_date));
+        modal_body.children('#review-date').html(getReadableDateStr(info.selected_date));
         modal_body.children('#review-time').html(getTimeFromSeconds(info.specified_start_time) + " to " + getTimeFromSeconds(info.specified_start_time + info.specified_length));
 
         var priceStr = getDollarStr(info.specified_price) + " (" + getHoursString(getHoursFromSeconds(info.specified_length)) + " @ " + getDollarStr(info.selected_prime) + "/hr)"; 
@@ -723,7 +670,7 @@ function createViewModule () {
     renderSched: function(current_date, schedule_tree, controller) {
 
       this.renderDatePicker(current_date, controller);
-      this.renderMonthNav(current_date);
+      this.renderMonthNav(current_date, controller);
       this.renderDayNav(current_date, controller);
       this.renderVenueRows(schedule_tree, current_date, controller);
 
@@ -736,7 +683,7 @@ function createViewModule () {
     renderAll: function (current_date, schedule_tree, controller) {
 
       this.renderDatePicker(current_date, controller);
-      this.renderMonthNav(current_date);
+      this.renderMonthNav(current_date, controller);
       this.renderDayNav(current_date, controller);
 
       var self = this;

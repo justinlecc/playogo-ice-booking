@@ -58,31 +58,50 @@
 
     <h2>Select a block of available ice time</h2>
 
-    <hr>
-    <div class="row">
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label for="datepicker">Date</label>
-          <input id="datepicker" class="form-control" type="text" size="30">
-        </div>
-      </div>
-
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label for="postal-input">Postal code</label>
-          <input id="postal-input" class="form-control" type="text" size="30" value="">
-          <script>document.getElementById('postal-input').value = postal</script> 
-        </div>
-      </div>
-
-    </div>
-
-
     <div id="tablet-container-outer">
     <div id="tablet-container-inner">
 
       <div id="month-nav-container">
 
+      </div>
+
+
+      <div class="row" style="display:none">
+        
+
+<!--         <div class="col-sm-4">
+          <div class="form-group">
+            <label for="datepicker">Date</label>
+            <input id="datepicker" class="form-control" type="text" size="30" date="">
+          </div>
+        </div> -->
+
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label for="postal-input">Postal code</label>
+            <input id="postal-input" class="form-control" type="text" size="30" value="">
+            <script>document.getElementById('postal-input').value = postal</script> 
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row" style="display:none">
+        <div class="col-xs-1">
+          <span class="glyphicon glyphicon-backward"></span>
+        </div>
+        <div class="col-xs-1">
+          <span class="glyphicon glyphicon-triangle-left"></span>
+        </div>
+        <div class="form-group col-xs-8">
+          <!-- <input id="datepicker" class="form-control" type="text" size="30" date=""> -->
+        </div>
+        <div class="col-xs-1">
+          <span class="glyphicon glyphicon-triangle-right"></span>
+        </div>
+        <div class="col-xs-1">
+          <span class="glyphicon glyphicon-forward"></span>
+        </div>
       </div>
 
       <div id="day-nav-container">
@@ -159,7 +178,8 @@
   Avails Schedule Month Navigation Template
 -->
 <script id="avails-month-template" type="text/template">
-    <h3 id="month"></h3>
+    <input type="hidden" id="datepicker" state="closed">
+    <div id="month" class="btn btn-default"></div>
 </script>
 
 <!--
@@ -167,43 +187,57 @@
 -->
 <script id="day-nav-template" type="text/template">
   <ul class="day-tabs">
-    <li class="outer-tab"><a><span class="glyphicon glyphicon-chevron-left"></span></a></li>
+    <li class="outer-tab"><p><span class="glyphicon glyphicon-chevron-left"></span></p></li>
     <li class="inner-tab">
-      <a>
+      <p>
+      </p>
+      <p>
         Date Render
-      </a>
+      </p>
     </li>
     <li class="inner-tab">
-      <a>
+      <p>
+      </p>
+      <p>
         Date Render
-      </a>
+      </p>
     </li>
     <li class="inner-tab">
-      <a>
+      <p>
+      </p>
+      <p>
         Date Render
-      </a>
+      </p>
     </li>
     <li class="inner-tab">
-      <a>
+      <p>
+      </p>
+      <p>
         Date Render
-      </a>
+      </p>
     </li>
     <li class="inner-tab">
-      <a>
+      <p>
+      </p>
+      <p>
         Date Render
-      </a>
+      </p>
     </li>
     <li class="inner-tab">
-      <a>
+      <p>
+      </p>
+      <p>
         Date Render
-      </a>
+      </p>
     </li>
     <li class="inner-tab">
-      <a>
+      <p>
+      </p>
+      <p>
         Date Render
-      </a>
+      </p>
     </li>
-    <li class="outer-tab"><a><span class="glyphicon glyphicon-chevron-right"></span></a></li>
+    <li class="outer-tab"><p><span class="glyphicon glyphicon-chevron-right"></span></p></li>
   </ul>
 </script>
 

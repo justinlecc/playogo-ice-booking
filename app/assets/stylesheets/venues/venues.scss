@@ -5,13 +5,15 @@
 /**
 * Colors
 */
-$pogo-blue: #169EF1;
-$pogo-yellow: #F9A146;
-$pogo-teal: #5AB1A8;
-$pogo-red: #D04B3D;
-$dark-grey: #D8D8D8;
-$mid-grey: #E8E8E8; /*#D3D3D3*/
-$light-grey: #F0F0F0;
+$pogo-blue:          #169EF1;
+$pogo-orange:        #F9A146;
+$pogo-orange-border: #FF982E;
+$pogo-orange-active: #FFAC57;
+$pogo-teal:          #5AB1A8;
+$pogo-red:           #D04B3D;
+$dark-grey:          #D8D8D8;
+$mid-grey:           #E8E8E8; /*#D3D3D3*/
+$light-grey:         #F0F0F0;
 
 
 /**
@@ -38,6 +40,13 @@ p{
 
 .navbar {
   margin-bottom: 0px;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  border-bottom-color: $pogo-blue;
+
+  * {
+    font-family: "source sans pro", verdana, arial, helvetica, sans-serif;
+  }
 }
 
 .navbar-brand {
@@ -47,6 +56,40 @@ p{
 #notice {
   margin:0px;
 }
+
+/**
+* Bootstrap modifiers
+*/
+
+.btn-default,
+.btn-default:hover, 
+.btn-default:focus, 
+.btn-default:active, 
+.btn-default.active,
+.btn-default:hover, 
+.btn-default:focus, 
+.btn-default:active, 
+.btn-default.active, 
+.open .dropdown-toggle.btn-default,
+.btn-default.disabled, 
+.btn-default[disabled], 
+fieldset[disabled] .btn-default, 
+.btn-default.disabled:hover, 
+.btn-default[disabled]:hover, 
+fieldset[disabled] .btn-default:hover, 
+.btn-default.disabled:focus, 
+.btn-default[disabled]:focus, 
+fieldset[disabled] .btn-default:focus, 
+.btn-default.disabled:active, 
+.btn-default[disabled]:active, 
+fieldset[disabled] .btn-default:active, 
+.btn-default.disabled.active, 
+.btn-default[disabled].active, 
+fieldset[disabled] .btn-default.active {
+  border-color: $mid-grey;
+}
+
+
 
 
 /**
@@ -109,11 +152,14 @@ p{
 */
 
 #month-nav-container{
+  position:relative;
+  display: inline;
   text-align: center;
+  /*display: none;*/
   #month {
     /*text-align: center;*/
     font-family: 'source sans pro';
-    font-weight: 300;
+    font-weight: 200;
     font-size: 18pt;
     /*background-color: $light-grey;*/
     /*border-color: $dark-grey;*/
@@ -123,6 +169,7 @@ p{
     /*font-size: 18pt;*/
     .calendar-icon {
       padding: 10px;
+      padding-right: 0px;
     }
   }
 }
@@ -134,6 +181,7 @@ p{
 #day-nav-container {
   width: 100%;
   display: inline-block;
+  margin-bottom: -5px; /* to make flush with div under */
 
   /* Clearfix */
   .day-tabs:after {
@@ -145,53 +193,64 @@ p{
   .day-tabs {
     padding: 0;
     margin-bottom: 0px;
+    height:36px;
     li {
       color: black;
       float:left;
       list-style: none;
       width:11%;
+      height: 100%;
       background: transparent;
       text-align: center;
       cursor: pointer;
-      /*padding-top: 9px;
-      padding-bottom: 9px;*/
+      border-top-left-radius:    4px;
+      border-top-right-radius:   4px;
+      border-bottom-right-radius:0px;
+      border-bottom-left-radius: 0px;
+
+      p {
+        /*font-family: 'CooperHewitt';*/
+        font-weight: 400;
+        /*display:inline-block;*/
+        font-size: 14px;
+        color:#4c4c4c;
+        border-radius: 3px 3px 0px 0px;
+        margin-bottom: 0px;
+        transition:all linear 0.15s;
+      }
+
+    }
+
+    li:first-child, li:last-child {
+      display: table;
+
+      p {
+        display: table-cell;
+        vertical-align: middle;
+      }
+
     }
 
     li:hover {
       background-color: $light-grey;
       transition: all linear 0.15s;
-      border-radius: 3px 3px 3px 3px;
+      /*border-radius: 3px 3px 3px 3px;*/
       /*text-decoration:none;*/
-      a {
-        color: white;
-        background-color: transparent;
+      p {
+        color: $pogo-blue;
       }
     }
 
-    a {
-      /*font-family: 'CooperHewitt';*/
-      font-weight: 300;
-      display:inline-block;
-      font-size: 14px;
-      color:#4c4c4c;
-
-      display:inline-block;
-      border-radius: 3px 3px 0px 0px;
-
-      
-      
-      transition:all linear 0.15s;
-    }
-    a:hover {
-      background:#a7cce5;
-      text-decoration:none;
-    }
-
     li.active, li.active:hover {
-      background: $pogo-blue;
-      border-radius: 25px;
-      a {
-        color: white;
+      background: $mid-grey;
+
+      /* Curved edges */
+/*      -moz-box-shadow:    inset 1px 1px 5px #838383;
+      -webkit-box-shadow: inset 1px 1px 5px #838383;
+      box-shadow:         inset 1px 1px 5px #838383;*/
+
+      p {
+        /*color: white;*/
       }
     } 
   }
@@ -237,21 +296,21 @@ div.hours-col {
 #tablet-container-outer {
   border-radius: 35px;
   /* Drop shadow */
-  -webkit-box-shadow: 0px 0px 3px 1cpx $dark-grey;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
-  -moz-box-shadow:    0px 0px 3px 1cpx $dark-grey;  /* Firefox 3.5 - 3.6 */
-  box-shadow:         0px 0px 3px 1cpx $dark-grey;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+  -webkit-box-shadow: 2px 5px 3px 1px $dark-grey;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  -moz-box-shadow:    2px 5px 3px 1px $dark-grey;  /* Firefox 3.5 - 3.6 */
+  box-shadow:         2px 5px 3px 1px $dark-grey;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
 /*box-shadow: [horizontal offset] [vertical offset] [blur radius] [optional spread radius] [color];*/
 }
 
 #tablet-container-inner {
+  text-align: center;
   border-radius: 35px;
-
   padding: 25px;
 
   /* Curved edges */
-  -moz-box-shadow:    inset 0px 0px 15px $dark-grey;
-  -webkit-box-shadow: inset 0px 0px 15px $dark-grey;
-  box-shadow:         inset 0px 0px 15px $dark-grey;
+  -moz-box-shadow:    inset -2px -5px 30px #838383;
+  -webkit-box-shadow: inset -2px -5px 30px #838383;
+  box-shadow:         inset -2px -5px 30px #838383;
 
 /*$dark-grey: #D8D8D8;
   $mid-grey: #E8E8E8; 
@@ -261,19 +320,20 @@ div.hours-col {
 
 #venue-rows-container {
   position: relative;
+  text-align: left;
 }
 
 #venue-rows-container:before{
   content:'';
   position: absolute;
-  z-index: 100;
+  z-index: 101;
   top:0px;
   left:0px;
   right:0px;
   bottom:0px;
-  -moz-box-shadow:    inset 0px 0px 3px #838383;
-  -webkit-box-shadow: inset 0px 0px 3px #838383;
-  box-shadow:         inset 0px 0px 3px #838383;
+  -moz-box-shadow:    inset 0px 0px 5px #838383;
+  -webkit-box-shadow: inset 0px 0px 5px #838383;
+  box-shadow:         inset 0px 0px 5px #838383;
 
   /* Disable click events */
   pointer-events: none;
@@ -316,7 +376,7 @@ div.divider {
 div.avail-block {
   position:absolute;
   z-index: 100;
-  background: $pogo-yellow;
+  background: $pogo-orange;
   height: 12px;
   cursor: pointer;
 }
