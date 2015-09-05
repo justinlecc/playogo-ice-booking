@@ -651,7 +651,7 @@ function createViewModule () {
         });
 
         info.element.preventDefault();
-        alert("hold here");
+        // alert("hold here");
 
       }
     },

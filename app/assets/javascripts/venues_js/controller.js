@@ -102,7 +102,7 @@ function createControllerModule () {
           key: 'pk_test_1Di5chkNtgIMHyHZ6pbKLOrD',
           token: function(token) {
               self.payment_submitted = true;
-              alert("TOKEN - payment_submited: " + self.payment_submitted.toString());
+              // alert("TOKEN - payment_submited: " + self.payment_submitted.toString());
               // Update form
               $( 'input[name="stripeToken"]' ).val(token.id);
               $( 'input[name="stripeEmail"]' ).val(token.email);
@@ -113,7 +113,7 @@ function createControllerModule () {
               document.getElementById('payment-form').submit();
           },
           closed: function () {
-              alert("CLOSED - payment_submitted: " + self.payment_submitted.toString());
+              // alert("CLOSED - payment_submitted: " + self.payment_submitted.toString());
               if (self.payment_submitted == true) {
                   self.payment_submitted = false;
               } else {
