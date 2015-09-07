@@ -9,7 +9,7 @@ function getLatLng(address) {
       lng = results[0].geometry.location.lng();
       deferred.resolve(lat, lng);
     } else {
-      alert("Geocode was not successful for the following reason: " + status);
+      alert("In getLatLng(): Geocode was not successful for the following reason: " + status);
       deferred.reject(status);
     }
   });
@@ -36,7 +36,7 @@ function initializeMap (postalCode) {
       lng = results[0].geometry.location.lng();
       renderMap(lat, lng);
     } else {
-      alert("Geocode was not successful for the following reason: " + status);
+      alert("In initializeMap(): Geocode was not successful for the following reason: " + status);
     }
   });
 
