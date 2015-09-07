@@ -33,8 +33,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 # JL added to server static assets in production
 # See description: https://devcenter.heroku.com/articles/ruby-support#static-assets
-gem 'rails_serve_static_assets'
-gem 'rails_stdout_logging'
+# gem 'rails_serve_static_assets'
+# gem 'rails_stdout_logging'
  
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
