@@ -31,6 +31,11 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+# JL added to server static assets in production
+# See description: https://devcenter.heroku.com/articles/ruby-support#static-assets
+gem 'rails_serve_static_assets'
+gem 'rails_stdout_logging'
+ 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
@@ -63,6 +68,8 @@ group :development, :test do
 
   # Touch Punch (JL added)
   gem 'touchpunch-rails', '~> 1.0.3'
+
+  # 
   
 end
 
