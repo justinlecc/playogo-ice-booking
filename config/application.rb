@@ -30,7 +30,7 @@ module PlayogoV1
     config.serve_static_assets = true
 
     # config.assets.precompile += [
-    #   'hella-tite.css'
+    #   'playogoMarker3.png'
     # ]
 
   end
