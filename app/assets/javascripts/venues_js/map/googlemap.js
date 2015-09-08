@@ -88,7 +88,7 @@ function renderMap (lat, long) {
     // Set venue marker
     var vMarkerOptions = {
       position: new google.maps.LatLng(vlat, vlong),
-      icon: '/assets/playogoMarker3.png'
+      icon: 'playogoMarker3.png'
     }
     var vMarker = new google.maps.Marker(vMarkerOptions);
     vMarker.setMap(map);
