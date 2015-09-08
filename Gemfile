@@ -37,6 +37,33 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # gem 'rails_stdout_logging'
 # gem 'rails_12factor', group: :production # https://devcenter.heroku.com/articles/rails-4-asset-pipeline
  
+# Nokogiri (JL added)
+gem 'nokogiri', '~> 1.6.6.2'
+
+# Underscorejs (JL added)
+gem 'underscore-rails', '~> 1.7.0'
+
+# Stripe (JL added)
+gem 'stripe', '~> 1.20.0'
+
+# Bootstrap (JL added)
+# gem 'bootstrap-sass', '~> 3.2.0' (was using this version)
+gem 'bootstrap-sass', '~> 3.3.3'
+gem 'autoprefixer-rails'
+
+# JQuery UI (JL added)
+gem 'jquery-ui-rails', '~> 5.0.3'
+
+# JQuery Mobile (JL added)
+gem 'jquery_mobile_rails', '~> 1.4.5'
+
+# Touch Punch (JL added)
+gem 'touchpunch-rails', '~> 1.0.3'
+
+group :production do
+  gem 'rails_12factor', group: :production # https://devcenter.heroku.com/articles/rails-4-asset-pipeline
+end
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
@@ -47,28 +74,30 @@ group :development, :test do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 
-  # Nokogiri (JL added)
-  gem 'nokogiri', '~> 1.6.6.2'
+  # # took the following out of development group
 
-  # Underscorejs (JL added)
-  gem 'underscore-rails', '~> 1.7.0'
+  # # Nokogiri (JL added)
+  # gem 'nokogiri', '~> 1.6.6.2'
 
-  # Stripe (JL added)
-  gem 'stripe', '~> 1.20.0'
+  # # Underscorejs (JL added)
+  # gem 'underscore-rails', '~> 1.7.0'
 
-  # Bootstrap (JL added)
-  # gem 'bootstrap-sass', '~> 3.2.0' (was using this version)
-  gem 'bootstrap-sass', '~> 3.3.3'
-  gem 'autoprefixer-rails'
+  # # Stripe (JL added)
+  # gem 'stripe', '~> 1.20.0'
 
-  # JQuery UI (JL added)
-  gem 'jquery-ui-rails', '~> 5.0.3'
+  # # Bootstrap (JL added)
+  # # gem 'bootstrap-sass', '~> 3.2.0' (was using this version)
+  # gem 'bootstrap-sass', '~> 3.3.3'
+  # gem 'autoprefixer-rails'
 
-  # JQuery Mobile (JL added)
-  gem 'jquery_mobile_rails', '~> 1.4.5'
+  # # JQuery UI (JL added)
+  # gem 'jquery-ui-rails', '~> 5.0.3'
 
-  # Touch Punch (JL added)
-  gem 'touchpunch-rails', '~> 1.0.3'
+  # # JQuery Mobile (JL added)
+  # gem 'jquery_mobile_rails', '~> 1.4.5'
+
+  # # Touch Punch (JL added)
+  # gem 'touchpunch-rails', '~> 1.0.3'
 
   # 
   
