@@ -12,7 +12,7 @@ var PAYMENT = 'PAYMENT';
 
 
 function deployVenues () {
-    console.log("Some change");
+
     var modelModule = new createModelModule();
     var viewModule = new createViewModule();
     var controllerModule = new createControllerModule();
