@@ -30,7 +30,7 @@ module PlayogoV1
     config.serve_static_assets = true
 
     config.assets.precompile += [
-      'playogoMarker3.png'
+      'assets/playogoMarker3.png'
     ]
     #something
 
