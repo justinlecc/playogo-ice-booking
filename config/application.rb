@@ -29,9 +29,10 @@ module PlayogoV1
     # JL added to serve assets on Heroku https://devcenter.heroku.com/articles/rails-4-asset-pipeline
     config.serve_static_assets = true
 
-    # config.assets.precompile += [
-    #   'playogoMarker3.png'
-    # ]
+    config.assets.precompile += [
+      'playogoMarker3.png'
+    ]
+    #something
 
   end
 end
