@@ -35,7 +35,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # See description: https://devcenter.heroku.com/articles/ruby-support#static-assets
 # gem 'rails_serve_static_assets'
 # gem 'rails_stdout_logging'
-gem 'rails_12factor', group: :production # https://devcenter.heroku.com/articles/rails-4-asset-pipeline
+# gem 'rails_12factor', group: :production # https://devcenter.heroku.com/articles/rails-4-asset-pipeline
  
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
