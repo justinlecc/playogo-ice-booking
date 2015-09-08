@@ -22,15 +22,15 @@ Rails.application.configure do
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
-  # JL edit to remove 404 on image assets: config.serve_static_files = ENV['RAILS_SERVE_STATIC_FILES'].present?
-  config.serve_static_files = true
+  config.serve_static_files = ENV['RAILS_SERVE_STATIC_FILES'].present?
+  # config.serve_static_files = true
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
-  # JL edit: config.assets.compile = false
+  # JL edit - allow for static images to be loaded: config.assets.compile = false
   config.assets.compile = true
 
   # Asset digests allow you to set far-future HTTP expiration dates on all assets,
