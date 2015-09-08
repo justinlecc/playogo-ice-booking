@@ -26,8 +26,5 @@ module PlayogoV1
     # JL added for loading library files
     config.autoload_paths += Dir["#{config.root}/lib/**/"]
 
-    # JL added to serve assets on Heroku https://devcenter.heroku.com/articles/rails-4-asset-pipeline
-    # config.serve_static_assets = true
-
   end
 end
