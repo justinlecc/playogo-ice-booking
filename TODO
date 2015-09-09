@@ -1,0 +1,12 @@
+Features and fixes in order of priority
+
+Calendar sometimes appears in unintended location
+Add animation to run while payment is being processed
+Make 'booking completed' notice more prominent
+Make 'current location' and 'current date' persist after making a booking
+Make 'customer info' persist when closing or changing the state of the modal
+Calendar doesn't close on second button click
+Woolwich data input
+Centre Wellington data input
+Time range filter
+Correct Kitchener avails that are an invalid size (not a multiple of half hour)
