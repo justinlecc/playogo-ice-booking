@@ -1,4 +1,4 @@
-class IcetimeNode
+class OpeningNode
   attr_accessor :start, :length
 
   def initialize(startTime, length)

@@ -13,14 +13,17 @@ var PAYMENT = 'PAYMENT';
 
 function deployVenues () {
 
+    /*
+     * Create app modules
+     */
     var modelModule = new createModelModule();
     var viewModule = new createViewModule();
     var controllerModule = new createControllerModule();
 
     /*
-     * Initialize the VenueOpeningCollectionModel
+     * Initialize the ScheduleTreeModel
      */
-    var availsCollectionModel = modelModule.loadAvailsCollectionModel();
+    var scheduleTreeModel = modelModule.loadScheduleTreeModel();
 
     /*
      * Initialize the AvailsScheduleModel

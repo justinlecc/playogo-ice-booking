@@ -1,15 +1,15 @@
 class DayNode
-  attr_accessor :date, :blocks
+  attr_accessor :date, :openings
 
   def initialize(date)
     @date = date
-    @blocks = []
+    @openings = []
   end
 
-  def addAvail (startTime, length)
-    # Adds the new avail to avails
-    new_avail = IcetimeNode.new(startTime, length)
-    @blocks.push(new_avail)
+  def addOpening (startTime, length)
+    # Adds the new opening to openings
+    newOpening = OpeningNode.new(startTime, length)
+    @openings.push(newOpening)
   end
 
 end

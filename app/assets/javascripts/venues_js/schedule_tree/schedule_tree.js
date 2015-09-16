@@ -1,3 +1,18 @@
+/* Returns an array of all venues in the schedule tree */
+function getVenues(scheduleTree) {
+  
+  var venues = [];
+
+  _.each(schedule_tree.owners, function (owner){
+
+    venues.concat(owner.venues);
+
+  });
+
+  return venues;
+
+}
+
 // retrieves info from the schedule_tree
 function getFromScheduleTree(schedule_tree, item, venue, theatre) {
 

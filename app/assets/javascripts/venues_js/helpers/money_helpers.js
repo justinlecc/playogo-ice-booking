@@ -1,3 +1,6 @@
+// Tax Rate
+var TAX_RATE = .13;
+
 // Returns a dollar string from cents integer
 function getDollarStr(cents){
   var dollars         = parseInt(cents / 100);

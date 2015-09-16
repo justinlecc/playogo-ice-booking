@@ -1,5 +1,18 @@
 
-class KitchenerDataParse  
+class KitchenerDataParse
+
+  def initialize()
+
+    @name          = "Kitchener"
+    @manager_name  = "Ashley Kropf"
+    @manager_email = "playogosports@gmail.com"
+
+  end
+
+  def getOwnerHash()
+    return {:name => @name}
+  end
+
   def getTheatreHash(theatre)
     return {:prime => 20000, :non_prime => 15000, :insurance => 500, :name => theatre}
   end
@@ -43,7 +56,7 @@ class KitchenerDataParse
     treeToDatabase(xmlToTree(xmlFile))
   end
 
-  def treeToDatabase (availTree)
+  def treeToDatabase (scheduleTree)
     clear_data = 1
     # Delete current openings
     Opening.delete_all
@@ -57,38 +70,43 @@ class KitchenerDataParse
 
     @kitchener = nil
     if (clear_data)
-      @kitchener = Owner.create!({:name => "Kitchener",
-                                  :manager_name => "Ashley Kropf",
-                                  :manager_email => "playogosports@gmail.com"});
+      @kitchener = Owner.create!({:name => @name,
+                                  :manager_name => @manager_name,
+                                  :manager_email => @manager_email});
     else
-      @kitchener = Owner.find({:name => "Kitchener"}).first;
+      @kitchener = Owner.find({:name => @name}).first;
     end
 
-    # Create new avails
-    availTree.venues.each do |venue|
-      if (clear_data)
-        locationHash = getVenueLocationHash(venue.name) 
-        @cur_venue = Venue.create!({:name => venue.name, 
-                                    :owner => @kitchener,
-                                    :lat => venue.lat,
-                                    :long => venue.long, #locationHash[:long],
-                                    :address => venue.address })#locationHash[:address]});
-      else
-        @cur_venue = Venue.find({:name => venue.name}).first;
-      end
-      venue.theatres.each do |theatre|
-        if (clear_data) 
-          @cur_theatre = Theatre.create!({:name => theatre.name, :venue => @cur_venue})
-          Price.create!({:prime => 20000, :non_prime => 15000, :insurance => 533, :theatre => @cur_theatre})
+    # Create new openings
+    scheduleTree.owners.each do |owner|
+
+      owner.venues.each do |venue|
+
+        if (clear_data)
+          locationHash = getVenueLocationHash(venue.name) 
+          @cur_venue = Venue.create!({:name => venue.name, 
+                                      :owner => @kitchener,
+                                      :lat => venue.lat,
+                                      :long => venue.long, #locationHash[:long],
+                                      :address => venue.address })#locationHash[:address]});
         else
-          @cur_theatre = Theatre.find({:name => theatre.name, :venue => @cur_venue})
+          @cur_venue = Venue.find({:name => venue.name}).first;
         end
-        theatre.days.each do |day|
-          day.blocks.each do |block|
-            Opening.create!({:start_time => block.start, 
-                             :length => block.length, 
-                             :date => day.date,
-                             :theatre => @cur_theatre})
+        venue.theatres.each do |theatre|
+
+          if (clear_data) 
+            @cur_theatre = Theatre.create!({:name => theatre.name, :venue => @cur_venue})
+            Price.create!({:prime => theatre.prime, :non_prime => theatre.non_prime, :insurance => theatre.insurance, :theatre => @cur_theatre})
+          else
+            @cur_theatre = Theatre.find({:name => theatre.name, :venue => @cur_venue})
+          end
+          theatre.days.each do |day|
+            day.openings.each do |opening|
+              Opening.create!({:start_time => opening.start, 
+                               :length => opening.length, 
+                               :date => day.date,
+                               :theatre => @cur_theatre})
+            end
           end
         end
       end
@@ -96,11 +114,12 @@ class KitchenerDataParse
   end
   
   def xmlToTree(xmlFile)
-    # Struture to hold availabilities
-    availTree = ScheduleTree.new("Kitchener")
+    # Struture to hold openings
+    scheduleTree = ScheduleTree.new()
 
     # File name of doc to be parsed should be param 
-    doc_path = Rails.root.join('lib', 'data_parse', xmlFile)
+    doc_path = Rails.root.join('lib', 'schedule_readers','kitchener', xmlFile)
+
     # Get xml into Nokogiri format
     doc = Nokogiri::XML(File.read(doc_path))
 
@@ -148,15 +167,15 @@ class KitchenerDataParse
             raise "ERROR: start_datetime is later than end_datetime"
           end
 
-          # Get Icetime fields
+          # Get Opening fields
           length = ((end_datetime - start_datetime)*24*60*60).to_i # multiplies fraction of day by 24, 60 and 60
           start_seconds = ((start_datetime - start_datetime.beginning_of_day)*24*60*60).to_i
 
           #date = start_datetime.to_date
           date = start_datetime.strftime("%Y-%m-%d")
 
-          # Add the availability to the Avail Tree
-          availTree.addAvail(getVenueLocationHash(venue), getTheatreHash(theatre), date, start_seconds, length)
+          # Add the opening to the Schedule Tree
+          scheduleTree.addOpening(getOwnerHash(), getVenueLocationHash(venue), getTheatreHash(theatre), date, start_seconds, length)
 
         end
 
@@ -167,7 +186,7 @@ class KitchenerDataParse
 
     end
 
-    return availTree
+    return scheduleTree
   end
 
 

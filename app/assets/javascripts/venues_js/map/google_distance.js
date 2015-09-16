@@ -7,7 +7,7 @@ function sortVenueRows (schedule_tree, controller, lat, lng) {
   var deferred = $.Deferred();
   dMatrixService.getDistanceMatrix({
     origins: [origin],
-    destinations: schedule_tree.venues.map(function (venue) {
+    destinations: getVenues(schedule_tree).map(function (venue) {
       return new google.maps.LatLng(venue.lat, venue.long);
     }),
     travelMode: google.maps.TravelMode.DRIVING

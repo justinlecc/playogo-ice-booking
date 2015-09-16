@@ -19,9 +19,13 @@ class VenuesController < ApplicationController
       @postal = 'N2H 1Z6' # the aud's postal code
     end
 
-    scheduleTree = ScheduleTree.new("Playogo")
+    scheduleTree = ScheduleTree.new
 
-    @scheduleTree = Bookable::getBookable
+    scheduleTree = Bookable::getBookable
+
+    @venueTree = VenueTree.new(scheduleTree)
+
+
 
   end
 

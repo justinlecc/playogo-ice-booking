@@ -1,5 +1,6 @@
 Features and fixes in order of priority
 
+Finish changes to schedule_tree on front and back end (change of root)
 Calendar sometimes appears in unintended location
 Add animation to run while payment is being processed
 Make 'booking completed' notice more prominent
@@ -15,5 +16,6 @@ Correct Kitchener avails that are an invalid size (not a multiple of half hour)
 Make earliest opening and latest closing time be generated dynamically
 Create a contact page
 Create an about page
+Create email accounts for playogo.com
 
 
