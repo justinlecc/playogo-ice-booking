@@ -1,19 +1,32 @@
-Features and fixes in order of priority
+FEATURES AND FIXES
 
-Calendar sometimes appears in unintended location
-Add animation to run while payment is being processed
-Make 'booking completed' notice more prominent
-Make 'current location' and 'current date' persist after making a booking
-Make 'customer info' persist when closing or changing the state of the modal
-Calendar doesn't close on second button click
-Municipal policies should be data from database
-Add Playogo logo on Stripe modal
-Woolwich data input
-Centre Wellington data input
-Time range filter
-Correct Kitchener avails that are an invalid size (not a multiple of half hour)
-Make earliest opening and latest closing time be generated dynamically
-Create a contact page
-Create an about page
+Bare Minimum To Sell Kitchener's Ice:
+  Get new format of ice schedules from Jeremy
+    *Verify start of day avails have correct start time
+  Protocol for updating the schedules daily
+  Put stripe non-test mode
+
+Minimum For A Usable Interface
+  Get calendar to open in correct place
+  Add animation to run while payment is being processed
+  Make 'booking completed' notice more prominent
+  Create a contact page
+  Create an about page
+  Test on major browsers
+  
+
+
+Other Less Pressing Tasks
+  Make 'current location' and 'current date' persist after making a booking
+  Make 'customer info' persist when closing or changing the state of the modal
+  Calendar doesn't close on second button click
+  Municipal policies should be data from database
+  Add Playogo logo on Stripe modal
+  Woolwich data input
+  Centre Wellington data input
+  Time range filter
+
+  Make earliest opening and latest closing time be generated dynamically
+
 
 
