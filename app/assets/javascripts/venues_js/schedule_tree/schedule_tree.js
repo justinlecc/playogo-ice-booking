@@ -1,4 +1,7 @@
-// retrieves info from the schedule_tree
+/*
+ * Retrieves an attribute from a ScheduleTree in json format
+ */
+
 function getFromScheduleTree(schedule_tree, item, venue, theatre) {
 
   var returnValue = false;

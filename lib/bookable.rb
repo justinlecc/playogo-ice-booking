@@ -1,6 +1,6 @@
 module Bookable
   
-  # Remove any openings that overlap with booking
+  # Remove any openings from the schedule tree that overlap with the booking
   def self.adjustOpenings(booking, scheduleTree)
     # Two cases (comparing booking b to opening a):
     #    1. b.start_time <= a.start_time

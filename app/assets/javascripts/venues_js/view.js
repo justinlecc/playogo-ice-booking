@@ -7,6 +7,7 @@
 
 /*
  * The percentage of the schedule grid that the name column takes up
+ * TODO: move to definitions file
  */
 var NAME_COL_WIDTH_PCT = 33;
 
@@ -40,25 +41,6 @@ function createViewModule () {
   };
 
   _.extend(ScheduleRenderer.prototype,{
-    
-    /*
-     * Renders the date picker
-     */ 
-    renderDatePicker: function (current_date, controller){
-
-      // var datePickerInput = $("#datepicker");
-
-      // datePickerInput.datepicker();
-      // datePickerInput.datepicker("option", "dateFormat", "yy-mm-dd");
-
-      // datePickerInput.val(current_date);
-
-      // // Define event listener
-      // datePickerInput.change(function () {
-      //   controller.changeDateByValue(this.value);
-      // });
-
-    },
 
     /*
      * Renders the month nav
@@ -669,7 +651,6 @@ function createViewModule () {
 
     renderSched: function(current_date, schedule_tree, controller) {
 
-      this.renderDatePicker(current_date, controller);
       this.renderMonthNav(current_date, controller);
       this.renderDayNav(current_date, controller);
       this.renderVenueRows(schedule_tree, current_date, controller);
@@ -678,14 +659,17 @@ function createViewModule () {
 
     /*
      * Renders the entire schedule
-     * ** Currently also renders map which should be refactored
+     * ** Currently also renders map which should be refactored (see below)
      */ 
     renderAll: function (current_date, schedule_tree, controller) {
 
-      this.renderDatePicker(current_date, controller);
       this.renderMonthNav(current_date, controller);
       this.renderDayNav(current_date, controller);
 
+      // TODO:
+      // The following needs to be refactored to separate schedule and map concerns.
+      // Issue is the rendering the VenueRows cannot happen until google maps calls back.
+      // Need to create a higher order view renderer to deligate this.
       var self = this;
       getLatLng(postal).then(function (lat, lng) {
 
@@ -699,9 +683,7 @@ function createViewModule () {
 
         })
 
-      // TODO: sort out renderMap calls
-      // Currently this calls proceedure that leads to aquiring lat lng again.
-      });//.then(this.renderMap); 
+      });
 
      },
 
@@ -715,17 +697,18 @@ function createViewModule () {
     }
   });
 
-  // /*
-  //  * Creates a Schedule Renderer
-  //  */ 
+  /*
+   * Creates a Schedule Renderer
+   */ 
   function loadScheduleRenderer () {
     return new ScheduleRenderer();
   };
 
-
-  // Return an object containing all of our classes and constants
+  /*
+   * Return an object containing all of our classes
+   */ 
   return {
-      ScheduleRenderer: ScheduleRenderer,
+      ScheduleRenderer:     ScheduleRenderer,
       loadScheduleRenderer: loadScheduleRenderer
   };
 }

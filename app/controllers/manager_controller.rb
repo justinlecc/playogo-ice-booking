@@ -1,5 +1,6 @@
 class ManagerController < ApplicationController
 
+  # Serves page manager will confirm or cancel a pending booking
   def respond_to_request
     booking_id = params[:booking_id]
     booking = Booking.where({:id => booking_id}).first
@@ -29,9 +30,9 @@ class ManagerController < ApplicationController
     end
   end
 
-
+  # Manager confirmed the booking
   def confirm_request
-    # TO DO: make params safe
+    # TODO: make params safe
     booking_id = params[:booking_id]
     theatre_id = params[:theatre]
     date_str = params[:date]
@@ -96,6 +97,7 @@ class ManagerController < ApplicationController
     redirect_to '/venues'
   end
 
+  # Manager cancels booking
   def cancel_request
     booking_id = params[:booking_id]
     booking = Booking.where({:id => booking_id}).first

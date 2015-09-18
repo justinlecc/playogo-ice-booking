@@ -1,4 +1,6 @@
 class CustomerMailer < ApplicationMailer
+
+  # Confirmation that the booking (booking_id) has been logged and we are waiting for rink manager to respond
   def ice_requested(booking_id)
     booking = Booking.where({:id => booking_id}).first
     @name = booking.name
@@ -15,6 +17,7 @@ class CustomerMailer < ApplicationMailer
     mail(:to => email, :subject => 'To customer')
   end
 
+  # Booking (booking_id) has been confirmed by the rink manager
   def ice_confirmed(booking_id)
     booking = Booking.where({:id => booking_id}).first
     @name = booking.name

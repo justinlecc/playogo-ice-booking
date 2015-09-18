@@ -1,4 +1,6 @@
-// Returns a dollar string from cents integer
+/*
+ * Returns a dollar string from cents integer
+ */
 function getDollarStr(cents){
   var dollars         = parseInt(cents / 100);
   var remaining_cents = Math.round(cents % 100);

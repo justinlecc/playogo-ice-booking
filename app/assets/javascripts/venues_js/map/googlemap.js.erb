@@ -1,4 +1,20 @@
-// returns a jQuery Defferend object
+/*
+ * ####################################################
+ *                       TODO
+ * ####################################################
+ *
+ * Need to refactor view js to properly encapsulate map
+ * rendering.
+ *   1. Create a VenuesPageRenderer
+ *   2. Create a MapRenderer
+ *   3. Take map concerns out of ScheduleRenderer and add to MapRenderer
+ */
+
+
+/*
+ * Gets lat and lng from address
+ * Returns a jQuery Defferend object
+ */
 function getLatLng(address) {
   var geocoder = new google.maps.Geocoder();
   var deferred = $.Deferred();
@@ -17,31 +33,9 @@ function getLatLng(address) {
 }
 
 
-
-function initializeMap (postalCode) {
-
-  var LAT_LONG_RECIEVED = false;
-
-  // Get lat long from postal code
-  var lat = '';
-  var lng = '';
-  var address = postalCode;
-
-  var geocoder;
-  geocoder = new google.maps.Geocoder();
-
-  geocoder.geocode( { 'address': address}, function(results, status) {
-    if (status == google.maps.GeocoderStatus.OK) {
-      lat = results[0].geometry.location.lat();
-      lng = results[0].geometry.location.lng();
-      renderMap(lat, lng);
-    } else {
-      alert("In initializeMap(): Geocode was not successful for the following reason: " + status);
-    }
-  });
-
-}
-
+/*
+ * Renders the map with the given lat lng
+ */
 function renderMap (lat, long) {
 
   // Display map
@@ -104,20 +98,30 @@ function renderMap (lat, long) {
     google.maps.event.addListener(vMarker, 'click', makeInfoWindowEvent(map, vInfoWindows[i], vMarkers[i]));
   }
 
+}
 
-  // Set venue markers
-  // _.each(schedule_tree.venues, function(venue) {
-  //   var vlat = venue.lat;
-  //   var vlong = venue.long;
-  //   var vaddr = venue.address;
-  //   console.log(venue.name);
+/*
+ * Renders the map with the given postal code
+ */
+function initializeMap (postalCode) {
 
-  //   var markerOptions2 = {
-  //     position: new google.maps.LatLng(lat, long)
-  //   }
-  //   var marker2 = new google.maps.Marker(markerOptions2);
-  //   marker2.setMap(map);
+  var LAT_LONG_RECIEVED = false;
 
-  // });
+  // Get lat long from postal code
+  var lat = '';
+  var lng = '';
+  var address = postalCode;
 
+  var geocoder;
+  geocoder = new google.maps.Geocoder();
+
+  geocoder.geocode( { 'address': address}, function(results, status) {
+    if (status == google.maps.GeocoderStatus.OK) {
+      lat = results[0].geometry.location.lat();
+      lng = results[0].geometry.location.lng();
+      renderMap(lat, lng);
+    } else {
+      alert("In initializeMap(): Geocode was not successful for the following reason: " + status);
+    }
+  });
 }

@@ -85,10 +85,16 @@ function createModelModule() {
             this.latest_date = latest_date;
         },
 
+        /*
+         * Returns the date currently being navigated
+         */
         getCurrentDate: function () {
             return this.current_date;
         },
 
+        /*
+         * Sets the date currently being navigated
+         */
         setCurrentDate: function (date) {
             this.current_date = date;
             // if statement for testing (set current date being used on initialization)
@@ -97,11 +103,16 @@ function createModelModule() {
             }
         },
 
+        /*
+         * Add listener to AvailsScheduleModel
+         */
         addListener: function (listener) {
             this.listeners.push(listener);
         },
 
-        // Call callback listeners with event type and neccessary params
+        /*
+         * Call callback listeners with event type and neccessary params
+         */
         notifyListeners: function (event_type, params) {
             var self = this;
             _.each(self.listeners, function (l) {
@@ -118,13 +129,14 @@ function createModelModule() {
         return new AvailsScheduleModel();
     };
 
-
-    // Return an object containing all of our classes and constants
+    /*
+     * Return an object containing all of our classes and constants
+     */
     return {
-        AvailsCollectionModel: AvailsCollectionModel,
+        AvailsCollectionModel:     AvailsCollectionModel,
         loadAvailsCollectionModel: loadAvailsCollectionModel,
-        AvailsScheduleModel: AvailsScheduleModel,
-        loadAvailsScheduleModel: loadAvailsScheduleModel
+        AvailsScheduleModel:       AvailsScheduleModel,
+        loadAvailsScheduleModel:   loadAvailsScheduleModel
     };
 
 

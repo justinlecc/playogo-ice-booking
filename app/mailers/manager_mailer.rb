@@ -2,6 +2,7 @@ class ManagerMailer < ApplicationMailer
   default from: "justin_leclerc@hotmail.com"
   # layout 'mailer'
 
+  # Email sent to manager requesting the booking (booking_id) be confirmed
   def ice_request(booking_id)
 
     # Get booking

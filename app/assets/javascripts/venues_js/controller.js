@@ -1,8 +1,7 @@
 'use strict'
 
 /////////////////////////////////////////////////////////////////////////
-// Helpers
-
+// TODO: Put into definitions file. Will need to be dynamic to accomedate more provinces.
 var TAX_RATE = .13;
 
 
@@ -48,6 +47,7 @@ function createControllerModule () {
   };
 
   _.extend(VenueController.prototype, {
+
     /*
      *  Initialize controller
      */
@@ -303,7 +303,7 @@ function createControllerModule () {
    * Return an object containing all of our classes and constants
    */
   return {
-      VenueController: VenueController,
+      VenueController:     VenueController,
       loadVenueController: loadVenueController
   };
 

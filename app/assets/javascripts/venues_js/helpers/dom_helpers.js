@@ -1,4 +1,6 @@
-// Removing and adding classes
+/*
+ * Removing and adding classes
+ */
 function hasClass(ele,cls) {
   return !!ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
 }
@@ -14,7 +16,9 @@ function removeClass(ele,cls) {
   }
 }
 
-// Returns the height of an element even when not rendered in the dom
+/*
+ * Returns the height of an element even when not rendered in the dom
+ */
 function getHeight(element)
 {
     element.style.visibility = "hidden";

@@ -1,3 +1,11 @@
+/*
+ * TODO: see googlemaps.js
+ */
+
+/*
+ * Sorts the VenueRows in order of proximity to lat and lng
+ */
+
 function sortVenueRows (schedule_tree, controller, lat, lng) {
   "use strict";
 
