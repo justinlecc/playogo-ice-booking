@@ -7,16 +7,17 @@ Bare Minimum To Sell Kitchener's Ice:
   Put stripe non-test mode
 
 Minimum For A Usable Interface
-  Get calendar to open in correct place
   Add animation to run while payment is being processed
   Make 'booking completed' notice more prominent
   Create a contact page
   Create an about page
   Test on major browsers
+  Client side verification of inputs
   
 
 
 Other Less Pressing Tasks
+  Rerender page when size changes
   Make 'current location' and 'current date' persist after making a booking
   Make 'customer info' persist when closing or changing the state of the modal
   Calendar doesn't close on second button click
@@ -29,4 +30,5 @@ Other Less Pressing Tasks
   Make earliest opening and latest closing time be generated dynamically
 
 
-
+Notes
+  JL: I can't recreate calendar appearing in incorrect spot
