@@ -50,8 +50,12 @@
 
 <div id="venue-container" class="container">
 
-<p id="notice"><%= notice %></p>
-
+<% if notice %>
+  <div class="alert alert-success alert-dismissible" role="alert">
+     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <p id="notice" ><%= notice %></p>
+  </div>
+<% end %>
 
 <div class="row sched-row">
   <div id="schedule" class="col-sm-8">

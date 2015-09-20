@@ -1,20 +1,27 @@
 Rails.application.routes.draw do
 
+  # Welcome
   root 'welcome#index'
 
+  # Venues
   get '/venues/:nav_date' => 'venues#index'
   get '/venues' => 'venues#index'
   post '/venues' => 'venues#index'
-
   post '/venues/ice_booking', to: 'venues#ice_booking'
 
+  # Manager
   get '/manager/confirm_booking/:booking_id', to: 'manager#respond_to_request'
-
   post '/manager/confirm_request', to: 'manager#confirm_request'
-
   post '/manager/cancel_request', to: 'manager#cancel_request'
 
-  resources :venues
+  # About
+  get '/about', to: 'about#index'
+
+  # Contact
+  get '/contact', to: 'contact#index'
+
+
+  resources :venues # <- probably want to remove
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
