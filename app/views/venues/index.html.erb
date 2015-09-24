@@ -281,15 +281,33 @@
   <div class="form-group">
     <label for="customer-name">Name</label>
     <input type="text" class="form-control" id="customer-name" placeholder="Enter your first and last name">
+    <div id="input-info-name-error" class="alert alert-danger" role="alert">
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <span class="sr-only">Error:</span>
+      Please enter your full name.
+    </div>
   </div>
+  
   <div class="form-group">
     <label for="customer-phone">Phone</label>
     <input type="text" class="form-control" id="customer-phone" placeholder="Enter phone number">
+    <div id="input-info-phone-error" class="alert alert-danger" role="alert">
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <span class="sr-only">Error:</span>
+      Please enter your phone number.
+    </div>
   </div>
+  
   <div class="form-group">
     <label for="customer-notes">What are you using the ice for and how many people will be on it? (to be used by rink manager)</label>
     <input type="text" class="form-control" id="customer-notes" placeholder="Eg. Pick up hockey game with around 15 players.">
+    <div id="input-info-description-error" class="alert alert-danger" role="alert">
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <span class="sr-only">Error:</span>
+      Please enter a description of what you will be using the ice for.
+    </div>
   </div>
+  
 
   <!--
   <div class="form-group">

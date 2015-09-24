@@ -50,11 +50,13 @@ function getMonday(d) {
 
 /*
  * parse a date in yyyy-mm-dd format to UTC time
+ * WARNING: typically UTC time is being used as an object naive to timezones. In
+ * these cases, be sure to use UTC 'getter methods'. Eg. .getUTCday().
  */
 function parseUTCDate(input) {
   var parts = input.split('-');
   // new Date(year, month [, day [, hours[, minutes[, seconds[, ms]]]]])
-  return new Date(Date.UTC(parts[0], parts[1]-1, parts[2])); // Note: months are 0-based
+  return new Date(Date.UTC(parts[0], parts[1]-1, parts[2],0,0,0,0)); // Note: months are 0-based
 }
 
 /*

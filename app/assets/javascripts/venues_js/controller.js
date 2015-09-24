@@ -6,8 +6,6 @@ var TAX_RATE = .13;
 
 
 
-
-
 /////////////////////////////////////////////////////////////////////////
 // Controller
 
@@ -159,16 +157,27 @@ function createControllerModule () {
     changePageState: function (el, next_page_state) {
       if (TIME_SELECT == next_page_state) {
 
+        // Set the selected booking if opening was clicked
         if (el != null) {
-          // Set the selected booking
-          this.selected_venue = el.getAttribute("venue");
-          this.selected_theatre = el.getAttribute("theatre");
-          this.selected_date = el.getAttribute("date");
-          this.selected_start_time = el.getAttribute("start_time");
-          this.selected_length = el.getAttribute("length"); /* need to get size from selection */
-          this.selected_prime = getFromScheduleTree(this.availsCollectionModel.getAvails(), 'prime', this.selected_venue, this.selected_theatre);
-          this.selected_non_prime = getFromScheduleTree(this.availsCollectionModel.getAvails(), 'non_prime', this.selected_venue, this.selected_theatre);
-          this.selected_insurance = getFromScheduleTree(this.availsCollectionModel.getAvails(), 'insurance', this.selected_venue, this.selected_theatre);
+
+          // Selected fields
+          this.selected_venue       = el.getAttribute("venue");
+          this.selected_theatre     = el.getAttribute("theatre");
+          this.selected_date        = el.getAttribute("date");
+          this.selected_start_time  = parseInt(el.getAttribute("start_time"));
+          this.selected_length      = parseInt(el.getAttribute("length")); /* need to get size from selection */
+          this.selected_prime       = parseInt(getFromScheduleTree(this.availsCollectionModel.getAvails(), 'prime', this.selected_venue, this.selected_theatre));
+          this.selected_non_prime   = parseInt(getFromScheduleTree(this.availsCollectionModel.getAvails(), 'non_prime', this.selected_venue, this.selected_theatre));
+          this.selected_insurance   = parseInt(getFromScheduleTree(this.availsCollectionModel.getAvails(), 'insurance', this.selected_venue, this.selected_theatre));
+ 
+          // Default specified values
+          this.specified_start_time = this.selected_start_time;
+          this.specified_length     = 60*60;
+          this.specified_price      = getBookingPrice(this.selected_date, 
+                                                      this.specified_start_time,
+                                                      this.specified_length,
+                                                      this.selected_prime,
+                                                      this.selected_non_prime);
         }
 
         // Set the page state
@@ -176,15 +185,18 @@ function createControllerModule () {
 
         // Render the modal content
         var self = this;
-        this.scheduleRenderer.renderModal(TIME_SELECT, {selected_venue:      this.selected_venue,
-                                                        selected_theatre:    this.selected_theatre,
-                                                        selected_date:       this.selected_date,
-                                                        selected_start_time: this.selected_start_time,
-                                                        selected_length:     this.selected_length,
-                                                        selected_prime:      this.selected_prime,
-                                                        selected_non_prime:  this.selected_non_prime,
-                                                        selected_insurance:  this.selected_insurance,
-                                                        controller:          self
+        this.scheduleRenderer.renderModal(TIME_SELECT, {selected_venue:       this.selected_venue,
+                                                        selected_theatre:     this.selected_theatre,
+                                                        selected_date:        this.selected_date,
+                                                        selected_start_time:  this.selected_start_time,
+                                                        selected_length:      this.selected_length,
+                                                        selected_prime:       this.selected_prime,
+                                                        selected_non_prime:   this.selected_non_prime,
+                                                        selected_insurance:   this.selected_insurance,
+                                                        specified_start_time: this.specified_start_time,
+                                                        specified_length:     this.specified_length,
+                                                        specified_price:      this.specified_price,
+                                                        controller:           self
                                                         });
 
         // Activate the modal
@@ -210,6 +222,7 @@ function createControllerModule () {
 
         if (this.page_state == INPUT_INFO) {
 
+          // TODO: specified_price needs to be calculated by prime and non-prime prices TIME_SELECT
           this.specified_price      = Math.round(this.selected_prime * getHoursFromSeconds(this.specified_length));
           this.specified_tax        = Math.round((this.specified_price + this.selected_insurance) * TAX_RATE);
           this.specified_total_cost = Math.round(this.specified_price + this.selected_insurance + this.specified_tax);

@@ -438,6 +438,15 @@ function createViewModule () {
           cur_time += 30 * 60;
         }
 
+        // Get the initial positions of the handles
+        var startHandle  = (info.specified_start_time - info.selected_start_time) / (30*60);
+        var finishHandle = ((info.specified_start_time + info.specified_length) - info.selected_start_time) / (30*60);
+        if (startHandle < 0 || finishHandle < 0) {
+          throw "ERROR: slider handles initialized to an index less than 0";
+        } else if (startHandle > finishHandle - 2) {
+          throw "ERROR: slider handles initialized improperly";
+        }
+
         // Initialize the slider
         var slider = $(".timeselect-slider");
         slider.append('<div class="ui-slider-handle"><div id="start-tooltip" data-tooltip="Start" class="range-handle"></div></div>');
@@ -447,7 +456,7 @@ function createViewModule () {
           range: true,
           min: 0,
           max: time_options.length - 1,
-          values: [ 0, 2 ],
+          values: [ startHandle, finishHandle ],
           valueStore: 'test',
           // What to do on change
           slide: function (event, ui) {
@@ -459,49 +468,55 @@ function createViewModule () {
               return false;
             } 
 
+            // Get start and end times
             var start_time = time_options[ ui.values[ 0 ] ];
             var end_time = time_options[ ui.values[ 1 ] ];
 
-            // Update time range in visible span and controller
+            // Update 'specified' variables -- remove?
+            // info.specified_start_time = start_time;
+            // info.specified_length     = end_time - start_time;
+
+            // Update time range in visible span
             var timerange_element = $( "#modal-selected-timerange" )
             timerange_element.html( getTimeFromSeconds(time_options[ ui.values[ 0 ] ]) + " to " + getTimeFromSeconds(time_options[ ui.values[ 1 ] ]));
-            info.controller.specified_start_time = time_options[ ui.values[ 0 ] ];
-            info.controller.specified_length = time_options[ ui.values[ 1 ] ] - time_options[ ui.values[ 0 ] ];
+
+            // Update specified attributes in controller
+            // TODO: should controller attributes be updated here? -- bad mvc?
+            info.controller.specified_start_time = start_time;
+            info.controller.specified_length = end_time - start_time;
 
             // Upadate time in tooltip
             var startTooltip = $("#start-tooltip");
-            startTooltip.attr('data-tooltip', 'Start: ' + getTimeFromSeconds(time_options[ ui.values[ 0 ] ]));
+            startTooltip.attr('data-tooltip', 'Start: ' + getTimeFromSeconds(start_time));
 
             var endTooltip = $("#end-tooltip");
-            endTooltip.attr('data-tooltip', 'End: ' + getTimeFromSeconds(time_options[ ui.values[ 1 ] ]));
+            endTooltip.attr('data-tooltip', 'End: ' + getTimeFromSeconds(end_time));
 
             // Update the price in the visible span
-            ;
-            $( "#modal-selected-price" ).html( getDollarStr(getHoursFromSeconds(end_time - start_time) * info.controller.selected_prime) + " (@ " + getDollarStr(info.controller.selected_prime) + "/h)");
+            // TODO: price rate
+            $( "#modal-selected-price" ).html( getDollarStr(getBookingPrice(info.selected_date, start_time, end_time - start_time, info.selected_prime, info.selected_non_prime)) + " (@ " + getDollarStr(info.selected_prime) + "/h prime or " + getDollarStr(info.selected_non_prime) + "/h non-prime)");
           }
 
         });
 
-        // Initial tooltip values
+        // Initial ice time range
+        var start_time = info.specified_start_time;
+        var end_time = info.specified_start_time + info.specified_length;
+
+        // Initialize tooltip values
         var startTooltip = $("#start-tooltip");
-        startTooltip.attr('data-tooltip', 'Start: ' + getTimeFromSeconds(time_options[0]));
+        startTooltip.attr('data-tooltip', 'Start: ' + getTimeFromSeconds(start_time));
 
         var endTooltip = $("#end-tooltip");
-        endTooltip.attr('data-tooltip', 'End: ' + getTimeFromSeconds(time_options[2]));        
+        endTooltip.attr('data-tooltip', 'End: ' + getTimeFromSeconds(end_time));        
 
+        // Initialize time range text
+        $( "#modal-selected-timerange" ).html(getTimeFromSeconds(start_time) + " to " + getTimeFromSeconds(end_time));
 
-        // Initial ice time range
-        $( "#modal-selected-timerange" ).html( getTimeFromSeconds(time_options[0]) +
-        " to " + getTimeFromSeconds(time_options[2]) );
-        info.controller.specified_start_time = time_options[0];
-        info.controller.specified_length = time_options[2] - time_options[0];
+        // Initialize ice time price
+        // TODO: don't display both prime and non-prime rates
+        $( "#modal-selected-price" ).html( getDollarStr(getBookingPrice(info.selected_date, start_time, end_time - start_time, info.selected_prime, info.selected_non_prime)) + " (@ " + getDollarStr(info.selected_prime) + "/h prime or " + getDollarStr(info.selected_non_prime) + "/h non-prime)");
 
-        // Initial ice time price
-        var start_time = time_options[ 0 ];
-        var end_time = time_options[ 2 ];
-
-        $( "#modal-selected-price" ).html( getDollarStr(getHoursFromSeconds(end_time - start_time) * info.selected_prime)
-                                          + " (@ " + getDollarStr(info.selected_prime) + "/h)");
         // Set venue
         $( "#modal-selected-venue").html(info.selected_venue + " - " + info.selected_theatre);
 

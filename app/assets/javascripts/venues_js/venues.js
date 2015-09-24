@@ -82,14 +82,48 @@ function deployVenues () {
     });
     var inputinfo_continue_btn = document.getElementById('booking-modal-btn-inputinfo').children[1];
     inputinfo_continue_btn.addEventListener('click', function () {
-        // Get info update controller
+
+
+
+        // Get info
         var customer_name = $( '#customer-name' ).val();
-        venueController.customer_name = customer_name;
-
         var customer_phone = $( '#customer-phone' ).val();
-        venueController.customer_phone = customer_phone;
-
         var customer_notes = $( '#customer-notes' ).val();
+
+        // Check form of input
+        // **Currently only checks if a string has been inputed
+        var invalid_input = false;
+
+        if (customer_name === "") {
+            invalid_input = true;
+            document.getElementById("input-info-name-error").style.display = "block";
+        } else {
+            document.getElementById("input-info-name-error").style.display = "none";
+        }
+
+        if (customer_phone === "") {
+            invalid_input = true;
+            document.getElementById("input-info-phone-error").style.display = "block";
+        } else {
+            document.getElementById("input-info-phone-error").style.display = "none";
+        }
+
+        if (customer_notes === "") {
+            invalid_input = true;
+            document.getElementById("input-info-description-error").style.display = "block";
+        } else {
+            document.getElementById("input-info-phone-error").style.display = "none";
+        }
+
+        // If argument is missing, do not proceed
+        if (invalid_input) {
+            return;
+        }
+
+
+        // Update controller
+        venueController.customer_name = customer_name;
+        venueController.customer_phone = customer_phone;
         venueController.customer_notes = customer_notes;
 
         // Change the current page

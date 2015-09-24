@@ -434,7 +434,7 @@ div.hour {
 }
 
 /**
-* Popover
+* Modals
 */
 #popover-container {
   position: absolute;
@@ -453,7 +453,7 @@ div.hour {
 }
 
 /**
-* Popover - Time Select
+* Modal - Time Select
 */
 
 .timeselect-slider {
@@ -507,6 +507,13 @@ div.ui-slider-range.ui-widget-header.ui-corner-all {
 
 #modal-selected-timerange, #modal-selected-venue, #modal-selected-price {
   color: $pogo-blue;
+}
+
+/**
+* Modal - Time Select
+*/
+#input-info-name-error, #input-info-phone-error, #input-info-description-error {
+  display: none;
 }
 
 /*

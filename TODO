@@ -4,16 +4,12 @@ Bare Minimum To Sell Kitchener's Ice:
   Get new format of ice schedules from Jeremy
     *Verify start of day avails have correct start time
   Protocol for updating the schedules daily
+  Get official municipal policies
   Put stripe non-test mode
 
 Minimum For A Usable Interface
-  Create a contact page
-  Create an about page
   Test on major browsers
-  Client side verification of inputs
   Add "Beta" to navbar
-  
-
 
 Other Less Pressing Tasks
   Include a page footer
@@ -27,7 +23,7 @@ Other Less Pressing Tasks
   Centre Wellington data input
   Time range filter
   Better loading animation
-
+  Styling of contact and about pages
   Make earliest opening and latest closing time be generated dynamically
 
 

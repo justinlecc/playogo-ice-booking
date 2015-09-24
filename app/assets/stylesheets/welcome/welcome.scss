@@ -72,6 +72,11 @@ div.welcome-display {
   }
 }
 
+#search-input-errors {
+  margin-top: 5px;
+  display: none;
+}
+
 /*
   Media Queries
   -----------------------------------------------*/
@@ -102,7 +107,5 @@ div.welcome-display {
 }
 /* Large desktop */
 @media (min-width:1200px){
-  h1 {
-    color:red;
-  }
+
 }

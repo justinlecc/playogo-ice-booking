@@ -9,10 +9,22 @@
 
 window.addEventListener('load', function () {
 
+  // Welcome page
   if ('WELCOME' === deploy_js) {
     deployWelcome();
+
+  // Venues page
   } else if ('VENUES' === deploy_js) {
     deployVenues();
+
+  // About page
+  } else if ('ABOUT' === deploy_js) {
+    // Currently no javascript to deploy
+
+  // Contact page
+  } else if ('CONTACT' === deploy_js) {
+    // Currently no javascript to deploy
+    
   } else {
     throw "ERROR: In view js deployment, unrecognized view type.";
   }
