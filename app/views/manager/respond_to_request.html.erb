@@ -1,4 +1,10 @@
+<script>
+  deploy_js = 'MANAGER/CONFIRM_BOOKING';
+</script>
+
 <div class="container">
+
+  <h1>Confirm or change the following booking details</h1>
 
   <form id="confirm_request" action="/manager/confirm_request" method="POST">
   
@@ -7,14 +13,18 @@
       <select id="venue-input" class="form-control" name="theatre" form="confirm_request">
         <% @venues.each do |venue, value| %>
           <% value.each do |theatre|%>
-            <option value="<%= theatre[:id] %>"><%= venue + " - " + theatre[:name] %></option>
+            <% if (theatre[:name] == @booking_theatre) && (venue == @booking_venue) %>
+              <option value="<%= theatre[:id] %>" selected><%= venue + " - " + theatre[:name] %></option>
+            <% else %>
+              <option value="<%= theatre[:id] %>"><%= venue + " - " + theatre[:name] %></option>
+            <% end %>
           <% end %>
         <% end %>
       </select>
     </div>
   
     <div class="form-group">
-      <label for="date-input">Date (yyyy/mm/dd)</label>
+      <label for="date-input">Date (yyyy-mm-dd)</label>
       <input id="date-input" class="form-control" type="text" name="date" value="<%= @date %>">
     </div>
 
@@ -42,17 +52,14 @@
 
   <br><br><br>
 
-  <p>If there is a problem with this booking request, it can be cancelled by clicking here.</p>
+  <p>If there is a problem with this booking request, it can be cancelled by clicking below.</p>
   <form id="cancel_request" action="/manager/cancel_request" method="POST">
 
     <input type="hidden" name="booking_id" value="<%= @booking_id%>">
 
     <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
 
-    <button type="submit" class="btn btn-default">Cancel booking</button>
+    <button type="submit" class="btn btn-warning">Cancel booking</button>
   </form>
 </div>
 
-<script>
-alert("loading javascript that doesnt belong to this view");
-</script>

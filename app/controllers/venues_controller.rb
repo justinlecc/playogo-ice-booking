@@ -30,17 +30,19 @@ class VenuesController < ApplicationController
   # POST venues/payment
   def ice_booking 
     # Params !! Protect against injection attack !!
-    token = params[:stripeToken]
-    email = params[:stripeEmail]
-    venue_name = params[:venue]
+    token        = params[:stripeToken]
+    email        = params[:stripeEmail]
+    venue_name   = params[:venue]
     theatre_name = params[:theatre]
-    date = params[:date]
-    start_time = params[:start_time].to_i
-    length = params[:length].to_i
-    amount = params[:amount].to_i # needs to be verified to be the correct amount
-    name = params[:name]
+    date         = params[:date]
+    start_time   = params[:start_time].to_i
+    length       = params[:length].to_i
+    amount       = params[:amount].to_i # needs to be verified to be the correct amount
+    name         = params[:name]
     phone_number = params[:phone]
-    notes = params[:notes]
+    notes        = params[:notes]
+    nav_date     = params[:nav_date]
+    nav_postal   = params[:nav_postal]
 
     # Get the theatre
     theatre = Theatre.joins(:venue).where(venues: {"name" => venue_name}, :name => theatre_name)
@@ -134,7 +136,10 @@ class VenuesController < ApplicationController
     # Send customer email
     CustomerMailer.ice_requested(b.id).deliver_now
 
-    redirect_to '/venues/?date=' + params[:nav_date]
+    # Notify the admin of confirmation
+    AdminMailer.notify_admin({:type => "BOOKING_REQUEST", :booking_id => b.id}).deliver_now
+
+    redirect_to '/venues/?nav_date=' + nav_date + "&postal=" + nav_postal
   end
 
 

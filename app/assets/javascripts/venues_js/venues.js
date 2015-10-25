@@ -39,11 +39,9 @@ function deployVenues () {
     venueController.initializePage(schedule_tree); // schedule_tree from .erb view rendering
     availsScheduleModel.controller = venueController;
 
-    
-
 
     /////////////////////////////////////////////////////////////////////
-    // MODAL
+    // MODAL EVENTS
 
     /*
      * Add event listeners to TIME_SELECT modal
@@ -91,7 +89,7 @@ function deployVenues () {
         var customer_notes = $( '#customer-notes' ).val();
 
         // Check form of input
-        // **Currently only checks if a string has been inputed
+        // TODO: Currently only checks if a string has been inputed
         var invalid_input = false;
 
         if (customer_name === "") {

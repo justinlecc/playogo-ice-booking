@@ -15,6 +15,11 @@ $dark-grey:          #D8D8D8;
 $mid-grey:           #E8E8E8; /*#D3D3D3*/
 $light-grey:         #F0F0F0;
 
+/**
+ * Card Color Definitions
+ */
+$card-border:        #E4E4E4;
+$card-background:    #F2F2F2;
 
 /**
 * Globals (shoud go to application.css)
@@ -39,7 +44,7 @@ p{
 }
 
 .playogo-logo {
-  height: 22px;
+  height: 32px; /* was 22px for non beta logo */
 }
 
 .navbar {
@@ -434,6 +439,15 @@ div.hour {
 }
 
 /**
+ * Google Map
+ */
+#map {
+  border-style: solid;
+  border-width: 0px 0px 0px 1px;
+  border-color: $card-border;
+}
+
+/**
 * Modals
 */
 #popover-container {
@@ -480,6 +494,7 @@ div.ui-slider-range.ui-widget-header.ui-corner-all {
   border: none;
   background: none;
 }
+
 .timeselect-slider {
   height: 10px;
 }

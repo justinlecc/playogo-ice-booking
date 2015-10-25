@@ -96,8 +96,8 @@ function getHoursFromSeconds(seconds) {
  */
 function getHoursString(hours) {
   if (hours === 1) {
-    return hours.toString() + " hour";
+    return hours.toString() + " hr";
   } else {
-    return hours.toString() + " hours";
+    return hours.toString() + " hrs";
   }
 }

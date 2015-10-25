@@ -3,6 +3,26 @@
  *************************************
  */
 
+/**
+ * Color Definitions
+ */
+$pogo-blue:          #169EF1;
+$pogo-orange:        #F9A146;
+$pogo-orange-border: #FF982E;
+$pogo-orange-active: #FFAC57;
+$pogo-teal:          #5AB1A8;
+$pogo-red:           #D04B3D;
+$dark-grey:          #D8D8D8;
+$mid-grey:           #E8E8E8; /*#D3D3D3*/
+$light-grey:         #F0F0F0;
+
+/**
+ * Card Color Definitions
+ */
+$card-border:        #E4E4E4;
+$card-background:    #F2F2F2;
+
+
 /*
  * Content
  */
@@ -10,4 +30,16 @@
   p {
     font-size: 16px;
   }
+}
+
+/*
+ * Footer
+ */
+.footer {
+  width:100%; 
+  height: 40px;
+  background: $card-background;
+  border-style: solid;
+  border-width: 1px 0px 0px 0px;
+  border-top-color: $card-border;
 }

@@ -472,18 +472,15 @@ function createViewModule () {
             var start_time = time_options[ ui.values[ 0 ] ];
             var end_time = time_options[ ui.values[ 1 ] ];
 
-            // Update 'specified' variables -- remove?
-            // info.specified_start_time = start_time;
-            // info.specified_length     = end_time - start_time;
-
             // Update time range in visible span
             var timerange_element = $( "#modal-selected-timerange" )
             timerange_element.html( getTimeFromSeconds(time_options[ ui.values[ 0 ] ]) + " to " + getTimeFromSeconds(time_options[ ui.values[ 1 ] ]));
 
             // Update specified attributes in controller
-            // TODO: should controller attributes be updated here? -- bad mvc?
+            // TODO: These should be updated using a controller method. Update start and length -> price updates automatically.
             info.controller.specified_start_time = start_time;
-            info.controller.specified_length = end_time - start_time;
+            info.controller.specified_length     = end_time - start_time;
+            info.controller.specified_price      = getBookingPrice(info.selected_date, start_time, end_time - start_time, info.selected_prime, info.selected_non_prime);
 
             // Upadate time in tooltip
             var startTooltip = $("#start-tooltip");
@@ -494,7 +491,7 @@ function createViewModule () {
 
             // Update the price in the visible span
             // TODO: price rate
-            $( "#modal-selected-price" ).html( getDollarStr(getBookingPrice(info.selected_date, start_time, end_time - start_time, info.selected_prime, info.selected_non_prime)) + " (@ " + getDollarStr(info.selected_prime) + "/h prime or " + getDollarStr(info.selected_non_prime) + "/h non-prime)");
+            $( "#modal-selected-price" ).html( getDollarStr(info.controller.specified_price) + " (@ " + getDollarStr(info.selected_prime) + "/h prime or " + getDollarStr(info.selected_non_prime) + "/h non-prime)");
           }
 
         });
@@ -515,7 +512,7 @@ function createViewModule () {
 
         // Initialize ice time price
         // TODO: don't display both prime and non-prime rates
-        $( "#modal-selected-price" ).html( getDollarStr(getBookingPrice(info.selected_date, start_time, end_time - start_time, info.selected_prime, info.selected_non_prime)) + " (@ " + getDollarStr(info.selected_prime) + "/h prime or " + getDollarStr(info.selected_non_prime) + "/h non-prime)");
+        $( "#modal-selected-price" ).html( getDollarStr(info.specified_price) + " (@ " + getDollarStr(info.selected_prime) + "/h prime or " + getDollarStr(info.selected_non_prime) + "/h non-prime)");
 
         // Set venue
         $( "#modal-selected-venue").html(info.selected_venue + " - " + info.selected_theatre);
@@ -574,7 +571,7 @@ function createViewModule () {
         modal_body.children('#review-date').html(getReadableDateStr(info.selected_date));
         modal_body.children('#review-time').html(getTimeFromSeconds(info.specified_start_time) + " to " + getTimeFromSeconds(info.specified_start_time + info.specified_length));
 
-        var priceStr = getDollarStr(info.specified_price) + " (" + getHoursString(getHoursFromSeconds(info.specified_length)) + " @ " + getDollarStr(info.selected_prime) + "/hr)"; 
+        var priceStr = getDollarStr(info.specified_price) + " (" + getHoursString(getHoursFromSeconds(info.specified_length)) + " @ " + getDollarStr(info.selected_prime) + "/hr prime and " + getDollarStr(info.selected_non_prime) + "/hr non prime)"; 
         modal_body.children('#review-price').html(priceStr);
 
         var insuranceStr = getDollarStr(info.selected_insurance) + " (manditory by municipality policy)";
@@ -613,25 +610,27 @@ function createViewModule () {
         ****************************************************/
 
         // Venue
-        inputs[2].value = info.selected_venue;
-        // Theatre
-        inputs[3].value = info.selected_theatre;
-        // Date
-        inputs[4].value = info.selected_date;
-        // Start time
-        inputs[5].value = info.specified_start_time;
-        // Length
-        inputs[6].value = info.specified_length;
-        // Amount
-        inputs[7].value = info.specified_total_cost;
-        // Nav date
-        inputs[8].value = info.navigation_date;
+        inputs[2].value  = info.selected_venue;
+        // Theatre 
+        inputs[3].value  = info.selected_theatre;
+        // Date 
+        inputs[4].value  = info.selected_date;
+        // Start time 
+        inputs[5].value  = info.specified_start_time;
+        // Length 
+        inputs[6].value  = info.specified_length;
+        // Amount 
+        inputs[7].value  = info.specified_total_cost;
+        // Nav date 
+        inputs[8].value  = info.navigation_date;
         // Name
-        inputs[9].value = info.customer_name;
+        inputs[9].value  = info.customer_name;
         // Phone
         inputs[10].value = info.customer_phone;
         // Notes
         inputs[11].value = info.customer_notes;
+        // Postal code
+        inputs[12].value = postal;
 
         // Email filled out in stripe window
 

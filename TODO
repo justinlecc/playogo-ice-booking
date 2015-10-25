@@ -1,30 +1,49 @@
 FEATURES AND FIXES
 
 Bare Minimum To Sell Kitchener's Ice:
-  Get new format of ice schedules from Jeremy
+
+  Get new format of ice schedules from Allyson
+
+  Block ability to book less than *two* days in advance
+    maybe min number of business hours
+  Make 'current location' and 'current date' persist after making a booking
+    nav_date is being passed to venues index controller
+    ******Half way done**** nav_date seems to be being passed. Verify its being used in all situations. Get schedule to render it nav_date.
+  Make 'customer info' persist when closing or changing the state of the modal
+  Add Playogo logo on Stripe modal
+  Check booking controller for checking prices and input parameters
+  Test on major browsers
+
+  Refund on cancelations/manually
+  Read new Kitchener schedule formats
     *Verify start of day avails have correct start time
-  Protocol for updating the schedules daily
-  Get official municipal policies
+  Load venues page on current day
+  Host on Playogo.com
+  Remove localhost link in manager email
+  Customer email address sending to email not playogosports
+  Send working demo to Jeremy
+    Get official municipal policies
+    Get number of business hours booking will be processed in
+  Change booking processing hours guarentee in customer email
+  Put correct manager name and email into database
   Put stripe non-test mode
 
-Minimum For A Usable Interface
-  Test on major browsers
-  Add "Beta" to navbar
+
+
+
 
 Other Less Pressing Tasks
-  Include a page footer
-  Rerender page when size changes
-  Make 'current location' and 'current date' persist after making a booking
-  Make 'customer info' persist when closing or changing the state of the modal
   Calendar doesn't close on second button click
   Municipal policies should be data from database
-  Add Playogo logo on Stripe modal
   Woolwich data input
   Centre Wellington data input
   Time range filter
   Better loading animation
   Styling of contact and about pages
   Make earliest opening and latest closing time be generated dynamically
+  Dynamic way of having multiple pricing structures
+  Refactor controller::renderAll so schedule and map concerns are separated
+
 
 
 Notes

@@ -2,15 +2,13 @@ class ManagerController < ApplicationController
 
   # Serves page manager will confirm or cancel a pending booking
   def respond_to_request
-    booking_id = params[:booking_id]
-    booking = Booking.where({:id => booking_id}).first
+    @booking_id = params[:booking_id]
+    booking = Booking.where({:id => @booking_id}).first
 
     if (booking == nil || booking.status != "paid")
       redirect_to '/venues'
       return
     end
-
-    @booking_id = booking.id
 
     # Booking info
     @booking_venue = booking.theatre.venue.name
@@ -94,6 +92,9 @@ class ManagerController < ApplicationController
     # Notify the customer
     CustomerMailer.ice_confirmed(booking.id).deliver_now
 
+    # Notify the admin of confirmation
+    AdminMailer.notify_admin({:type => "BOOKING_CONFIRMATION", :booking_id => booking_id}).deliver_now
+
     redirect_to '/venues'
   end
 
@@ -106,6 +107,9 @@ class ManagerController < ApplicationController
     # TO DO: handle what happens when booking cancelled
     # -refund
     # -email customer? (municipalities job to contact them)
+
+    # Notify admin of cancellation
+    AdminMailer.notify_admin({:type => "BOOKING_CANCELLATION", :booking_id => booking_id}).deliver_now
 
     redirect_to '/venues'
   end 

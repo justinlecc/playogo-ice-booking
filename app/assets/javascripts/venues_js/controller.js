@@ -63,6 +63,15 @@ function createControllerModule () {
       // Render page
       this.scheduleRenderer.renderAll(this.availsScheduleModel.getCurrentDate(), this.availsCollectionModel.getAvails(), self);
 
+      // Rerender page if browser resized 
+      // Debouncing makes render triggered x milliseconds after last window resize (http://underscorejs.org/#throttle)
+      // TODO: Does rerendering need to make another request to google maps?
+      var debouncedRenderAll = _.debounce(self.scheduleRenderer.renderAll, 500).bind(self.scheduleRenderer); 
+      window.addEventListener("resize", function() {
+        debouncedRenderAll(self.availsScheduleModel.getCurrentDate(), self.availsCollectionModel.getAvails(), self);
+      });
+
+
       // Page flow state. Mainly used for modal flow logic.
       // States:
       //   1. SEARCH - Looking through possible availabilities
@@ -96,6 +105,7 @@ function createControllerModule () {
 
       // Set up stripe handler
       this.payment_submitted = false;
+
       this.handler = StripeCheckout.configure({
           key: 'pk_test_1Di5chkNtgIMHyHZ6pbKLOrD',
           token: function(token) {
@@ -113,11 +123,12 @@ function createControllerModule () {
           },
           closed: function () {
 
-              // Render loading animation
-              // TODO: rendering animation should be factored into an object
-              renderLoadingAnimation();
-
               if (self.payment_submitted == true) {
+
+                  // Render loading animation to play until payment page refreshes
+                  // TODO: rendering animation should be factored into an object
+                  renderLoadingAnimation();
+
                   self.payment_submitted = false;
               } else {
                   $('#booking-modal').modal('show');
@@ -130,6 +141,8 @@ function createControllerModule () {
       $(window).on('popstate', function() {
         this.handler.close();
       });
+
+      // 
 
     },
 
@@ -222,8 +235,7 @@ function createControllerModule () {
 
         if (this.page_state == INPUT_INFO) {
 
-          // TODO: specified_price needs to be calculated by prime and non-prime prices TIME_SELECT
-          this.specified_price      = Math.round(this.selected_prime * getHoursFromSeconds(this.specified_length));
+          // Cacluate the insurance and total cost
           this.specified_tax        = Math.round((this.specified_price + this.selected_insurance) * TAX_RATE);
           this.specified_total_cost = Math.round(this.specified_price + this.selected_insurance + this.specified_tax);
 
