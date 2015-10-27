@@ -9,13 +9,13 @@
 
 <h3>When</h3>
 <p>
-  Date: <%= @date.strftime("%A %e %b %Y") %><br>
-  Time: <%= (@date.to_datetime + @start_time.seconds).strftime("%l:%M%P") %> to 
-               <%= (@date.to_datetime + @start_time.seconds + @length.seconds).strftime("%l:%M%P") %>
+  Date: <%= @date %><br>
+  Time: <%= @start_time %> to <%= @end_time %>
 </p>
 
 <h3>Who</h3>
-<p>Name: <%= @customer_name %><br>
+<p>
+  Name:  <%= @customer_name %><br>
   Phone: <%= @customer_phone %><br>
   Email: <%= @customer_email %><br>
   Notes: <%= @customer_notes %>

@@ -19,7 +19,7 @@ class VenuesController < ApplicationController
       @postal = 'N2H 1Z6' # the aud's postal code
     end
 
-    scheduleTree = ScheduleTree.new("Playogo")
+    #scheduleTree = ScheduleTree.new("Playogo")
 
     @scheduleTree = Bookable::getBookable
 
@@ -51,10 +51,12 @@ class VenuesController < ApplicationController
       ErrorLogging::log("payments#process_booking", \
                         "Selected: " + theatre.length.to_s + " theatres with query")
       raise "ERROR: Invalid theatre query in venue controller"
+    else
+      theatre = theatre.first
     end
-    theatre = theatre.first
 
-    # TODO: verify that booking is being made in place of an availability
+    # TODO: verify booking is being made in place of an availability
+    # TODO: verify booking is not conflicting with another already made booking
     # TODO: verify that 'amount' is the correct amount of money for the booking
 
     # Create "pending" booking
@@ -84,7 +86,13 @@ class VenuesController < ApplicationController
           :amount => amount,
           :currency => "cad",
           :source => token,
-          :description => "JL testing stripe charges."
+          :description => name + ' | ' + \
+                          phone_number + ' | ' + \
+                          venue_name + ', ' + \
+                          theatre_name + ', ' + \
+                          nav_date + ', ' + \
+                          start_time.to_s + ', ' + \
+                          length.to_s
         )
       rescue Stripe::CardError => e
         # Error the card has been declined
@@ -131,7 +139,7 @@ class VenuesController < ApplicationController
     end
 
     # Send manager email
-    ManagerMailer.ice_request(b.id).deliver_now
+    ManagerMailer.ice_request({:booking_id => b.id, :amount_paid => amount}).deliver_now
 
     # Send customer email
     CustomerMailer.ice_requested(b.id).deliver_now
@@ -143,58 +151,5 @@ class VenuesController < ApplicationController
   end
 
 
-  ########################################
-  # THE FOLLOWING ACTIONS ARE NOT NEEDED #
-  ########################################
 
-  # POST /venues
-  # POST /venues.json
-  def create
-    @venue = Venue.new(venue_params)
-
-    respond_to do |format|
-      if @venue.save
-        format.html { redirect_to @venue, notice: 'Venue was successfully created.' }
-        format.json { render :show, status: :created, location: @venue }
-      else
-        format.html { render :new }
-        format.json { render json: @venue.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /venues/1
-  # PATCH/PUT /venues/1.json
-  def update
-    respond_to do |format|
-      if @venue.update(venue_params)
-        format.html { redirect_to @venue, notice: 'Venue was successfully updated.' }
-        format.json { render :show, status: :ok, location: @venue }
-      else
-        format.html { render :edit }
-        format.json { render json: @venue.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /venues/1
-  # DELETE /venues/1.json
-  def destroy
-    @venue.destroy
-    respond_to do |format|
-      format.html { redirect_to venues_url, notice: 'Venue was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_venue
-      @venue = Venue.find(params[:id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def venue_params
-      params.require(:venue).permit(:name)
-    end
 end

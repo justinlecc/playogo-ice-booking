@@ -49,7 +49,7 @@ function createControllerModule () {
     /*
      *  Initialize controller
      */
-    initializePage: function (schedule_tree) {
+    initializePage: function (schedule_tree, nav_date) {
       // Controller reference
       var self = this;
 
@@ -58,7 +58,7 @@ function createControllerModule () {
 
       // Set range and date
       this.availsScheduleModel.setDateRange(this.availsCollectionModel.getAvails());
-      this.availsScheduleModel.setCurrentDate('2015-02-10'); // for testing, should initialize actual date
+      this.availsScheduleModel.setCurrentDate(nav_date); // for testing, should initialize actual date
 
       // Render page
       this.scheduleRenderer.renderAll(this.availsScheduleModel.getCurrentDate(), this.availsCollectionModel.getAvails(), self);
@@ -229,7 +229,8 @@ function createControllerModule () {
         this.page_state = INPUT_INFO;
 
         // Render the modal content
-        this.scheduleRenderer.renderModal(INPUT_INFO, null);
+        var self = this;
+        this.scheduleRenderer.renderModal(INPUT_INFO, {controller: self});
 
       } else if (REVIEW_INFO == next_page_state) {
 

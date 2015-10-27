@@ -6,9 +6,7 @@
 
 <p>Here are the details:</p>
 <p><b>Where:</b> <%= @venue %> - <%= @theatre %> </p>
-<p><b>When:</b> <%= (Time.zone.parse("12:00am") + @start_time.seconds).strftime("%l:%M%P") %> - 
-  <%= (Time.zone.parse("12:00am") + @start_time.seconds + @length.seconds).strftime("%l:%M%P") %> on 
-  <%= Date.parse(@date).strftime("%A %e %B %Y") %> </p>
+<p><b>When:</b> <%= @start_time %> - <%= @end_time %> on <%= @date %> </p>
 
 
 <p>

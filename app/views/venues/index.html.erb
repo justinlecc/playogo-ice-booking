@@ -1,8 +1,9 @@
 
 <script>
-  deploy_js = 'VENUES';
+  deploy_js     = 'VENUES';
   schedule_tree = JSON.parse('<%= @scheduleTree.to_json.html_safe %>');
-  postal = '<%= @postal %>';
+  postal        = '<%= @postal %>';
+  nav_date      = '<%= @date %>';
 </script>
 
 <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>

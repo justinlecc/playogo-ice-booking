@@ -406,9 +406,9 @@ function createViewModule () {
     renderModal: function (state, info) {
       // Hide all modal buttons (correct button will be displayed by case)
       var modal_btns = document.getElementById('booking-modal-btns').children; //.children();
-        _.each(modal_btns, function (el) {
-          el.style.display = 'none';
-        });
+      _.each(modal_btns, function (el) {
+        el.style.display = 'none';
+      });
 
       // State dependent control flow
       if (state == TIME_SELECT) {
@@ -547,11 +547,18 @@ function createViewModule () {
         var modal_body_template = document.getElementById('modal-body-inputinfo-template');
         modal_body.innerHTML = modal_body_template.innerHTML;
 
+        // Fill in input fields
+        document.getElementById('customer-name').value  = info.controller.customer_name;
+        document.getElementById('customer-phone').value = info.controller.customer_phone;
+        document.getElementById('customer-notes').value = info.controller.customer_notes;
+
         // Modal button
         var modal_btn = document.getElementById('booking-modal-btn-inputinfo');
         modal_btn.style.display = 'inline';
 
       } else if (state == REVIEW_INFO) {
+
+        console.log("review info hello!");
 
         // Modal title
         var modal_title = document.getElementById('booking-modal-title');
@@ -640,8 +647,9 @@ function createViewModule () {
 
         // Open Checkout with further options
         info.handler.open({
-            name: 'Playogo.com',
+            name: 'Playogo',
             description: 'Ice time',
+            image: '<%= asset_path('playogoMarkerSquare.png') %>',
             amount: info.specified_total_cost
             
         });
