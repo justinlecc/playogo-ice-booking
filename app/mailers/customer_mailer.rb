@@ -16,7 +16,7 @@ class CustomerMailer < ApplicationMailer
     @end_time   = formatter.secondsToTimeStr(booking.end_time)
     email       = booking.email
 
-    email = 'playogosports@gmail.com' # testing
+    #email = 'playogosports@gmail.com' # testing
 
     # Send
     mail(:to => email, :subject => 'To customer')
