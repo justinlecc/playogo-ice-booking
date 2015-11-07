@@ -2,32 +2,25 @@ FEATURES AND FIXES
 
 Bare Minimum To Sell Kitchener's Ice:
 
-  Block ability to book less than *two* days in advance
-    Test the filtering with days in I have data for (currently filtering for today)
-
-
-
-  Test on major browsers
+  Test on major desktop browsers
+  Test on mobile
 
   Get new format of ice schedules from Allyson
-  Read new Kitchener schedule formats
-    *Verify start of day avails have correct start time
-  Load venues page on current day
+    Read new Kitchener schedule formats
+      *Verify start of day avails have correct start time
+    Load venues page on current day
+    Set cutoff time relative to the current datetime
   
-
-  Host on Playogo.com
-  Remove localhost link in manager email
-  Change subjects of email
-  Customer email address sending to email not playogosports
+  Make workable demo for Jeremy
+    Remove localhost link in manager email
+    Change subjects of email
+    Customer email address sending to email not playogosports
+    Put correct manager name and email into database
   Send working demo to Jeremy
-    Get official municipal policies
-    Get number of business hours booking will be processed in
-  Change booking processing hours guarentee in customer email
-  Put correct manager name and email into database
+  
   Create playogosports@gmail.com stripe account and switch over system to that account
   Put stripe non-test mode
-
-
+  Host on Playogo.com
 
 
 

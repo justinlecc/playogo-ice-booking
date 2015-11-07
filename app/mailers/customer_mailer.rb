@@ -24,15 +24,15 @@ class CustomerMailer < ApplicationMailer
 
   # Booking (booking_id) has been confirmed by the rink manager
   def ice_confirmed(booking_id)
-    booking = Booking.where({:id => booking_id}).first
-    @name = booking.name
-    @owner = booking.theatre.venue.owner.name
-    @venue = booking.theatre.venue.name
-    @theatre = booking.theatre.name
-    @date = booking.date
+    booking     = Booking.where({:id => booking_id}).first
+    @name       = booking.name
+    @owner      = booking.theatre.venue.owner.name
+    @venue      = booking.theatre.venue.name
+    @theatre    = booking.theatre.name
+    @date       = booking.date
     @start_time = booking.start_time
-    @length = booking.length
-    email = booking.email
+    @length     = booking.length
+    email       = booking.email
 
     email = 'playogosports@gmail.com' # testing
     # Send
