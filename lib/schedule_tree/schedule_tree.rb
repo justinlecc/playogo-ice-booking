@@ -28,5 +28,12 @@ class ScheduleTree
 
   end
 
+  def removeBeforeCutoff(params)
+
+    @venues.each do |venue|
+      venue.removeBeforeCutoff(params)
+    end
+
+  end
 
 end

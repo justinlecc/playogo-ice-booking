@@ -58,6 +58,7 @@ class VenuesController < ApplicationController
     # TODO: verify booking is being made in place of an availability
     # TODO: verify booking is not conflicting with another already made booking
     # TODO: verify that 'amount' is the correct amount of money for the booking
+    # TODO: verify that booking has enough time to be approved by manager
 
     # Create "pending" booking
     b = Booking.create({:start_time => start_time, 

@@ -116,6 +116,11 @@ module Bookable
       adjustOpenings(booking, scheduleTree)
     end
 
+    # Remove Openings that don't have enough time to be approved (4 business hours)
+    businessHours = BusinessHours.new
+    cutoff = businessHours.getApprovalCutoff
+    scheduleTree.removeBeforeCutoff({:date => '2015-02-17', :time => 39600+3600}) # TODO: put 'cutoff' as parameter here
+
     return scheduleTree
   end
 end

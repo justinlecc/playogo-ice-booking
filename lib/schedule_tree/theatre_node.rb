@@ -28,4 +28,21 @@ class TheatreNode
     @days.sort! { |a,b| a.date <=> b.date }
   end
 
+  def removeBeforeCutoff(params)
+
+    puts @days.length
+    @days.delete_if do |day|
+      puts day.date
+      if day.date < params[:date]
+        true
+      elsif day.date == params[:date]
+        day.removeBeforeCutoff(params[:time]);
+        false
+      else
+        false
+      end
+    end
+
+  end
+
 end

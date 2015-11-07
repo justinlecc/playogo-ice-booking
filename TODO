@@ -3,10 +3,11 @@ FEATURES AND FIXES
 Bare Minimum To Sell Kitchener's Ice:
 
   Block ability to book less than *two* days in advance
-    maybe min number of business hours
+    Test the filtering with days in I have data for (currently filtering for today)
+
+
+
   Test on major browsers
-  Take out Date operations in the manager and customer emails
-    Finish Time formatting functions and use them on above
 
   Get new format of ice schedules from Allyson
   Read new Kitchener schedule formats
@@ -45,7 +46,3 @@ Other Less Pressing Tasks
   Refactor controller::renderAll so schedule and map concerns are separated
   Marker images(map and stripe modal) have cut off right sides
 
-
-
-Notes
-  JL: I can't recreate calendar appearing in incorrect spot

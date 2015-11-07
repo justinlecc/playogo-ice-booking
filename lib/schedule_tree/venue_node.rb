@@ -28,4 +28,12 @@ class VenueNode
 
   end
 
+  def removeBeforeCutoff(params)
+
+    @theatres.each do |theatres|
+      theatres.removeBeforeCutoff(params)
+    end
+
+  end
+
 end
