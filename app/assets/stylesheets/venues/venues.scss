@@ -30,7 +30,7 @@ html {
 
 body {
   height: 100%;
-  font-family: 'source sans pro'; /*'CooperHewitt';*/
+  font-family: "source sans pro", verdana, arial, helvetica, sans-serif;
   font-weight: 400;
   background-color: white;
 }
@@ -40,7 +40,7 @@ body {
 }
 
 p{
-  font-family: 'source sans pro';
+  font-family: "source sans pro", verdana, arial, helvetica, sans-serif;
 }
 
 .playogo-logo {
@@ -142,7 +142,7 @@ fieldset[disabled] .btn-default.active {
 */
 
 .sched-row {
-  font-family: 'source sans pro';
+  font-family: "source sans pro", verdana, arial, helvetica, sans-serif;
   margin-left: 0px;
   margin-right: 0px;
   height:100%;
@@ -167,7 +167,7 @@ fieldset[disabled] .btn-default.active {
   /*display: none;*/
   #month {
     /*text-align: center;*/
-    font-family: 'source sans pro';
+    font-family: "source sans pro", verdana, arial, helvetica, sans-serif;
     font-weight: 200;
     font-size: 18pt;
     /*background-color: $light-grey;*/
@@ -218,7 +218,6 @@ fieldset[disabled] .btn-default.active {
       border-bottom-left-radius: 0px;
 
       p {
-        /*font-family: 'CooperHewitt';*/
         font-weight: 400;
         /*display:inline-block;*/
         font-size: 14px;
