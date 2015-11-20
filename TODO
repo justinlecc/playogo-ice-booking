@@ -8,12 +8,9 @@ Bare Minimum To Sell Kitchener's Ice:
     Run through with people who don't know system
   
   Send working demo to Jeremy
-    Update the heroku database
-    Customer email address sending to email not playogosports
-      both request and confimation
+    Test manager email link
+    confirm customer is getting confirmation email
     Put jeremy's email as manager email
-    Verify manager emails are sending to manager email (not playogo's gmail)
-    Walkthrough testing
 
   Put Theatre::getPrice in controller
     Log pricing conficts
@@ -33,6 +30,8 @@ Bare Minimum To Sell Kitchener's Ice:
     Host on Playogo.com
     Change subjects of emails
     Set loading bit to false so we don't delete bookings
+    Have a play about tying stripe payments to bookings
+
 
 
 
