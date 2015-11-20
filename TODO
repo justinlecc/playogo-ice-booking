@@ -11,6 +11,7 @@ Bare Minimum To Sell Kitchener's Ice:
     Test manager email link
     confirm customer is getting confirmation email
     Put jeremy's email as manager email
+    Put allyson as manager
 
   Put Theatre::getPrice in controller
     Log pricing conficts
