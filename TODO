@@ -2,37 +2,45 @@ FEATURES AND FIXES
 
 Bare Minimum To Sell Kitchener's Ice:
 
-  Test on windows browsers
-  Test on samsung phones
-  Send Allyson email for schedules
-
-  Get new format of ice schedules from Allyson
-    Read new Kitchener schedule formats
-      *Verify start of day avails have correct start time
-        make sure it solves the quarter hour problem
-    Set cutoff time relative to the current datetime
-    Get venues to load on appropriate day
-    Block navigation to previous days
+  User testing
+    Make testing senarios
+    Run through with Ash
+    Run through with people who don't know system
   
-  Make workable demo for Jeremy
+  Send working demo to Jeremy
     Update the heroku database
     Customer email address sending to email not playogosports
       both request and confimation
     Put jeremy's email as manager email
-    Verify manager emails are sending to manager email
-  Send working demo to Jeremy
-  
+    Verify manager emails are sending to manager email (not playogo's gmail)
+    Walkthrough testing
+
+  Put Theatre::getPrice in controller
+    Log pricing conficts
+  Test on windows browsers
+  Test on samsung phones
+  Test we can load data without deleting bookings
+
+  Confirm with Jeremy
+    How much is insurance on multiple hours?
+    Number hours in advance
+    Policies on site
+    Any holidays to denote that are not currently? 
+
   Push live
     Create playogosports@gmail.com stripe account and switch over system to that account
     Put stripe non-test mode
     Host on Playogo.com
     Change subjects of emails
+    Set loading bit to false so we don't delete bookings
 
 
 
 Other Less Pressing Tasks
-  Marker images(map and stripe modal) have cut off right sides
-  Make logo image match navbar color
+  Test solution to Quarter hour problem
+  /venues with no postal default
+  Block navigation to previous days
+  ability to change postal code on /venues page
   Iphone font problem
   Make transactions atomic
   Check booking controller for checking prices and input parameters

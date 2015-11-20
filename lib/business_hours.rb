@@ -12,7 +12,7 @@ class BusinessHours
 
   def getApprovalCutoff
     Time.zone = 'Eastern Time (US & Canada)'
-    time_s = (Time.zone.now).to_s
+    time_s    = (Time.zone.now).to_s
     date_time = DateTime.parse(time_s)
     remainingBufferHours = @approvalBufferHours
 
@@ -50,9 +50,3 @@ class BusinessHours
 
 end
 
-
-# 12  1  2  3  4  5  6  ...  8  9  10  11  ...
-#
-#
-#
-#

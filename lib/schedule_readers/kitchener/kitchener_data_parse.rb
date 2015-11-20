@@ -38,8 +38,7 @@ class KitchenerDataParse
     return {:name => venue, :lat => lat, :long => long, :address => address}
   end
 
-  def load
-    xmlFile = 'kitchener_data.xml'
+  def load(xmlFile)
     treeToDatabase(xmlToTree(xmlFile))
   end
 
@@ -100,7 +99,7 @@ class KitchenerDataParse
     availTree = ScheduleTree.new("Kitchener")
 
     # File name of doc to be parsed should be param 
-    doc_path = Rails.root.join('lib', 'data_parse', xmlFile)
+    doc_path = Rails.root.join('lib', 'schedule_readers', 'kitchener', xmlFile)
     # Get xml into Nokogiri format
     doc = Nokogiri::XML(File.read(doc_path))
 
@@ -141,7 +140,7 @@ class KitchenerDataParse
 
           # Create datetimes
           start_datetime = DateTime.strptime(start_date + " " + start_time, "%d %b %Y %H:%M %p")
-          end_datetime =  DateTime.strptime(end_date + " " + end_time, "%d %b %Y %H:%M %p")
+          end_datetime   = DateTime.strptime(end_date + " " + end_time, "%d %b %Y %H:%M %p")
 
           # Assert that start_datetime is before end_datetime
           if (start_datetime >= end_datetime)
@@ -152,6 +151,27 @@ class KitchenerDataParse
           length = ((end_datetime - start_datetime)*24*60*60).to_i # multiplies fraction of day by 24, 60 and 60
           start_seconds = ((start_datetime - start_datetime.beginning_of_day)*24*60*60).to_i
 
+          # Trim availability with invalid length
+          # This is due to the staggered start of Kitcheners pads.
+          # They don't account for it in their schedules
+          odd_length = length % (30*60);
+          if (odd_length != 0)
+            if odd_length != 15*60
+              raise "ERROR: Invalid availability length was not off by 15 mins"
+            end
+
+            # Cut off begining of morning availabilities
+            if start_seconds < (12*3600)
+              start_seconds += 15*60
+              length -= 15*60
+
+            # Cut off end of late day availabilities
+            else
+              length -= 15*60
+    
+            end
+          end
+
           #date = start_datetime.to_date
           date = start_datetime.strftime("%Y-%m-%d")
 
@@ -160,7 +180,7 @@ class KitchenerDataParse
 
         end
 
-        # Increment rows
+        # Increment row
         i += 8
 
       end

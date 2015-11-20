@@ -10,7 +10,8 @@ class VenuesController < ApplicationController
 
     @date = params[:nav_date]
     if !@date
-      @date = Date.current.strftime("%Y-%m-%d")
+
+      @date = Time.current.to_date.strftime("%Y-%m-%d")
       params[:nav_date] = @date
     end
 
@@ -18,8 +19,6 @@ class VenuesController < ApplicationController
     if @postal == nil
       @postal = 'N2H 1Z6' # the aud's postal code
     end
-
-    #scheduleTree = ScheduleTree.new("Playogo")
 
     @scheduleTree = Bookable::getBookable
 
@@ -29,7 +28,7 @@ class VenuesController < ApplicationController
 
   # POST venues/payment
   def ice_booking 
-    # Params !! Protect against injection attack !!
+    # Params
     token        = params[:stripeToken]
     email        = params[:stripeEmail]
     venue_name   = params[:venue]
@@ -59,6 +58,9 @@ class VenuesController < ApplicationController
     # TODO: verify booking is not conflicting with another already made booking
     # TODO: verify that 'amount' is the correct amount of money for the booking
     # TODO: verify that booking has enough time to be approved by manager
+
+    #theatre.getPrice(date, start_time, length);
+    # if doesn't match: log values and send email to admin
 
     # Create "pending" booking
     b = Booking.create({:start_time => start_time, 
