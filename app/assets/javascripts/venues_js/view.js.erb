@@ -232,9 +232,15 @@ function createViewModule () {
             var container = document.getElementById('venue-rows-container');
             container.innerHTML = '';
 
+            // We will display a message if no there is no availability on this day
+            var page_found_avail = false;
+
             // Iterate for each venue in schedule_tree
             var venues = schedule_tree.venues;
             _.each(venues, function (venue) {
+
+                // We won't display the venue row if it doesn't have any availability
+                var venue_found_avail = false;
 
                 /* Make venue container */
                 var venue_row = document.createElement('div');
@@ -342,12 +348,22 @@ function createViewModule () {
 
                     // Days
                     for (var i=0; i < theatre.days.length; i++) {
+
+                        // We won't display the theatre row if there aren't any avails
+                        var theatre_found_avail = false;
                         
                         var day = theatre.days[i];
 
                         if (day.date == current_date) {
+
                             // Render avails
                             _.each(day.blocks, function (avail) {
+
+                                // There is an avail for this venue & theatre
+                                page_found_avail    = true;
+                                venue_found_avail   = true;
+                                theatre_found_avail = true;
+
                                 // Avails
                                 var length = avail.length;
                                 var start_time = avail.start;
@@ -390,8 +406,25 @@ function createViewModule () {
                             break;
                         }
                     }
+
+                    // Don't display theatre row if it doesn't have any avails
+                    if (!theatre_found_avail) {
+                        theatre_row.style.display = 'none';
+                    }
+
                 });
+
+                // Don't display venue row if it doesn't have any avails
+                if (!venue_found_avail) {
+                    venue_row.style.display = 'none';
+                }
+
             });
+
+            // Display message if the page doesn't have any avails
+            if  (!page_found_avail) {
+                container.innerHTML = '<p>There is no availability on this day</p>';
+            }
 
             // Resolve that the venue rows have been created
             deferred.resolve();
