@@ -45,4 +45,38 @@ class TheatreNode
 
   end
 
+  def getDayWithAvails(currentDate)
+
+    closestDate = nil
+
+    @days.each do |day|
+
+      if day.hasAvail
+
+        if closestDate == nil
+
+          closestDate = day.date
+
+        else
+
+          if day.date >= currentDate
+
+            if day.date < closestDate
+
+              closestDate = day.date
+
+            end
+
+          end
+
+        end
+
+      end
+
+    end
+
+    return closestDate
+
+  end
+
 end

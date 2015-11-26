@@ -423,7 +423,7 @@ function createViewModule () {
 
             // Display message if the page doesn't have any avails
             if  (!page_found_avail) {
-                container.innerHTML = '<p>There is no availability on this day</p>';
+                container.innerHTML = document.getElementById('no-avails-message').innerHTML;
             }
 
             // Resolve that the venue rows have been created

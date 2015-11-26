@@ -3,7 +3,7 @@ class BusinessHours
   def initialize
     @open  = 9
     @close = 17
-    @approvalBufferHours = 4
+    @approvalBufferHours = 5
   end
 
   def isHoliday(date)

@@ -8,19 +8,25 @@ class VenuesController < ApplicationController
   # POST /venues
   def index
 
+    @scheduleTree = Bookable::getBookable
+
     @date = params[:nav_date]
+
     if !@date
 
-      @date = Time.current.to_date.strftime("%Y-%m-%d")
+      @date = @scheduleTree.getDayWithAvails(Time.current.to_date.strftime("%Y-%m-%d"))
+
       params[:nav_date] = @date
+
     end
 
     @postal = params[:postal]
-    if @postal == nil
-      @postal = 'N2H 1Z6' # the aud's postal code
-    end
 
-    @scheduleTree = Bookable::getBookable
+    if @postal == nil
+
+      @postal = 'N2H 1Z6' # the aud's postal code
+
+    end
 
   end
 

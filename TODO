@@ -45,7 +45,9 @@ Other Less Pressing Tasks
     ability to change postal code on /venues page
     Iphone font problem
     Make transactions atomic
+
     Check booking controller for checking prices and input parameters
+        including that it is available
     Calendar doesn't close on second button click
     Municipal policies should be data from database
     Woolwich data input

@@ -1,9 +1,9 @@
 
 <script>
-  deploy_js     = 'VENUES';
-  schedule_tree = JSON.parse('<%= @scheduleTree.to_json.html_safe %>');
-  postal        = '<%= @postal %>';
-  nav_date      = '<%= @date %>';
+    deploy_js     = 'VENUES';
+    schedule_tree = JSON.parse('<%= @scheduleTree.to_json.html_safe %>');
+    postal        = '<%= @postal %>';
+    nav_date      = '<%= @date %>';
 </script>
 
 <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
@@ -11,38 +11,38 @@
 
 <!-- Modal -->
 <div class="modal fade" id="booking-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h2 class="modal-title" id="booking-modal-title">Modal title</h2>
-      </div>
-      <div class="modal-body" id="booking-modal-body">
-        Test
-      </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h2 class="modal-title" id="booking-modal-title">Modal title</h2>
+            </div>
+            <div class="modal-body" id="booking-modal-body">
+                Test
+            </div>
 
-      <!-- Modal buttons -->
-      <div class="modal-footer" id="booking-modal-btns">
-        <div id="booking-modal-btn-timeselect">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>
-          <button type="button" class="btn btn-primary">Select</button>
-        </div>
-        <div id="booking-modal-btn-venuepolicies">
-          <button type="button" class="btn btn-default">Back</button>
-          <button type="button" class="btn btn-primary">I Agree</button>
-        </div>
-        <div id="booking-modal-btn-inputinfo">
-          <button type="button" class="btn btn-default">Back</button>
-          <button type="button" class="btn btn-primary">Continue</button>
-        </div>
-        <div id="booking-modal-btn-reviewinfo">
-          <button type="button" class="btn btn-default">Back</button>
-          <button id="stripe-checkout-btn" type="button" class="btn btn-primary">Confirm Booking</button>
-        </div>
-      </div>
+            <!-- Modal buttons -->
+            <div class="modal-footer" id="booking-modal-btns">
+                <div id="booking-modal-btn-timeselect">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>
+                    <button type="button" class="btn btn-primary">Select</button>
+                </div>
+                <div id="booking-modal-btn-venuepolicies">
+                    <button type="button" class="btn btn-default">Back</button>
+                    <button type="button" class="btn btn-primary">I Agree</button>
+                </div>
+                <div id="booking-modal-btn-inputinfo">
+                    <button type="button" class="btn btn-default">Back</button>
+                    <button type="button" class="btn btn-primary">Continue</button>
+                </div>
+                <div id="booking-modal-btn-reviewinfo">
+                    <button type="button" class="btn btn-default">Back</button>
+                    <button id="stripe-checkout-btn" type="button" class="btn btn-primary">Confirm Booking</button>
+                </div>
+            </div>
 
+        </div>
     </div>
-  </div>
 </div>
 
 
@@ -52,119 +52,119 @@
 <div id="venue-container" class="container">
 
 <% if notice %>
-  <div class="alert alert-success alert-dismissible" role="alert">
-     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <p id="notice" ><%= notice %></p>
-  </div>
+    <div class="alert alert-success alert-dismissible" role="alert">
+         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <p id="notice" ><%= notice %></p>
+    </div>
 <% end %>
 
 <div class="row sched-row">
-  <div id="schedule" class="col-sm-8">
+    <div id="schedule" class="col-sm-8">
 
-    <h2>Select an <span class="orange-text">orange</span> block of available ice time.</h2>
+        <h2>Select an <span class="orange-text">orange</span> block of available ice time.</h2>
 
-    <div id="tablet-container-outer">
-    <div id="tablet-container-inner">
+        <div id="tablet-container-outer">
+        <div id="tablet-container-inner">
 
-      <div id="month-nav-container">
+            <div id="month-nav-container">
 
-      </div>
+            </div>
 
 
-      <div class="row" style="display:none">
-        
+            <div class="row" style="display:none">
+                
 
 <!--         <div class="col-sm-4">
-          <div class="form-group">
-            <label for="datepicker">Date</label>
-            <input id="datepicker" class="form-control" type="text" size="30" date="">
-          </div>
-        </div> -->
+                    <div class="form-group">
+                        <label for="datepicker">Date</label>
+                        <input id="datepicker" class="form-control" type="text" size="30" date="">
+                    </div>
+                </div> -->
 
-        <div class="col-sm-4">
-          <div class="form-group">
-            <label for="postal-input">Postal code</label>
-            <input id="postal-input" class="form-control" type="text" size="30" value="">
-            <script>document.getElementById('postal-input').value = postal</script> 
-          </div>
-        </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="postal-input">Postal code</label>
+                        <input id="postal-input" class="form-control" type="text" size="30" value="">
+                        <script>document.getElementById('postal-input').value = postal</script> 
+                    </div>
+                </div>
 
-      </div>
+            </div>
 
-      <div class="row" style="display:none">
-        <div class="col-xs-1">
-          <span class="glyphicon glyphicon-backward"></span>
-        </div>
-        <div class="col-xs-1">
-          <span class="glyphicon glyphicon-triangle-left"></span>
-        </div>
-        <div class="form-group col-xs-8">
-          <!-- <input id="datepicker" class="form-control" type="text" size="30" date=""> -->
-        </div>
-        <div class="col-xs-1">
-          <span class="glyphicon glyphicon-triangle-right"></span>
-        </div>
-        <div class="col-xs-1">
-          <span class="glyphicon glyphicon-forward"></span>
-        </div>
-      </div>
+            <div class="row" style="display:none">
+                <div class="col-xs-1">
+                    <span class="glyphicon glyphicon-backward"></span>
+                </div>
+                <div class="col-xs-1">
+                    <span class="glyphicon glyphicon-triangle-left"></span>
+                </div>
+                <div class="form-group col-xs-8">
+                    <!-- <input id="datepicker" class="form-control" type="text" size="30" date=""> -->
+                </div>
+                <div class="col-xs-1">
+                    <span class="glyphicon glyphicon-triangle-right"></span>
+                </div>
+                <div class="col-xs-1">
+                    <span class="glyphicon glyphicon-forward"></span>
+                </div>
+            </div>
 
-      <div id="day-nav-container">
-        <ul class="day-tabs">
-          <li class="outer-tab"><a><span class="glyphicon glyphicon-backward"></span></a></li>
-          <li class="inner-tab">
-            <a>
-              Date Render
-            </a>
-          </li>
-          <li class="inner-tab">
-            <a>
-              Date Render
-            </a>
-          </li>
-          <li class="inner-tab">
-            <a>
-              Date Render
-            </a>
-          </li>
-          <li class="inner-tab">
-            <a>
-              Date Render
-            </a>
-          </li>
-          <li class="inner-tab">
-            <a>
-              Date Render
-            </a>
-          </li>
-          <li class="inner-tab">
-            <a>
-              Date Render
-            </a>
-          </li>
-          <li class="inner-tab">
-            <a>
-              Date Render
-            </a>
-          </li>
-          <li class="outer-tab"><a><span class="glyphicon glyphicon-forward"></span></a></li>
-        </ul>
-      </div>
+            <div id="day-nav-container">
+                <ul class="day-tabs">
+                    <li class="outer-tab"><a><span class="glyphicon glyphicon-backward"></span></a></li>
+                    <li class="inner-tab">
+                        <a>
+                            Date Render
+                        </a>
+                    </li>
+                    <li class="inner-tab">
+                        <a>
+                            Date Render
+                        </a>
+                    </li>
+                    <li class="inner-tab">
+                        <a>
+                            Date Render
+                        </a>
+                    </li>
+                    <li class="inner-tab">
+                        <a>
+                            Date Render
+                        </a>
+                    </li>
+                    <li class="inner-tab">
+                        <a>
+                            Date Render
+                        </a>
+                    </li>
+                    <li class="inner-tab">
+                        <a>
+                            Date Render
+                        </a>
+                    </li>
+                    <li class="inner-tab">
+                        <a>
+                            Date Render
+                        </a>
+                    </li>
+                    <li class="outer-tab"><a><span class="glyphicon glyphicon-forward"></span></a></li>
+                </ul>
+            </div>
 
-      <div id="venue-rows-container">
-        <div class="inset-dropshadow">
+            <div id="venue-rows-container">
+                <div class="inset-dropshadow">
 
-        </div>
-      </div>
+                </div>
+            </div>
 
-    </div><!-- End of tablet container inner -->
-    </div><!-- End of tablet container outer -->
+        </div><!-- End of tablet container inner -->
+        </div><!-- End of tablet container outer -->
 
-  </div><!-- End of schedule col -->
+    </div><!-- End of schedule col -->
 
-  <div id="map" class="col-sm-4">
+    <div id="map" class="col-sm-4">
 
-  </div>
+    </div>
 </div>
 
 </div>
@@ -180,200 +180,208 @@
 
 
 <!--
-  Avails Schedule Month Navigation Template
+    Avails Schedule Month Navigation Template
 -->
 <script id="avails-month-template" type="text/template">
-    <input type="hidden" id="datepicker" state="closed">
-    <div id="month" class="btn btn-default"></div>
+        <input type="hidden" id="datepicker" state="closed">
+        <div id="month" class="btn btn-default"></div>
 </script>
 
 <!--
-  Avails Schedule Day Navigation Template
+    Avails Schedule Day Navigation Template
 -->
 <script id="day-nav-template" type="text/template">
-  <ul class="day-tabs">
-    <li class="outer-tab"><p><span class="glyphicon glyphicon-chevron-left"></span></p></li>
-    <li class="inner-tab">
-      <p>
-      </p>
-      <p>
-        Date Render
-      </p>
-    </li>
-    <li class="inner-tab">
-      <p>
-      </p>
-      <p>
-        Date Render
-      </p>
-    </li>
-    <li class="inner-tab">
-      <p>
-      </p>
-      <p>
-        Date Render
-      </p>
-    </li>
-    <li class="inner-tab">
-      <p>
-      </p>
-      <p>
-        Date Render
-      </p>
-    </li>
-    <li class="inner-tab">
-      <p>
-      </p>
-      <p>
-        Date Render
-      </p>
-    </li>
-    <li class="inner-tab">
-      <p>
-      </p>
-      <p>
-        Date Render
-      </p>
-    </li>
-    <li class="inner-tab">
-      <p>
-      </p>
-      <p>
-        Date Render
-      </p>
-    </li>
-    <li class="outer-tab"><p><span class="glyphicon glyphicon-chevron-right"></span></p></li>
-  </ul>
+    <ul class="day-tabs">
+        <li class="outer-tab"><p><span class="glyphicon glyphicon-chevron-left"></span></p></li>
+        <li class="inner-tab">
+            <p>
+            </p>
+            <p>
+                Date Render
+            </p>
+        </li>
+        <li class="inner-tab">
+            <p>
+            </p>
+            <p>
+                Date Render
+            </p>
+        </li>
+        <li class="inner-tab">
+            <p>
+            </p>
+            <p>
+                Date Render
+            </p>
+        </li>
+        <li class="inner-tab">
+            <p>
+            </p>
+            <p>
+                Date Render
+            </p>
+        </li>
+        <li class="inner-tab">
+            <p>
+            </p>
+            <p>
+                Date Render
+            </p>
+        </li>
+        <li class="inner-tab">
+            <p>
+            </p>
+            <p>
+                Date Render
+            </p>
+        </li>
+        <li class="inner-tab">
+            <p>
+            </p>
+            <p>
+                Date Render
+            </p>
+        </li>
+        <li class="outer-tab"><p><span class="glyphicon glyphicon-chevron-right"></span></p></li>
+    </ul>
 </script>
 
 <!--
-  Avails Schedule hours-cols Template
+    Avails Schedule hours-cols Template
 -->
 <script id="avails-hours-template" type="text/template">
-    <div class="row-same-height hours-row">
-      <div class="hours-col col-same-height">
-        <span class="glyphicon glyphicon-time"></span>
-      </div>
-      <div class="hours-col col-xs-9 col-same-height">
-      </div>
-    </div>
+        <div class="row-same-height hours-row">
+            <div class="hours-col col-same-height">
+                <span class="glyphicon glyphicon-time"></span>
+            </div>
+            <div class="hours-col col-xs-9 col-same-height">
+            </div>
+        </div>
 </script>
 
 <!--
-  Modal TIME_SELECT body template
+    No availability message Template
+-->
+<script id="no-avails-message" type="text/template">
+    <p>There is no availability on this day</p>
+</script>
+
+
+<!--
+    Modal TIME_SELECT body template
 -->
 <script id="modal-body-timeselect-template" type="text/template">
-  <div class="timeselect-slider"></div>
-  <br>
-  <p>
-    You&#39;ve selected <span id="modal-selected-timerange"></span>
-    at <span id="modal-selected-venue"></span>
-    for <span id="modal-selected-price"></span>.
-  </p>
+    <div class="timeselect-slider"></div>
+    <br>
+    <p>
+        You&#39;ve selected <span id="modal-selected-timerange"></span>
+        at <span id="modal-selected-venue"></span>
+        for <span id="modal-selected-price"></span>.
+    </p>
 
 </script>
 
 
 <!--
-  Modal INPUT_INFO body template
+    Modal INPUT_INFO body template
 -->
 <script id="modal-body-inputinfo-template" type="text/template">
-  
-  <div class="form-group">
-    <label for="customer-name">Name</label>
-    <input type="text" class="form-control" id="customer-name" placeholder="Enter your first and last name">
-    <div id="input-info-name-error" class="alert alert-danger" role="alert">
-      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-      <span class="sr-only">Error:</span>
-      Please enter your full name.
+    
+    <div class="form-group">
+        <label for="customer-name">Name</label>
+        <input type="text" class="form-control" id="customer-name" placeholder="Enter your first and last name">
+        <div id="input-info-name-error" class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            Please enter your full name.
+        </div>
     </div>
-  </div>
-  
-  <div class="form-group">
-    <label for="customer-phone">Phone</label>
-    <input type="text" class="form-control" id="customer-phone" placeholder="Enter phone number">
-    <div id="input-info-phone-error" class="alert alert-danger" role="alert">
-      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-      <span class="sr-only">Error:</span>
-      Please enter your phone number.
+    
+    <div class="form-group">
+        <label for="customer-phone">Phone</label>
+        <input type="text" class="form-control" id="customer-phone" placeholder="Enter phone number">
+        <div id="input-info-phone-error" class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            Please enter your phone number.
+        </div>
     </div>
-  </div>
-  
-  <div class="form-group">
-    <label for="customer-notes">What are you using the ice for and how many people will be on it? (to be used by rink manager)</label>
-    <input type="text" class="form-control" id="customer-notes" placeholder="Eg. Pick up hockey game with around 15 players.">
-    <div id="input-info-description-error" class="alert alert-danger" role="alert">
-      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-      <span class="sr-only">Error:</span>
-      Please enter a description of what you will be using the ice for.
+    
+    <div class="form-group">
+        <label for="customer-notes">What are you using the ice for and how many people will be on it? (to be used by rink manager)</label>
+        <input type="text" class="form-control" id="customer-notes" placeholder="Eg. Pick up hockey game with around 15 players.">
+        <div id="input-info-description-error" class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            Please enter a description of what you will be using the ice for.
+        </div>
     </div>
-  </div>
-  
+    
 
-  <!--
-  <div class="form-group">
-    <label for="customer-phone">
-      Activity type
-    </label>
-    <input type="hidden" id="customer-phone">
-    <div class="radio">
-    <label>
-      <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-      Pickup hockey
-    </label>
+    <!--
+    <div class="form-group">
+        <label for="customer-phone">
+            Activity type
+        </label>
+        <input type="hidden" id="customer-phone">
+        <div class="radio">
+        <label>
+            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+            Pickup hockey
+        </label>
+        </div>
+        <div class="radio">
+        <label>
+            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+            Skating party
+        </label>
+        </div>
+        <div class="radio disabled">
+        <label>
+            <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">
+            On ice training
+        </label>
     </div>
-    <div class="radio">
-    <label>
-      <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-      Skating party
-    </label>
-    </div>
-    <div class="radio disabled">
-    <label>
-      <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">
-      On ice training
-    </label>
-  </div>
-  -->
+    -->
 
-  </div>
+    </div>
 
 </script>
 
 <!--
-  Modal INFO_REVIEW body template
+    Modal INFO_REVIEW body template
 -->
 <script id="modal-body-reviewinfo-template" type="text/template">
 
-  <label for="review-customer-name">Name</label>
-  <p id="review-customer-name">Testing 123</p>
+    <label for="review-customer-name">Name</label>
+    <p id="review-customer-name">Testing 123</p>
 
-  <label for="review-customer-phone">Phone</label>
-  <p id="review-customer-phone"></p>
+    <label for="review-customer-phone">Phone</label>
+    <p id="review-customer-phone"></p>
 
-  <label for="review-use-description">Description of use</label>
-  <p id="review-use-description"></p>
+    <label for="review-use-description">Description of use</label>
+    <p id="review-use-description"></p>
 
-  <label for="review-theatre">Rink</label>
-  <p id="review-theatre"></p>
+    <label for="review-theatre">Rink</label>
+    <p id="review-theatre"></p>
 
-  <label for="review-date">Date</label>
-  <p id="review-date"></p>
+    <label for="review-date">Date</label>
+    <p id="review-date"></p>
 
-  <label for="review-time">Timeslot</label>
-  <p id="review-time"></p>
+    <label for="review-time">Timeslot</label>
+    <p id="review-time"></p>
 
-  <label for="review-price">Price</label>
-  <p id="review-price"></p>
+    <label for="review-price">Price</label>
+    <p id="review-price"></p>
 
-  <label for="review-insurance">Insurance</label>
-  <p id="review-insurance"></p>
+    <label for="review-insurance">Insurance</label>
+    <p id="review-insurance"></p>
 
-  <label for="review-tax">Tax</label>
-  <p id="review-tax"></p>
+    <label for="review-tax">Tax</label>
+    <p id="review-tax"></p>
 
-  <label for="review-total-cost">Total Cost</label>
-  <p id="review-total-cost"></p>
+    <label for="review-total-cost">Total Cost</label>
+    <p id="review-total-cost"></p>
 
 
 
@@ -381,33 +389,33 @@
 
 
 <!--
-  Stripe checkout form.
-    -change data-key for deployment
-    -can customize (https://stripe.com/docs/checkout#integration-custom)
-    -hidden input 'stripeToken'
+    Stripe checkout form.
+        -change data-key for deployment
+        -can customize (https://stripe.com/docs/checkout#integration-custom)
+        -hidden input 'stripeToken'
 -->
 <script src="https://checkout.stripe.com/checkout.js"></script>
 
 <form id="payment-form" action="/venues/ice_booking" method="POST">
-  <input type="hidden" name="stripeToken" value="">
-  <input type="hidden" name="stripeEmail" value="">
-  <input type="hidden" name="venue" value="">
-  <input type="hidden" name="theatre" value="">
-  <input type="hidden" name="date" value="">
-  <input type="hidden" name="start_time" value="">
-  <input type="hidden" name="length" value="">
-  <input type="hidden" name="amount" value="">
-  <input type="hidden" name="nav_date" value="">
-  <input type="hidden" name="name" value="">
-  <input type="hidden" name="phone" value="">
-  <input type="hidden" name="notes" value="">
-  <input type="hidden" name="nav_postal" value="">
-  <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
+    <input type="hidden" name="stripeToken" value="">
+    <input type="hidden" name="stripeEmail" value="">
+    <input type="hidden" name="venue" value="">
+    <input type="hidden" name="theatre" value="">
+    <input type="hidden" name="date" value="">
+    <input type="hidden" name="start_time" value="">
+    <input type="hidden" name="length" value="">
+    <input type="hidden" name="amount" value="">
+    <input type="hidden" name="nav_date" value="">
+    <input type="hidden" name="name" value="">
+    <input type="hidden" name="phone" value="">
+    <input type="hidden" name="notes" value="">
+    <input type="hidden" name="nav_postal" value="">
+    <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
 </form>
 
 <!-- Loading Animation -->
 <div id="loading-animation-container">
-  <%= image_tag("loader.gif", :class => "loading-animation") %>
+    <%= image_tag("loader.gif", :class => "loading-animation") %>
 </div>
 
 

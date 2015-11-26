@@ -26,4 +26,10 @@ class DayNode
     end
   end
 
+  def hasAvail
+
+    return @blocks.length > 0;
+
+  end
+
 end

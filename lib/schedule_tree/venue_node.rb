@@ -36,4 +36,31 @@ class VenueNode
 
   end
 
+  def getDayWithAvails(currentDate)
+
+    closestDate = nil
+    @theatres.each do |theatre|
+
+      returnDate = theatre.getDayWithAvails(currentDate)
+
+      if closestDate == nil
+
+        closestDate = returnDate
+
+      else
+
+        if returnDate < closestDate
+
+          closestDate = returnDate
+
+        end
+
+      end
+
+    end
+
+    return closestDate
+
+  end
+
 end

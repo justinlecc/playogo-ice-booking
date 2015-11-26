@@ -36,4 +36,31 @@ class ScheduleTree
 
   end
 
+  def getDayWithAvails(currentDate)
+
+    closestDate = nil
+    @venues.each do |venue|
+
+      returnDate = venue.getDayWithAvails(currentDate)
+
+      if closestDate == nil
+
+        closestDate = returnDate
+
+      else
+
+        if returnDate < closestDate
+
+          closestDate = returnDate
+
+        end
+
+      end
+
+    end
+
+    return closestDate
+
+  end
+
 end
