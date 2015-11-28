@@ -21,6 +21,19 @@ class DayNode
       else
         block.length = block.end - cutoff_time
         block.start = cutoff_time
+
+        # Adjust the block if it is an invalid length
+        if (block.length % (30*60) != 0)
+
+          if (block.length % 15*60 != 0)
+            raise "ERROR: unexpected block length in DayNode::removeBeforeCutoff"
+          end
+
+          block.start  += 15*60
+          block.length -= 15*60
+
+        end
+
         false
       end
     end

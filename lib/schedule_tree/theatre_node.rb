@@ -30,9 +30,7 @@ class TheatreNode
 
   def removeBeforeCutoff(params)
 
-    puts @days.length
     @days.delete_if do |day|
-      puts day.date
       if day.date < params[:date]
         true
       elsif day.date == params[:date]
