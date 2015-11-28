@@ -24,7 +24,7 @@ class VenuesController < ApplicationController
 
     if @postal == nil
 
-      @postal = 'N2H 1Z6' # the aud's postal code
+      @postal = 'N2G 4G7' # city of kitchener's postal code
 
     end
 
@@ -156,7 +156,7 @@ class VenuesController < ApplicationController
     # Notify the admin of confirmation
     AdminMailer.notify_admin({:type => "BOOKING_REQUEST", :booking_id => b.id}).deliver_now
 
-    redirect_to '/venues/?nav_date=' + nav_date + "&postal=" + nav_postal
+    redirect_to '/venues/?nav_date=' + nav_date + "&postal=" + CGI::escape(nav_postal)
   end
 
 
