@@ -692,7 +692,7 @@ function createViewModule () {
             }
         },
 
-        renderMap: function () {
+        renderMap: function (postal) {
             initializeMap(postal);
 
             var container = document.getElementById('venue-container');
@@ -715,7 +715,7 @@ function createViewModule () {
          * Renders the entire schedule
          * ** Currently also renders map which should be refactored (see below)
          */ 
-        renderAll: function (current_date, schedule_tree, controller) {
+        renderAll: function (current_date, postal, schedule_tree, controller) {
 
             this.renderMonthNav(current_date, controller);
             this.renderDayNav(current_date, controller);
@@ -731,7 +731,7 @@ function createViewModule () {
 
                     self.renderVenueRows(schedule_tree, current_date, controller).then(function () {
 
-                        self.renderMap();
+                        self.renderMap(postal);
 
                     });
 

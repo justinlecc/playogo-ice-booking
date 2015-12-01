@@ -9,6 +9,9 @@
 
 window.addEventListener('load', function () {
 
+  // Get value from template
+  var deploy_js = document.getElementById('deploy-js').innerHTML;
+
   // Welcome page
   if ('WELCOME' === deploy_js) {
     deployWelcome();

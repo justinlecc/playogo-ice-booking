@@ -2,6 +2,12 @@ FEATURES AND FIXES
 
 Bare Minimum To Sell Kitchener's Ice:
 
+    Convert globals to html elements
+        Done nav_date and deploy_js
+        Need to put postal code into schedule model
+        *remember i'm on a new branch
+
+
     User testing
         Make testing senarios
         Run through with Ash
@@ -24,19 +30,17 @@ Bare Minimum To Sell Kitchener's Ice:
         Put stripe non-test mode
         Host on Playogo.com
         Change subjects of emails
+        Change links (manager email) to website
         Set loading bit to false so we don't delete bookings
-        Have a play about tying stripe payments to bookings
+        Have a play about trying stripe payments to bookings
+        Hide error reporting
+
+
 
 
 
 
 Other Less Pressing Tasks
-
-    render on closest day that has avail
-        server side
-    don't render rows that have no availability
-
-    convert globals to html elements
 
 
     Test solution to Quarter hour problem

@@ -3,22 +3,24 @@
 /*
  * Controller states (explanation of each below)
  */
-var SEARCH = 'SEARCH';
-var TIME_SELECT = 'TIME_SELECT';
+var SEARCH         = 'SEARCH';
+var TIME_SELECT    = 'TIME_SELECT';
 var VENUE_POLICIES = 'VENUE_POLICIES';
-var INPUT_INFO = 'INPUT_INFO';
-var REVIEW_INFO = 'REVIEW_INFO';
-var PAYMENT = 'PAYMENT';
+var INPUT_INFO     = 'INPUT_INFO';
+var REVIEW_INFO    = 'REVIEW_INFO';
+var PAYMENT        = 'PAYMENT';
 
 
 function deployVenues () {
-
+    /*
+     * Initialize modules
+     */
     var modelModule = new createModelModule();
     var viewModule = new createViewModule();
     var controllerModule = new createControllerModule();
 
     /*
-     * Initialize the VenueOpeningCollectionModel
+     * Initialize the AvailsCollectionModel
      */
     var availsCollectionModel = modelModule.loadAvailsCollectionModel();
 
@@ -28,6 +30,11 @@ function deployVenues () {
     var availsScheduleModel = modelModule.loadAvailsScheduleModel();
 
     /*
+     * Initialize the MapModel
+     */
+    var mapModel = modelModule.loadMapModel();    
+
+    /*
      * Initialize the ScheduleRenderer
      */
     var scheduleRenderer = viewModule.loadScheduleRenderer();
@@ -35,8 +42,8 @@ function deployVenues () {
     /*
      * Initialize the VenueController
      */
-    var venueController = controllerModule.loadVenueController(availsCollectionModel, availsScheduleModel, scheduleRenderer);
-    venueController.initializePage(schedule_tree, nav_date); // schedule_tree from .erb view rendering
+    var venueController = controllerModule.loadVenueController(availsCollectionModel, availsScheduleModel, mapModel, scheduleRenderer);
+    venueController.initializePage(schedule_tree); // schedule_tree from .erb view rendering
     availsScheduleModel.controller = venueController;
 
 

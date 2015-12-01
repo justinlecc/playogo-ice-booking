@@ -129,6 +129,57 @@ function createModelModule() {
         return new AvailsScheduleModel();
     };
 
+
+
+    /*
+     * MapModel
+     *     Holds information about the map 
+     *
+    */    
+    var MapModel = function () {
+        this.listeners = [];
+        this.postal    = '';
+    };
+
+    _.extend(MapModel.prototype,{
+
+        /* Sets the map's postal code */
+        setPostal: function (postal) {
+            this.postal = postal;
+        },
+
+        /* Get the map's postal code */
+        getPostal: function () {
+            return this.postal;
+        },
+
+        /*
+         * Add listener to AvailsScheduleModel
+         */
+        addListener: function (listener) {
+            this.listeners.push(listener);
+        },
+
+        /*
+         * Call callback listeners with event type and neccessary params
+         */
+        notifyListeners: function (event_type, params) {
+            var self = this;
+            _.each(self.listeners, function (l) {
+                l(event_type, {controller: self.controller});
+            })
+        }
+
+    });
+
+    /*
+     * Creates a MapModel
+     */ 
+    function loadMapModel() {
+        return new MapModel();
+    };
+
+
     /*
      * Return an object containing all of our classes and constants
      */
@@ -136,7 +187,8 @@ function createModelModule() {
         AvailsCollectionModel:     AvailsCollectionModel,
         loadAvailsCollectionModel: loadAvailsCollectionModel,
         AvailsScheduleModel:       AvailsScheduleModel,
-        loadAvailsScheduleModel:   loadAvailsScheduleModel
+        loadAvailsScheduleModel:   loadAvailsScheduleModel,
+        loadMapModel:              loadMapModel
     };
 
 

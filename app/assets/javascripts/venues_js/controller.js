@@ -29,19 +29,26 @@ function createControllerModule () {
     /*
      * Controller for the venues page
      */
-    var VenueController = function (availsCollectionModel, availsScheduleModel, scheduleRenderer) {
-        // Initialize models and renderers
-        this.availsCollectionModel = availsCollectionModel;
-        this.availsScheduleModel = availsScheduleModel;
-        this.scheduleRenderer = scheduleRenderer;
+    var VenueController = function (availsCollectionModel, availsScheduleModel, mapModel, scheduleRenderer) {
 
         // Initialize controller listeners
         this.listeners = [];
+
+        // Initialize models
+        this.availsCollectionModel = availsCollectionModel;
+        this.availsScheduleModel   = availsScheduleModel;
+        this.mapModel              = mapModel;
+        console.log(mapModel);
+
+        // Initialize renderers
+        this.scheduleRenderer      = scheduleRenderer;
         this.listeners.push(this.scheduleRenderer.notify);
 
         // Listen to models
         var self = this;
         this.availsScheduleModel.addListener(self.notify);
+        this.mapModel.addListener(self.notify);
+
     };
 
     _.extend(VenueController.prototype, {
@@ -49,26 +56,33 @@ function createControllerModule () {
         /*
          *  Initialize controller
          */
-        initializePage: function (schedule_tree, nav_date) {
+        initializePage: function (schedule_tree) {
             // Controller reference
             var self = this;
+
+            // Get values from template
+            var nav_date = document.getElementById('nav-date').innerHTML;
+            var postal   = document.getElementById('postal').innerHTML;
 
             // Set avails in collection model
             this.availsCollectionModel.setAvails(schedule_tree); 
 
-            // Set range and date
+            // Set range, date
             this.availsScheduleModel.setDateRange(this.availsCollectionModel.getAvails());
             this.availsScheduleModel.setCurrentDate(nav_date); // for testing, should initialize actual date
 
+            // Set postal code
+            this.mapModel.setPostal(postal);
+
             // Render page
-            this.scheduleRenderer.renderAll(this.availsScheduleModel.getCurrentDate(), this.availsCollectionModel.getAvails(), self);
+            this.scheduleRenderer.renderAll(this.availsScheduleModel.getCurrentDate(), this.mapModel.getPostal(), this.availsCollectionModel.getAvails(), self);
 
             // Rerender page if browser resized 
             // Debouncing makes render triggered x milliseconds after last window resize (http://underscorejs.org/#throttle)
             // TODO: Does rerendering need to make another request to google maps?
             var debouncedRenderAll = _.debounce(self.scheduleRenderer.renderAll, 500).bind(self.scheduleRenderer); 
             window.addEventListener("resize", function() {
-                debouncedRenderAll(self.availsScheduleModel.getCurrentDate(), self.availsCollectionModel.getAvails(), self);
+                debouncedRenderAll(self.availsScheduleModel.getCurrentDate(), self.mapModel.getPostal(), self.availsCollectionModel.getAvails(), self);
             });
 
 
@@ -326,8 +340,8 @@ function createControllerModule () {
     /*
      * Returns an instance of the venue controller
      */
-    var loadVenueController = function (availsCollectionModel, availsScheduleModel, scheduleRenderer) {
-        return new VenueController(availsCollectionModel, availsScheduleModel, scheduleRenderer);
+    var loadVenueController = function (availsCollectionModel, availsScheduleModel, mapModel, scheduleRenderer) {
+        return new VenueController(availsCollectionModel, availsScheduleModel, mapModel, scheduleRenderer);
     };
 
     /*
