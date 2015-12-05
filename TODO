@@ -1,12 +1,10 @@
 FEATURES AND FIXES
 
 Bare Minimum To Sell Kitchener's Ice:
+    
+    Scrape Waterloo
 
-    Convert globals to html elements
-        Done nav_date and deploy_js
-        Need to put postal code into schedule model
-        *remember i'm on a new branch
-
+    Convert schedule tree from global to html element
 
     User testing
         Make testing senarios
@@ -45,11 +43,12 @@ Other Less Pressing Tasks
 
     Test solution to Quarter hour problem
     /venues with no postal default
-    Block navigation to previous days
     ability to change postal code on /venues page
     Iphone font problem
     Make transactions atomic
-
+    Make orange blocks look more clickable
+    Avail start and endtime tooltip on hover
+    Prices on avail schedule
     Check booking controller for checking prices and input parameters
         including that it is available
     Calendar doesn't close on second button click
