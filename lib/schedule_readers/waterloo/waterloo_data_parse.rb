@@ -46,8 +46,9 @@ class WaterlooDataParse
     return {:name => venue, :lat => lat, :long => long, :address => address}
   end
 
-  def load(xmlFile)
-    treeToDatabase(xmlToTree(xmlFile))
+  def load()
+    fetchHtml()
+    loadLocal()
   end
 
   def loadLocal()
