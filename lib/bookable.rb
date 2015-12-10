@@ -90,22 +90,25 @@ module Bookable
     # Return all bookable ice time
     def self.getBookable
         scheduleTree = ScheduleTree.new("Playogo")
-        # Get all openings into schedule tree
-        venues = Venue.all
-        venues.each do |venue|
-            venue.theatres.each do |theatre|
-                theatre.openings.each do |opening|
-                    scheduleTree.addAvail({:name => venue.name,
-                                             :lat => venue.lat,
-                                             :long => venue.long,
-                                             :address => venue.address},
-                                            {:name => theatre.name,    
-                                             :prime => theatre.price.prime,
-                                             :non_prime => theatre.price.non_prime,
-                                             :insurance => theatre.price.insurance},
-                                            opening.date.to_s, 
-                                            opening.start_time, 
-                                            opening.length)
+        # Put all openings into schedule tree
+        owners = Owner.all
+        owners.each do |owner|
+            owner.venues.each do |venue|
+                venue.theatres.each do |theatre|
+                    theatre.openings.each do |opening|
+                        scheduleTree.addAvail(  {:name => venue.name,
+                                                 :lat => venue.lat,
+                                                 :long => venue.long,
+                                                 :address => venue.address,
+                                                 :owner => owner.id},
+                                                {:name => theatre.name,    
+                                                 :prime => theatre.price.prime,
+                                                 :non_prime => theatre.price.non_prime,
+                                                 :insurance => theatre.price.insurance},
+                                                opening.date.to_s, 
+                                                opening.start_time, 
+                                                opening.length)
+                    end
                 end
             end
         end

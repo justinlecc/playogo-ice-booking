@@ -388,6 +388,7 @@ function createViewModule () {
                                 avail_block.style.width = space_of_avail.toString() + 'px';
 
                                 // Set the values of avail
+                                avail_block.setAttribute('owner_id', venue.owner_id);
                                 avail_block.setAttribute('venue', venue.name);
                                 avail_block.setAttribute('theatre', theatre.name);
                                 avail_block.setAttribute('date', day.date);
@@ -543,7 +544,7 @@ function createViewModule () {
                 $( "#modal-selected-timerange" ).html(getTimeFromSeconds(start_time) + " to " + getTimeFromSeconds(end_time));
 
                 // Initialize ice time price
-                // TODO: don't display both prime and non-prime rates
+                // TODO: don't display both prime and non-prime rates (just do something better)
                 $( "#modal-selected-price" ).html( getDollarStr(info.specified_price) + " (@ " + getDollarStr(info.selected_prime) + "/h prime or " + getDollarStr(info.selected_non_prime) + "/h non-prime)");
 
                 // Set venue
@@ -555,14 +556,33 @@ function createViewModule () {
 
             } else if (state == VENUE_POLICIES) {
 
+                var cityname = info.name;
+                var citylongname = info.long_name;
+                var owner_policies = info.policies;
+
                 // Modal title
                 var modal_title = document.getElementById('booking-modal-title');
-                modal_title.innerHTML = 'Booking an ice time with Kitchener.';
+                modal_title.innerHTML = 'Booking an ice time with ' + info.name;
 
                 // Modal body
                 var modal_body = document.getElementById('booking-modal-body');
-                modal_body.innerHTML = '<p>By booking this ice time with the City of Kitchener you agreeing to the following policies:</p><ol><li>Rescheduling an ice time must be done at least 3 business days before the scheduled date.</li><li>Ice bookings are non-refundable.</li></ol><p>Playogo will facilitate the booking of this ice time, however any further changes or concerns must be addressed with the City of Kitchener directly.</p>';
+                modal_body.innerHTML = '';
 
+                var top = document.createElement('p');
+                top.innerHTML = 'By booking this ice time with the ' + info.long_name + ' are you agreeing to the following policies:';
+                modal_body.appendChild(top);
+
+                var list = document.createElement('ol');
+                for (var i=0; i<info.policies.length; i++) {
+                    var el = document.createElement('li');
+                    el.innerHTML = info.policies[i];
+                    list.appendChild(el);
+                }
+                modal_body.appendChild(list);
+
+                var bottom = document.createElement('p');
+                bottom.innerHTML = 'Playogo will facilitate the booking of this ice time, however any further changes or concerns must be addressed with the ' + info.long_name + ' directly.';
+                modal_body.appendChild(bottom);
 
                 // Modal button
                 var modal_btn = document.getElementById('booking-modal-btn-venuepolicies');
@@ -669,7 +689,9 @@ function createViewModule () {
                 // Notes
                 inputs[11].value = info.customer_notes;
                 // Postal code
-                inputs[12].value = postal;
+                inputs[12].value = info.postal;
+                console.log(info.postal);
+
 
                 // Email filled out in stripe window
 
@@ -692,8 +714,8 @@ function createViewModule () {
             }
         },
 
-        renderMap: function (postal) {
-            initializeMap(postal);
+        renderMap: function (schedule_tree, postal) {
+            initializeMap(schedule_tree, postal);
 
             var container = document.getElementById('venue-container');
             var map = document.getElementById('map');
@@ -731,7 +753,7 @@ function createViewModule () {
 
                     self.renderVenueRows(schedule_tree, current_date, controller).then(function () {
 
-                        self.renderMap(postal);
+                        self.renderMap(schedule_tree, postal);
 
                     });
 

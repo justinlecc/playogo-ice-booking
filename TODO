@@ -2,11 +2,9 @@ FEATURES AND FIXES
 
 Bare Minimum To Sell Kitchener's Ice:
 
-    Convert globals to html elements
-        Done nav_date and deploy_js
-        Need to put postal code into schedule model
-        *remember i'm on a new branch
-
+    Make bookings work w/ more than 1 municipality
+        Look for other bugs too
+        Wloo mem. @ 3pm today, $150
 
     User testing
         Make testing senarios
@@ -42,14 +40,19 @@ Bare Minimum To Sell Kitchener's Ice:
 
 Other Less Pressing Tasks
 
-
+    Fix db lookups based on 'name' (should be id)
+    Make managers have their own relation
+    Put policies info database schema (currently hard coded)
+    Make superclass for data input
+        avails to database method in super class
     Test solution to Quarter hour problem
     /venues with no postal default
-    Block navigation to previous days
     ability to change postal code on /venues page
     Iphone font problem
     Make transactions atomic
-
+    Make orange blocks look more clickable
+    Avail start and endtime tooltip on hover
+    Prices on avail schedule
     Check booking controller for checking prices and input parameters
         including that it is available
     Calendar doesn't close on second button click

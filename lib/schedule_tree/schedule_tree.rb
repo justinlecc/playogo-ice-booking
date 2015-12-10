@@ -19,10 +19,7 @@ class ScheduleTree
 
     end
 
-    # venueName not found in @venues
-    puts venueHash[:name]
-    new_venue = VenueNode.new(venueHash[:name], venueHash[:lat], venueHash[:long], venueHash[:address])
-    puts 'hello'#venueHash[:name] + '*************'
+    new_venue = VenueNode.new(venueHash[:name], venueHash[:lat], venueHash[:long], venueHash[:address], venueHash[:owner])
     new_venue.addAvail(theatreHash, date, startTime, length)
     @venues.push(new_venue)
 

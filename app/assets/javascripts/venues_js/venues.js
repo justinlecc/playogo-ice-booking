@@ -43,7 +43,7 @@ function deployVenues () {
      * Initialize the VenueController
      */
     var venueController = controllerModule.loadVenueController(availsCollectionModel, availsScheduleModel, mapModel, scheduleRenderer);
-    venueController.initializePage(schedule_tree); // schedule_tree from .erb view rendering
+    venueController.initializePage();
     availsScheduleModel.controller = venueController;
 
 

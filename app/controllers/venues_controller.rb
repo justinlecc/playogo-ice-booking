@@ -10,6 +10,12 @@ class VenuesController < ApplicationController
 
     @scheduleTree = Bookable::getBookable
 
+    @ownerInfo = []
+    
+    Owner.all.each do |owner|
+      @ownerInfo.push(owner.getInfo)
+    end
+
     @date = params[:nav_date]
 
     if !@date

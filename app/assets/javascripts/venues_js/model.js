@@ -16,6 +16,7 @@ function createModelModule() {
     var AvailsCollectionModel = function () {
         this.listeners = [];
         this.avails = null;
+        this.owners = null;
     };
 
     _.extend(AvailsCollectionModel.prototype,{
@@ -28,8 +29,22 @@ function createModelModule() {
         /* Gets the collection model's avails c*/
         getAvails: function () {
             return this.avails;
-        }
+        },
 
+        /* Sets the collection model's owner info */
+        setOwners: function (owner_info) {
+            this.owners = owner_info;
+        },
+
+        /* Gets the collection model's owner info */
+        getOwnerInfo: function (owner_id) {
+            for (var i=0; i<this.owners.length; i++) {
+                if (owner_id == this.owners[i].id) {
+                    return this.owners[i];
+                }
+            }
+            return null;
+        }
     });
 
     /*

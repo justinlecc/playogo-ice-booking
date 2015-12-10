@@ -60,6 +60,9 @@ gem 'jquery_mobile_rails', '~> 1.4.5'
 # Touch Punch (JL added)
 gem 'touchpunch-rails', '~> 1.0.3'
 
+# Httparty (JL added)
+gem 'httparty', '~> 0.13.5'
+
 group :production do
   gem 'rails_12factor', group: :production # https://devcenter.heroku.com/articles/rails-4-asset-pipeline
 end
