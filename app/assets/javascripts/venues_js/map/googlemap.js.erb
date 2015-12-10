@@ -36,7 +36,7 @@ function getLatLng(address) {
 /*
  * Renders the map with the given lat lng
  */
-function renderMap (lat, long) {
+function renderMap (schedule_tree, lat, long) {
 
   // Display map
   var mapOptions = {
@@ -103,7 +103,7 @@ function renderMap (lat, long) {
 /*
  * Renders the map with the given postal code
  */
-function initializeMap (postalCode) {
+function initializeMap (scheduleTree, postalCode) {
 
   var LAT_LONG_RECIEVED = false;
 
@@ -119,7 +119,7 @@ function initializeMap (postalCode) {
     if (status == google.maps.GeocoderStatus.OK) {
       lat = results[0].geometry.location.lat();
       lng = results[0].geometry.location.lng();
-      renderMap(lat, lng);
+      renderMap(scheduleTree, lat, lng);
     } else {
       alert("In initializeMap(): Geocode was not successful for the following reason: " + status);
     }

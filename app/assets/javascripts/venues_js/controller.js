@@ -38,7 +38,6 @@ function createControllerModule () {
         this.availsCollectionModel = availsCollectionModel;
         this.availsScheduleModel   = availsScheduleModel;
         this.mapModel              = mapModel;
-        console.log(mapModel);
 
         // Initialize renderers
         this.scheduleRenderer      = scheduleRenderer;
@@ -56,16 +55,19 @@ function createControllerModule () {
         /*
          *  Initialize controller
          */
-        initializePage: function (schedule_tree) {
+        initializePage: function () {
             // Controller reference
             var self = this;
 
             // Get values from template
-            var nav_date = document.getElementById('nav-date').innerHTML;
-            var postal   = document.getElementById('postal').innerHTML;
+            var nav_date      = document.getElementById('nav-date').innerHTML;
+            var postal        = document.getElementById('postal').innerHTML;
+            var schedule_tree = JSON.parse(document.getElementById('schedule-tree').innerHTML);
+            var owner_info    = JSON.parse(document.getElementById('owner-info').innerHTML);
 
             // Set avails in collection model
             this.availsCollectionModel.setAvails(schedule_tree); 
+            this.availsCollectionModel.setOwners(owner_info);
 
             // Set range, date
             this.availsScheduleModel.setDateRange(this.availsCollectionModel.getAvails());
@@ -101,6 +103,7 @@ function createControllerModule () {
             this.customer_notes       = '';
 
             // Avail info
+            this.selected_owner_id    = '';
             this.selected_venue       = '';
             this.selected_theatre     = '';
             this.selected_prime       = '';
@@ -188,6 +191,7 @@ function createControllerModule () {
                 if (el != null) {
 
                     // Selected fields
+                    this.selected_owner_id    = parseInt(el.getAttribute("owner_id"));
                     this.selected_venue       = el.getAttribute("venue");
                     this.selected_theatre     = el.getAttribute("theatre");
                     this.selected_date        = el.getAttribute("date");
@@ -213,18 +217,18 @@ function createControllerModule () {
                 // Render the modal content
                 var self = this;
                 this.scheduleRenderer.renderModal(TIME_SELECT, {selected_venue:       this.selected_venue,
-                                                                                                                selected_theatre:     this.selected_theatre,
-                                                                                                                selected_date:        this.selected_date,
-                                                                                                                selected_start_time:  this.selected_start_time,
-                                                                                                                selected_length:      this.selected_length,
-                                                                                                                selected_prime:       this.selected_prime,
-                                                                                                                selected_non_prime:   this.selected_non_prime,
-                                                                                                                selected_insurance:   this.selected_insurance,
-                                                                                                                specified_start_time: this.specified_start_time,
-                                                                                                                specified_length:     this.specified_length,
-                                                                                                                specified_price:      this.specified_price,
-                                                                                                                controller:           self
-                                                                                                                });
+                                                                selected_theatre:     this.selected_theatre,
+                                                                selected_date:        this.selected_date,
+                                                                selected_start_time:  this.selected_start_time,
+                                                                selected_length:      this.selected_length,
+                                                                selected_prime:       this.selected_prime,
+                                                                selected_non_prime:   this.selected_non_prime,
+                                                                selected_insurance:   this.selected_insurance,
+                                                                specified_start_time: this.specified_start_time,
+                                                                specified_length:     this.specified_length,
+                                                                specified_price:      this.specified_price,
+                                                                controller:           self
+                                                                });
 
                 // Activate the modal
                 $('#booking-modal').modal();
@@ -234,8 +238,11 @@ function createControllerModule () {
                 // Set the page state
                 this.page_state = VENUE_POLICIES;
 
+                // Get the owner info
+                var owner_info = this.availsCollectionModel.getOwnerInfo(this.selected_owner_id);
+
                 // Render the modal content
-                this.scheduleRenderer.renderModal(VENUE_POLICIES);
+                this.scheduleRenderer.renderModal(VENUE_POLICIES, owner_info);
 
             } else if (INPUT_INFO == next_page_state) {
 
@@ -286,22 +293,23 @@ function createControllerModule () {
 
                 // Render the modal content
                 this.scheduleRenderer.renderModal(PAYMENT, {element:              el,
-                                                                                                        handler:              this.handler,
-                                                                                                        selected_venue:       this.selected_venue,
-                                                                                                        selected_theatre:     this.selected_theatre,
-                                                                                                        selected_date:        this.selected_date,
-                                                                                                        selected_start_time:  this.selected_start_time,
-                                                                                                        selected_length:      this.selected_length,
-                                                                                                        specified_start_time: this.specified_start_time,
-                                                                                                        specified_length:     this.specified_length,
-                                                                                                        specified_price:      this.specified_price,
-                                                                                                        specified_tax:        this.specified_tax,
-                                                                                                        specified_total_cost: this.specified_total_cost,
-                                                                                                        customer_name:        this.customer_name,
-                                                                                                        customer_phone:       this.customer_phone,
-                                                                                                        customer_notes:       this.customer_notes,
-                                                                                                        navigation_date:      this.availsScheduleModel.getCurrentDate()
-                                                                                                     });
+                                                            handler:              this.handler,
+                                                            selected_venue:       this.selected_venue,
+                                                            selected_theatre:     this.selected_theatre,
+                                                            selected_date:        this.selected_date,
+                                                            selected_start_time:  this.selected_start_time,
+                                                            selected_length:      this.selected_length,
+                                                            specified_start_time: this.specified_start_time,
+                                                            specified_length:     this.specified_length,
+                                                            specified_price:      this.specified_price,
+                                                            specified_tax:        this.specified_tax,
+                                                            specified_total_cost: this.specified_total_cost,
+                                                            customer_name:        this.customer_name,
+                                                            customer_phone:       this.customer_phone,
+                                                            customer_notes:       this.customer_notes,
+                                                            navigation_date:      this.availsScheduleModel.getCurrentDate(),
+                                                            postal:               this.mapModel.getPostal()
+                                                         });
             }
  
         },
@@ -330,7 +338,6 @@ function createControllerModule () {
          * Change the date of the schedule model by offset
          */
         changeDateByValue: function (date) {
-            console.log("Changing date to: " + date);
             this.availsScheduleModel.setCurrentDate(date);
         }
 

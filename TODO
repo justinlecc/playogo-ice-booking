@@ -1,10 +1,10 @@
 FEATURES AND FIXES
 
 Bare Minimum To Sell Kitchener's Ice:
-    
-    Scrape Waterloo
 
-    Convert schedule tree from global to html element
+    Make bookings work w/ more than 1 municipality
+        Look for other bugs too
+        Wloo mem. @ 3pm today, $150
 
     User testing
         Make testing senarios
@@ -40,7 +40,11 @@ Bare Minimum To Sell Kitchener's Ice:
 
 Other Less Pressing Tasks
 
-
+    Fix db lookups based on 'name' (should be id)
+    Make managers have their own relation
+    Put policies info database schema (currently hard coded)
+    Make superclass for data input
+        avails to database method in super class
     Test solution to Quarter hour problem
     /venues with no postal default
     ability to change postal code on /venues page

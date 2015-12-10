@@ -1,9 +1,8 @@
-
 <script>
-    // deploy_js     = 'VENUES';
-    schedule_tree = JSON.parse('<%= @scheduleTree.to_json.html_safe %>');
-    // postal        = '<%= @postal %>';
-    // nav_date      = '<%= @date %>';
+    //schedule_tree = JSON.parse('<%= @scheduleTree.to_json.gsub("'", %q(\\\')).html_safe %>');
+    //console.log(schedule_tree);
+//     owner_info = JSON.parse('<%= @ownerInfo.to_json.gsub("'", %q(\\\')).html_safe %>');
+//     console.log(owner_info);
 </script>
 
 <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
@@ -12,6 +11,8 @@
 <div id="deploy-js" style="display:none"><%= 'VENUES' %></div>
 <div id="postal"    style="display:none"><%= @postal  %></div>
 <div id="nav-date"  style="display:none"><%= @date    %></div>
+<div id="schedule-tree" style="display:none"><%= @scheduleTree.to_json.html_safe %></div>
+<div id="owner-info" style="display:none"><%=    @ownerInfo.to_json.html_safe %></div>
 
 <!-- Modal -->
 <div class="modal fade" id="booking-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -285,6 +286,12 @@
 
 </script>
 
+<!--
+    Modal VENUE_POLICIES body template
+-->
+<script id="modal-body-venuepolicies-template" type="text/template">
+    
+</script>
 
 <!--
     Modal INPUT_INFO body template

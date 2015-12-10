@@ -1,5 +1,15 @@
 
 class KitchenerDataParse  
+
+  def initialize()
+
+    @owner_name      = "Kitchener"
+    @owner_long_name = "City of Kitchener"
+    @manager_name    = "Ashley Kropf"
+    @manager_email   = "playogosports@gmail.com"
+
+  end
+
   def getTheatreHash(theatre)
     return {:prime => 20000, :non_prime => 15000, :insurance => 500, :name => theatre}
   end
@@ -42,64 +52,145 @@ class KitchenerDataParse
     treeToDatabase(xmlToTree(xmlFile))
   end
 
-  def treeToDatabase (availTree)
-    clear_data = 1
-    # Delete current openings
-    Opening.delete_all
+  def treeToDatabase (availTree) # method should be in a superclass
+
+    owner = Owner.where(name: @owner_name).first
+
+    # 'clear_data' is set to if we want to delete the model we have and start fresh.
+    # Should be false in production because we only want to update openings.
+    clear_data = true
+
     if (clear_data)
-      Booking.delete_all
-      Price.delete_all
-      Theatre.delete_all
-      Venue.delete_all
-      Owner.delete_all
+
+      # Delete the whole model
+      if (owner)
+
+        venues = owner.venues
+
+        if (venues.length > 0)
+
+          venues.each do |venue|
+
+            theatres = venue.theatres
+
+            if (theatres.length > 0)
+
+              theatres.each do |theatre| 
+
+                theatre.openings.delete_all
+
+                if (theatre.price)
+                  theatre.price.delete
+                end
+
+              end
+
+              # Delete the theatres
+              theatres.delete_all
+
+            end
+
+          end
+
+          # Delete the venues
+          venues.delete_all
+
+        end
+
+        owner.delete
+        owner = nil
+
+      end
+
+    else
+
+      # Delete only the openings
+      if (owner)
+
+        venues = owner.venues
+
+        venues.each do |venue|
+
+          theatres = venue.theatres
+
+          theatres.each do |theatre| 
+
+            # Clear the current openings
+            theatre.openings.delete_all
+
+          end
+
+        end
+
+      end
+
     end
 
-    @kitchener = nil
-    if (clear_data)
-      @kitchener = Owner.create!({:name => "Kitchener",
-                                  :manager_name => "Ashley Kropf",
-                                  :manager_email => "playogosports@gmail.com"});
-    else
-      @kitchener = Owner.find({:name => "Kitchener"}).first;
+    # Create the owner record if it is has been deleted (or hasn't existsed yet)
+    if (!owner)
+      owner = Owner.create!({:name          => @owner_name,
+                             :long_name     => @owner_long_name,
+                             :manager_name  => @manager_name,
+                             :manager_email => @manager_email});
     end
 
     # Create new avails
     availTree.venues.each do |venue|
+
       if (clear_data)
+
         locationHash = getVenueLocationHash(venue.name) 
-        @cur_venue = Venue.create!({:name => venue.name, 
-                                    :owner => @kitchener,
-                                    :lat => venue.lat,
-                                    :long => venue.long, #locationHash[:long],
-                                    :address => venue.address })#locationHash[:address]});
+
+        cur_venue = Venue.create!({:name     => venue.name, 
+                                    :owner   => owner,
+                                    :lat     => venue.lat,
+                                    :long    => venue.long, #locationHash[:long],
+                                    :address => venue.address}) #locationHash[:address]});
+
       else
-        @cur_venue = Venue.find({:name => venue.name}).first;
+
+        cur_venue = Venue.find({:name => venue.name}).first;
+
       end
+
       venue.theatres.each do |theatre|
+
         if (clear_data) 
-          @cur_theatre = Theatre.create!({:name => theatre.name, :venue => @cur_venue})
-          Price.create!({:prime => 20000, :non_prime => 15000, :insurance => 533, :theatre => @cur_theatre})
+
+          cur_theatre = Theatre.create!({:name => theatre.name, :venue => cur_venue})
+
+          Price.create!({:prime => 20000, :non_prime => 15000, :insurance => 533, :theatre => cur_theatre}) # TODO: make price models
+
         else
-          @cur_theatre = Theatre.find({:name => theatre.name, :venue => @cur_venue})
+
+          cur_theatre = Theatre.find({:name => theatre.name, :venue => cur_venue})
+
         end
+
         theatre.days.each do |day|
+
           day.blocks.each do |block|
+
             Opening.create!({:start_time => block.start, 
-                             :length => block.length, 
-                             :date => day.date,
-                             :theatre => @cur_theatre})
+                             :length     => block.length, 
+                             :date       => day.date,
+                             :theatre    => cur_theatre})
           end
+
         end
+
       end
+
     end
   end
   
   def xmlToTree(xmlFile)
-    # Struture to hold availabilities
+    # Structure to hold availabilities
     availTree = ScheduleTree.new("Kitchener")
 
     # File name of doc to be parsed should be param 
     doc_path = Rails.root.join('lib', 'schedule_readers', 'kitchener', xmlFile)
+
     # Get xml into Nokogiri format
     doc = Nokogiri::XML(File.read(doc_path))
 
