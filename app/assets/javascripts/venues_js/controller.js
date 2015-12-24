@@ -231,7 +231,8 @@ function createControllerModule () {
                                                                 });
 
                 // Activate the modal
-                $('#booking-modal').modal();
+                $('#booking-modal').modal('show');
+
 
             } else if (VENUE_POLICIES == next_page_state) {
 
