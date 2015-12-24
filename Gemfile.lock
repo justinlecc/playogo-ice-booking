@@ -128,6 +128,8 @@ GEM
     rake (10.4.2)
     rdoc (4.2.0)
       json (~> 1.4)
+    respond-js-rails (1.4.2.1)
+      railties (~> 4.0, < 5.0)
     rest-client (1.8.0)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
@@ -193,6 +195,7 @@ DEPENDENCIES
   pg
   rails (= 4.2.0)
   rails_12factor
+  respond-js-rails (~> 1.4, >= 1.4.2.1)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   spring
