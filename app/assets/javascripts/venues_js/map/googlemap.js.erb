@@ -18,7 +18,6 @@
 function getLatLng(address) {
   var geocoder = new google.maps.Geocoder();
   var deferred = $.Deferred();
-
   geocoder.geocode( { 'address': address}, function (results, status) {
     if (status === google.maps.GeocoderStatus.OK) {
       lat = results[0].geometry.location.lat();

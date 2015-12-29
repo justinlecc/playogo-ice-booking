@@ -66,6 +66,9 @@ gem 'httparty', '~> 0.13.5'
 # Respond js (JL added for ie 9 compatability)
 gem 'respond-js-rails', '~> 1.4', '>= 1.4.2.1'
 
+# HTML5shiv (JL added for ie 9 compatability)
+gem 'html5shiv-rails', '~> 0.0.2'
+
 group :production do
   gem 'rails_12factor', group: :production # https://devcenter.heroku.com/articles/rails-4-asset-pipeline
 end
