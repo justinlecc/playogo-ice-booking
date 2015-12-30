@@ -7,8 +7,8 @@
  */
 
 
-window.addEventListener('load', function () {
-
+//window.addEventListener('load', function () {
+$(document).ready(function() {
   // Get value from template
   var deploy_js = document.getElementById('deploy-js').innerHTML;
 
