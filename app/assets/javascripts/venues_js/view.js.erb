@@ -396,11 +396,13 @@ function createViewModule () {
                                 avail_block.setAttribute('length', avail.length);
 
                                 // Set event listener
-                                avail_block.addEventListener('click', function () {
-
-				    alert("avail clicked!");
-                                    controller.changePageState(this, TIME_SELECT);
-                                });
+				document.addEventListener('load', function() {
+					var el = avail_block;
+					el.addEventListener('click', function () {
+                                    		alert("avail clicked!");
+                                    		controller.changePageState(this, TIME_SELECT);
+                                	});
+				});
 
                                 // Append
                                 sched_col.appendChild(avail_block);
