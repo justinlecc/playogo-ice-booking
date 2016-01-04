@@ -343,7 +343,7 @@ function createViewModule () {
                     }
 
                     // Days
-                    for (var i=0; i < theatre.days.length; i++) {
+                    for (i=0; i < theatre.days.length; i++) {
 
                         // We won't display the theatre row if there aren't any avails
                         var theatre_found_avail = false;
@@ -394,8 +394,9 @@ function createViewModule () {
 
                                 // Set event listener
                                 function addEvent(evnt, elem, func) {
-                                    if (elem.addEventListener)  // W3C DOM
+                                    if (elem.addEventListener) { // W3C DOM
                                       elem.addEventListener(evnt,func,false);
+                                    }
                                     else if (elem.attachEvent) { // IE DOM
                                       elem.attachEvent("on"+evnt, func);
                                     }
@@ -436,6 +437,10 @@ function createViewModule () {
             if  (!page_found_avail) {
                 container.innerHTML = document.getElementById('no-avails-message').innerHTML;
             }
+
+            // TODO: take the following out... this is for ie compatability testing
+            var rendered_avails = document.getElementsByClassName('avail-block');
+            alert(rendered_avails.length);
 
             // Resolve that the venue rows have been created
             deferred.resolve();
