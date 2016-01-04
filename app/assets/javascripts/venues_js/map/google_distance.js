@@ -30,7 +30,7 @@ function sortVenueRows (schedule_tree, controller, lat, lng) {
       
       // 2) sort schedule_tree.venues by distance or duration
       schedule_tree.venues.sort(function(a,b) {
-        return a.duration.value >= b.duration.value;
+        return a.duration.value >= b.duration.value ? 1 : -1;
       });
 
       console.log(response.rows[0].elements);
