@@ -392,22 +392,22 @@ function createViewModule () {
                                 avail_block.setAttribute('start_time', avail.start);
                                 avail_block.setAttribute('length', avail.length);
 
-                                // Set event listener
-                                function addEvent(evnt, elem, func) {
-                                    if (elem.addEventListener) { // W3C DOM
-                                      elem.addEventListener(evnt,func,false);
-                                    }
-                                    else if (elem.attachEvent) { // IE DOM
-                                      elem.attachEvent("on"+evnt, func);
-                                    }
-                                    else { // No much to do
-                                      throw "ERROR: no method to add event";
-                                    }
-                                }
-                                addEvent('click', avail_block, function () {
-                                    alert("avail clicked!");
-                                    controller.changePageState(this, TIME_SELECT);
-                                });
+                                // // Set event listener
+                                // function addEvent(evnt, elem, func) {
+                                //     if (elem.addEventListener) { // W3C DOM
+                                //       elem.addEventListener(evnt,func,false);
+                                //     }
+                                //     else if (elem.attachEvent) { // IE DOM
+                                //       elem.attachEvent("on"+evnt, func);
+                                //     }
+                                //     else { // No much to do
+                                //       throw "ERROR: no method to add event";
+                                //     }
+                                // }
+                                // addEvent('click', avail_block, function () {
+                                //     alert("avail clicked!");
+                                //     controller.changePageState(this, TIME_SELECT);
+                                // });
 				                // avail_block.addEventListener('click', function () {
                     //            		alert("avail clicked!");
                     //                 controller.changePageState(this, TIME_SELECT);
@@ -439,8 +439,25 @@ function createViewModule () {
             }
 
             // TODO: take the following out... this is for ie compatability testing
+            function addEvent(evnt, elem, func) {
+                if (elem.addEventListener) { // W3C DOM
+                  elem.addEventListener(evnt,func,false);
+                }
+                else if (elem.attachEvent) { // IE DOM
+                  elem.attachEvent("on"+evnt, func);
+                }
+                else { // No much to do
+                  throw "ERROR: no method to add event";
+                }
+            }
             var rendered_avails = document.getElementsByClassName('avail-block');
-            alert(rendered_avails.length);
+            for (var idx = 0; idx < rendered_avails.length; idx++) {
+                // Set event listener
+                addEvent('click', rendered_avails[idx], function () {
+                    alert("avail clicked!");
+                    controller.changePageState(this, TIME_SELECT);
+                });
+            }
 
             // Resolve that the venue rows have been created
             deferred.resolve();
