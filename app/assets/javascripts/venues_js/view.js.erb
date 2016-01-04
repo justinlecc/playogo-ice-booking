@@ -68,7 +68,6 @@ function createViewModule () {
                 var datepicker = $(document.getElementById("datepicker"));
 
                 if (datepicker.attr("state") === "closed") {
-                    console.log("in closed case");
                     datepicker.datepicker({
                         dateFormat: "yy-mm-dd",
                         beforeShow: function(input, obj) {
@@ -78,7 +77,6 @@ function createViewModule () {
                             widget.css("left", "0px");
                         },
                         onClose: function(dateText, inst) {
-                            console.log("onClose");
                             this.setAttribute("state", "closed");
                         }
                     });
@@ -95,10 +93,8 @@ function createViewModule () {
                     widget.css("top", "24px");
                     widget.css("left", "0px");
                     datepicker.attr("state", "open");
-                    console.log("should be open")
 
                 } else if (datepicker.attr("state") === "open") {
-                    console.log("in open case");
                     datepicker.datepicker("hide");
 
                 } else {
@@ -398,14 +394,14 @@ function createViewModule () {
 
                                 // Set event listener
                                 function addEvent(evnt, elem, func) {
-                                   if (elem.addEventListener)  // W3C DOM
+                                    if (elem.addEventListener)  // W3C DOM
                                       elem.addEventListener(evnt,func,false);
-                                   else if (elem.attachEvent) { // IE DOM
+                                    else if (elem.attachEvent) { // IE DOM
                                       elem.attachEvent("on"+evnt, func);
-                                   }
-                                   else { // No much to do
+                                    }
+                                    else { // No much to do
                                       throw "ERROR: no method to add event";
-                                   }
+                                    }
                                 }
                                 addEvent('click', avail_block, function () {
                                     alert("avail clicked!");
@@ -624,8 +620,6 @@ function createViewModule () {
 
             } else if (state == REVIEW_INFO) {
 
-                console.log("review info hello!");
-
                 // Modal title
                 var modal_title = document.getElementById('booking-modal-title');
                 modal_title.innerHTML = 'Please confirm your booking details.';
@@ -704,7 +698,6 @@ function createViewModule () {
                 inputs[11].value = info.customer_notes;
                 // Postal code
                 inputs[12].value = info.postal;
-                console.log(info.postal);
 
 
                 // Email filled out in stripe window

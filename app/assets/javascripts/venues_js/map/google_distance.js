@@ -33,10 +33,9 @@ function sortVenueRows (schedule_tree, controller, lat, lng) {
         return a.duration.value >= b.duration.value ? 1 : -1;
       });
 
-      console.log(response.rows[0].elements);
       deferred.resolve(); // schedule_tree has been sorted.
     } else {
-      console.error("Google Distance Matrix API error: "+status);
+      alert("Google Distance Matrix API error: "+status);
       deferred.reject(status);
     }
   });

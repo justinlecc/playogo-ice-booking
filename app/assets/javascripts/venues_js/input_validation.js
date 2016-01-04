@@ -6,11 +6,9 @@ function validPostalCode(postalCode) {
 
   // Remove spaces
   postalCode = postalCode.replace(/ /g, '');
-  console.log(postalCode);
 
   // Check length
   if (postalCode.length != 6) {
-    console.log("length");
     return false;
   }
 
@@ -26,7 +24,6 @@ function validPostalCode(postalCode) {
   if ((isNaN(postalCode[1])) ||
       (isNaN(postalCode[3])) ||
       (isNaN(postalCode[5]))) {
-    console.log("number");
     return false;
   }
 
