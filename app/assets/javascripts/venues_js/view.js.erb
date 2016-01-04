@@ -313,13 +313,13 @@ function createViewModule () {
                 _.each(venue.theatres, function (theatre) {
 
                     var theatre_row = document.createElement('div');
-                    theatre_row.className = 'theatre-row';
                     venue_row.appendChild(theatre_row);
+                    theatre_row.className = 'theatre-row';
 
                     // Same height cols
                     var same_height = document.createElement('div');
-                    same_height.className = 'row-same-height';
                     theatre_row.appendChild(same_height);
+                    same_height.className = 'row-same-height';
 
                     // Theatre name
                     var name_col = document.createElement('div');
@@ -329,8 +329,8 @@ function createViewModule () {
 
                     // Theatre avails
                     var sched_col = document.createElement('div');
-                    sched_col.className = 'sched-col col-xs-9 col-same-height';
                     same_height.appendChild(sched_col);
+                    sched_col.className = 'sched-col col-xs-9 col-same-height';
 
                     // Section divides
                     var cur_time = earliest_open;
@@ -382,6 +382,7 @@ function createViewModule () {
 
                                 // Place the avail
                                 var avail_block = document.createElement('div');
+                                sched_col.appendChild(avail_block);
                                 avail_block.className = 'avail-block';
                                 avail_block.style.left = space_before_avail.toString() + 'px';
                                 avail_block.style.top = top_offset.toString() + 'px';
@@ -396,13 +397,11 @@ function createViewModule () {
                                 avail_block.setAttribute('length', avail.length);
 
                                 // Set event listener
-				avail_block.addEventListener('click', function () {
+				                avail_block.addEventListener('click', function () {
                                		alert("avail clicked!");
-                                    	controller.changePageState(this, TIME_SELECT);
+                                    controller.changePageState(this, TIME_SELECT);
                                 });
 
-                                // Append
-                                sched_col.appendChild(avail_block);
                             });
 
                             break;
