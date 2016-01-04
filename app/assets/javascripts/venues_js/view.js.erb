@@ -397,10 +397,24 @@ function createViewModule () {
                                 avail_block.setAttribute('length', avail.length);
 
                                 // Set event listener
-				                avail_block.addEventListener('click', function () {
-                               		alert("avail clicked!");
+                                function addEvent(evnt, elem, func) {
+                                   if (elem.addEventListener)  // W3C DOM
+                                      elem.addEventListener(evnt,func,false);
+                                   else if (elem.attachEvent) { // IE DOM
+                                      elem.attachEvent("on"+evnt, func);
+                                   }
+                                   else { // No much to do
+                                      throw "ERROR: no method to add event";
+                                   }
+                                }
+                                addEvent('click', avail_block, function () {
+                                    alert("avail clicked!");
                                     controller.changePageState(this, TIME_SELECT);
                                 });
+				                // avail_block.addEventListener('click', function () {
+                    //            		alert("avail clicked!");
+                    //                 controller.changePageState(this, TIME_SELECT);
+                    //             });
 
                             });
 

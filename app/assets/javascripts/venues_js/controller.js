@@ -82,10 +82,10 @@ function createControllerModule () {
             // Rerender page if browser resized 
             // Debouncing makes render triggered x milliseconds after last window resize (http://underscorejs.org/#throttle)
             // TODO: Does rerendering need to make another request to google maps?
-            // var debouncedRenderAll = _.debounce(self.scheduleRenderer.renderAll, 500).bind(self.scheduleRenderer); 
-            // window.addEventListener("resize", function() {
-            //     debouncedRenderAll(self.availsScheduleModel.getCurrentDate(), self.mapModel.getPostal(), self.availsCollectionModel.getAvails(), self);
-            // });
+            var debouncedRenderAll = _.debounce(self.scheduleRenderer.renderAll, 500).bind(self.scheduleRenderer); 
+            window.addEventListener("resize", function() {
+                debouncedRenderAll(self.availsScheduleModel.getCurrentDate(), self.mapModel.getPostal(), self.availsCollectionModel.getAvails(), self);
+            });
 
 
             // Page flow state. Mainly used for modal flow logic.
