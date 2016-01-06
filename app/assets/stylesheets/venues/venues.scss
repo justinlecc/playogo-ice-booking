@@ -365,10 +365,9 @@ div.divider {
   border-left-width: 1px;
   border-left-style: solid;
   border-left-color: $dark-grey;
-  height: 100%;
   position: absolute;
   top:0;
-  z-index: 999;
+  z-index: 100;
 }
 
 
@@ -384,7 +383,7 @@ div.divider {
 
 div.avail-block {
   position:absolute;
-  z-index: 1001;
+  z-index: 101;
   background: $pogo-orange;
   height: 12px;
   cursor: pointer;
