@@ -337,10 +337,12 @@ function createViewModule () {
                     var num_hours = (latest_close - earliest_open) / (60*60);
                     var i = 0;
                     var space = hours_col.offsetWidth; // width of hours col
+                    var divider_height = sched_col.offsetHeight;
                     while (cur_time < latest_close) {
                         var divider = document.createElement('div');
                         divider.className = 'divider';
-                        divider.style.left = (space / num_hours)*i + 'px';
+                        divider.style.left = ((space / num_hours)*i).toString() + 'px';
+                        divider.style.height = divider_height.toString() + 'px';
                         sched_col.appendChild(divider);
                         cur_time += 60*60;
                         i++;
