@@ -1,4 +1,4 @@
-class WaterlooDataParse
+class CentreWellingtonTranslator
 
   def initialize()
     @search_to_day   = 31
@@ -9,8 +9,8 @@ class WaterlooDataParse
                             "May" => 5, "Jun" => 6, "Jul" => 7, "Aug" => 8, 
                             "Sep" => 9, "Oct" => 10,"Nov" => 11,"Dec" => 12}
 
-    @owner_name      = "Waterloo"
-    @owner_long_name = "City of Waterloo"
+    @owner_name      = "Centre Wellington"
+    @owner_long_name = "Township of Centre Wellington"
     @manager_name    = "Ashley Kropf"
     @manager_email   = "playogosports@gmail.com"
 
@@ -24,22 +24,14 @@ class WaterlooDataParse
     lat = nil
     long = nil
     address = nil
-    if (venue == "Waterloo Memorial Recreation Complex")
-      lat = 43.464093
-      long = -80.532588
-      address = "101 Father David Bauer Dr, Waterloo, ON N2J 4A8, Canada"
-    elsif (venue == "RIM Park")
-      lat = 43.519172
-      long = -80.502067
-      address = "2001 University Ave E, Waterloo, ON N2K 4K4, Canada"
-    elsif (venue == "Moses Springer Community Centre")
-      lat = 43.473331
-      long = -80.511332
-      address = "150 Lincoln Rd, Waterloo, ON N2J 4A8, Canada"
-    elsif (venue == "Albert McCormick C.C.")
-      lat = 43.488927
-      long = -80.544575
-      address = "500 Parkside Dr, Waterloo, ON N2L 5J4, Canada"
+    if (venue == "CW Community Sportsplex")
+      lat = 43.706519
+      long = -80.359973
+      address = "550 Belsyde Ave E, Fergus, ON N1M 2P7, Canada"
+    elsif (venue == "Elora and District Community Centre")
+      lat = 43.685068
+      long = -80.433498
+      address = "21 David St W, Elora, ON N0B 1S0, Canada"
     else
       throw "ERROR: Invalid venue name in getVenueLocationHash()"
     end
@@ -190,20 +182,18 @@ class WaterlooDataParse
   
   def htmlToTree(htmlFile)
 
-    puts @owner_name
-    return
-
     # Structure to hold availabilities
-    availTree = ScheduleTree.new("Waterloo")
+    availTree = ScheduleTree.new(@owner_name)
 
     # File name of doc to be parsed should be param 
-    doc_path = Rails.root.join('lib', 'schedule_readers', 'waterloo', htmlFile)
+    doc_path = Rails.root.join('lib', 'schedule_readers', 'centre_wellington', htmlFile)
     
     # Get xml into Nokogiri format
     doc = Nokogiri::XML(File.read(doc_path))
 
     # Iterate through each page
     pages = doc.css("body")
+    puts pages.length
     page_number = 1
 
     pages.each do |page|
@@ -233,6 +223,11 @@ class WaterlooDataParse
         # Get venue
         venue = cells[0].inner_text
 
+        if (venue == 'Elora  District Community Centre')
+          venue = 'Elora and District Community Centre'
+        end
+        puts venue
+
         # Get theatre
         theatre = cells[1].css("li")[0].inner_text
 
@@ -249,8 +244,8 @@ class WaterlooDataParse
         end_time = timeslot[2]
 
         # Create datetimes
-        start_datetime = DateTime.strptime(date + " " + start_time, "%Y-%b-%d %H:%M%p")
-        end_datetime   = DateTime.strptime(date + " " + end_time, "%Y-%b-%d %H:%M%p")
+        start_datetime = DateTime.strptime(date + " " + start_time, "%Y-%m-%d %H:%M%p")
+        end_datetime   = DateTime.strptime(date + " " + end_time, "%Y-%m-%d %H:%M%p")
 
         # Get date string
         date_string = start_datetime.strftime("%Y-%m-%d")
@@ -302,7 +297,7 @@ class WaterlooDataParse
   def fetchHtml()
 
     # The file we are writing the data to
-    output_file = Rails.root.join('lib', 'schedule_readers', 'waterloo', 'output.html')
+    output_file = Rails.root.join('lib', 'schedule_readers', 'centre_wellington', 'output.html')
 
     # ============================================================
     # Step 1
@@ -310,37 +305,37 @@ class WaterlooDataParse
     # ============================================================
 
     # Get web page
-    response = HTTParty.get('http://www.waterloo.ca/en/gettingactive/facilitiesandrooms.asp',
-      :headers => {
-        'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-        'Accept-Encoding' => 'gzip, deflate, sdch',
-        'Accept-Language' => 'en-US,en;q=0.8', 
-        'Cache-Control' => 'max-age=0',
-        'Connection' => 'keep-alive',
-        'Host' => 'www.waterloo.ca',
-        'Upgrade-Insecure-Requests' => '1',
-        'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36'
-      },
-      :limit => 1
-    )
+    # response = HTTParty.get('http://www.waterloo.ca/en/gettingactive/facilitiesandrooms.asp',
+    #   :headers => {
+    #     'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+    #     'Accept-Encoding' => 'gzip, deflate, sdch',
+    #     'Accept-Language' => 'en-US,en;q=0.8', 
+    #     'Cache-Control' => 'max-age=0',
+    #     'Connection' => 'keep-alive',
+    #     'Host' => 'www.waterloo.ca',
+    #     'Upgrade-Insecure-Requests' => '1',
+    #     'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36'
+    #   },
+    #   :limit => 1
+    # )
 
-    # Parse web page
-    parsed_page = Nokogiri::HTML(response)
+    # # Parse web page
+    # parsed_page = Nokogiri::HTML(response)
 
-    # Grab correct link from page
-    possible_links = parsed_page.css('#printAreaContent .PlainText a')
+    # # Grab correct link from page
+    # possible_links = parsed_page.css('#printAreaContent .PlainText a')
 
-    link = ''
+    # link = ''
 
-    possible_links.each do |possible_link|
+    # possible_links.each do |possible_link|
 
-      if (possible_link.text == 'availability')
+    #   if (possible_link.text == 'availability')
 
-        link = possible_link['href']
+    #     link = possible_link['href']
 
-      end
+    #   end
 
-    end
+    # end
 
     # =====================================================================
     # Step 2
@@ -348,16 +343,16 @@ class WaterlooDataParse
     # =====================================================================
 
     # Get page
-    response = HTTParty.get(link, 
-      :headers => {
-        'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Accept-Encoding' => 'gzip, deflate',
-        'Accept-Language' => 'en-US,en;q=0.5',
-        'Connection' => 'keep-alive',
-        'Host' => 'expressreg.city.waterloo.on.ca',
-        'Referer' => 'http://www.waterloo.ca/en/gettingactive/facilitiesandrooms.asp',
-        'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:41.0) Gecko/20100101 Firefox/41.0'
-      },
+    response = HTTParty.get('https://econnect.centrewellington.ca/Facilities/FacilitiesSearchWizard.asp', 
+      # :headers => {
+      #   'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+      #   'Accept-Encoding' => 'gzip, deflate',
+      #   'Accept-Language' => 'en-US,en;q=0.5',
+      #   'Connection' => 'keep-alive',
+      #   # 'Host' => 'expressreg.city.waterloo.on.ca',
+      #   # 'Referer' => 'http://www.waterloo.ca/en/gettingactive/facilitiesandrooms.asp',
+      #   'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:41.0) Gecko/20100101 Firefox/41.0'
+      # },
       :limit => 3
     )
 
@@ -368,11 +363,11 @@ class WaterlooDataParse
     end
 
     # Parse the web page
-    parsed_page = Nokogiri::HTML(response)
+    # parsed_page = Nokogiri::HTML(response)
 
     # Get the session variables
-    scheck = parsed_page.css('#SCheck')[0]['value']
-    sdt    = parsed_page.css('#SDT')[0]['value']
+    # scheck = parsed_page.css('#SCheck')[0]['value']
+    # sdt    = parsed_page.css('#SDT')[0]['value']
 
     # ====================================
     # Step 3
@@ -390,8 +385,8 @@ class WaterlooDataParse
     search_to_date = DateTime.new(@search_to_year, @search_to_month, @search_to_day).strftime("%d-%m-%Y")
 
     # Get the webpage
-    response = HTTParty.post("https://expressreg.city.waterloo.on.ca/facilities/FacilitiesSearchResult.asp",
-        :query => { :SCheck => scheck, :SDT => sdt, :ajax => 1},
+    response = HTTParty.post("https://econnect.centrewellington.ca/Facilities/FacilitiesSearchResult.asp?ajax=1",
+        # :query => { :SCheck => scheck, :SDT => sdt, :ajax => 1},
         :body => {
           'SearchFor' => 'A',
           'DayFrom' => current_day,
@@ -409,7 +404,7 @@ class WaterlooDataParse
           'FacilityLengthHours' => 1,
           'FacilityLengthMinutes' => 0,
           'chkWeekDay8' => 7,
-          'FacilityFunctions' => 686,
+          'FacilityFunctions' => 31,
           'CapacityPieces' => nil,
           'FacilitySpots' => nil,
           'FacilityTypes' => nil,
@@ -426,9 +421,7 @@ class WaterlooDataParse
           'Connection'  => 'keep-alive',
           'Content-Length' =>  '77',
           'Content-Type' => 'application/x-www-form-urlencoded; charset=UTF-8',
-          'Host' => 'expressreg.city.waterloo.on.ca',
           'Pragma' => 'no-cache',
-          'Referer' => link,
           'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:41.0) Gecko/20100101 Firefox/41.0',
           'X-Requested-With' => 'XMLHttpRequest'
         }
@@ -452,8 +445,8 @@ class WaterlooDataParse
       i_display_length = 10
 
       # Get the webpage
-      response = HTTParty.post("https://expressreg.city.waterloo.on.ca/facilities/FacilitiesSearchResult.asp",
-          :query => { :SCheck => scheck, :SDT => sdt, :ajax => 1},
+      response = HTTParty.post("https://econnect.centrewellington.ca/Facilities/FacilitiesSearchResult.asp",
+          # :query => { :SCheck => scheck, :SDT => sdt, :ajax => 1},
           :body => {
             'SearchFor' => 'A',
             'iDisplayStart' => i_display_start,
@@ -469,11 +462,10 @@ class WaterlooDataParse
             'Accept-Language' => 'en-US,en;q=0.5',
             'Cache-Control' => 'no-cache',
             'Connection'  => 'keep-alive',
-            'Content-Length' =>  '77',
+            'Content-Length' =>  '74',
             'Content-Type' => 'application/x-www-form-urlencoded; charset=UTF-8',
-            'Host' => 'expressreg.city.waterloo.on.ca',
             'Pragma' => 'no-cache',
-            'Referer' => link,
+            'Referer' => 'https://econnect.centrewellington.ca/Facilities/FacilitiesSearchWizard.asp',
             'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:41.0) Gecko/20100101 Firefox/41.0',
             'X-Requested-With' => 'XMLHttpRequest'
           }
