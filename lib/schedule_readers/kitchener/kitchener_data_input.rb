@@ -1,12 +1,12 @@
 
-class KitchenerDataParse  
+class KitchenerDataInput  
 
   def initialize()
 
     @owner_name      = "Kitchener"
     @owner_long_name = "City of Kitchener"
-    @manager_name    = "Ashley Kropf"
-    @manager_email   = "playogosports@gmail.com"
+    @manager_name    = "Dan Walkling"
+    @manager_email   = "info@theaud.ca"
 
   end
 
@@ -74,30 +74,33 @@ class KitchenerDataParse
             theatres = venue.theatres
 
             if (theatres.length > 0)
-
+              puts "in here 1"
               theatres.each do |theatre| 
-
-                theatre.openings.delete_all
+                puts "in here 2"
+                theatre.openings.destroy_all
+                theatre.bookings.destroy_all
 
                 if (theatre.price)
-                  theatre.price.delete
+                  puts "in here 3"
+                  theatre.price.destroy
                 end
 
               end
 
               # Delete the theatres
-              theatres.delete_all
+              puts "in here 4"
+              theatres.destroy_all
 
             end
 
           end
 
           # Delete the venues
-          venues.delete_all
+          venues.destroy_all
 
         end
 
-        owner.delete
+        owner.destroy
         owner = nil
 
       end
