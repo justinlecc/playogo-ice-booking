@@ -1,8 +1,8 @@
 class Theatre < ActiveRecord::Base
   belongs_to :venue
-  has_many :openings
+  has_many :openings, :dependent => :destroy
   has_many :bookings
-  has_one :price
+  has_one :price, :dependent => :destroy
 
   def getPrice(date, startTime, length)
     primeStart      = 17 * 3600 # TODO: should be stored in Price model

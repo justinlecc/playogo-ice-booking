@@ -2,18 +2,20 @@ FEATURES AND FIXES
 
 Bare Minimum To Sell Kitchener's Ice:
 
-    Fix the thing postalcode thing in production?
-
-    User testing
-        Make testing senarios
-        Run through with Ash
-        Run through with people who don't know system
+    Figure out why delete_all is working for waterloo but not kitchener
+        which should I actually be using?
+    Put the size of the business hours buffer as an attribute of owner
 
     Put Theatre::getPrice in controller
         Log pricing conficts
     Test on windows browsers
     Test on samsung phones
     Test we can load data without deleting bookings
+
+    User testing
+        Make testing senarios
+        Run through with Ash
+        Run through with people who don't know system
 
     Confirm with Jeremy
         How much is insurance on multiple hours?
@@ -23,9 +25,8 @@ Bare Minimum To Sell Kitchener's Ice:
 
     Push live
         Create playogosports@gmail.com stripe account and switch over system to that account
+        put the how many business hours it will take into the policy section
         Put stripe non-test mode
-        Host on Playogo.com
-        Change subjects of emails
         Change links (manager email) to website
         Set loading bit to false so we don't delete bookings
         Have a play about trying stripe payments to bookings

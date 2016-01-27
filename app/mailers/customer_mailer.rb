@@ -19,7 +19,7 @@ class CustomerMailer < ApplicationMailer
     #email = 'playogosports@gmail.com' # testing
 
     # Send
-    mail(:to => email, :subject => 'To customer')
+    mail(:to => email, :subject => 'Your ice booking has been requested')
   end
 
   # Booking (booking_id) has been confirmed by the rink manager
@@ -35,8 +35,9 @@ class CustomerMailer < ApplicationMailer
     email       = booking.email
 
     # email = 'playogosports@gmail.com' # testing
+
     # Send
-    mail(:to => email, :subject => 'To customer')
+    mail(:to => email, :subject => 'Your ice booking has been confirmed')
   end
 
 end

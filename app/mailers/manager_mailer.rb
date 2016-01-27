@@ -42,7 +42,7 @@ class ManagerMailer < ApplicationMailer
     @booking_id = booking.id
 
     # Send
-    mail(:to => @manager_email, :subject => 'To manager')
+    mail(:to => @manager_email, :subject => 'Ice Booking')
     
   end
 end

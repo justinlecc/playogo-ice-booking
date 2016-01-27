@@ -1,4 +1,4 @@
-class WaterlooDataParse
+class WaterlooDataInput
 
   def initialize()
     @search_to_day   = 31
@@ -11,8 +11,8 @@ class WaterlooDataParse
 
     @owner_name      = "Waterloo"
     @owner_long_name = "City of Waterloo"
-    @manager_name    = "Ashley Kropf"
-    @manager_email   = "playogosports@gmail.com"
+    @manager_name    = "Leta Bulgin"
+    @manager_email   = "Leta.Bulgin@waterloo.ca"
 
   end
 

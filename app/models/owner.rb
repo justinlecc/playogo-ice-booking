@@ -1,5 +1,5 @@
 class Owner < ActiveRecord::Base
-  has_many :venues
+  has_many :venues, :dependent => :destroy
 
   # Several database schema need to be added including owner information.
   # This is a temporary way of accessing policies before deciding how to store it
