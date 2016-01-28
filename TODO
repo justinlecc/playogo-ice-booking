@@ -39,6 +39,7 @@ Bare Minimum To Sell Kitchener's Ice:
 
 Other Less Pressing Tasks
 
+    'Playogo' as the email 'from' field
     Fix db lookups based on 'name' (should be id)
     Make managers have their own relation
     Put policies info database schema (currently hard coded)
