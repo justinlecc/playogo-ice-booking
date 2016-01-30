@@ -57,6 +57,12 @@
         <p id="notice" ><%= notice %></p>
     </div>
 <% end %>
+<% if alert %>
+    <div class="alert alert-danger alert-dismissible" role="alert">
+         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <p id="alert" ><%= alert %></p>
+    </div>
+<% end %>
 
 <div class="row sched-row">
     <div id="schedule" class="col-sm-8">
@@ -302,7 +308,57 @@
             Please enter your full name.
         </div>
     </div>
+
+    <div class="form-group">
+        <label for="customer-address">Address</label>
+        <input type="text" class="form-control" id="customer-address" placeholder="Enter your street address">
+        <div id="input-info-address-error" class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            Please enter your street address.
+        </div>
+    </div>
     
+    <div class="form-group">
+        <label for="customer-city">City</label>
+        <input type="text" class="form-control" id="customer-city" placeholder="Enter your city">
+        <div id="input-info-city-error" class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            Please enter your city.
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="customer-province">Province/State</label>
+        <input type="text" class="form-control" id="customer-province" placeholder="Enter your province or state">
+        <div id="input-info-province-error" class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            Please enter your province or state.
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="customer-country">Country</label>
+        <input type="text" class="form-control" id="customer-country" placeholder="Enter your country">
+        <div id="input-info-country-error" class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            Please enter your country.
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="customer-postal">Postal/Zip code</label>
+        <input type="text" class="form-control" id="customer-postal" placeholder="Enter your postal or zip code">
+        <div id="input-info-postal-error" class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            Please enter your postal or zip code.
+        </div>
+    </div>
+
     <div class="form-group">
         <label for="customer-phone">Phone</label>
         <input type="text" class="form-control" id="customer-phone" placeholder="Enter phone number">
@@ -360,7 +416,10 @@
 <script id="modal-body-reviewinfo-template" type="text/template">
 
     <label for="review-customer-name">Name</label>
-    <p id="review-customer-name">Testing 123</p>
+    <p id="review-customer-name"></p>
+
+    <label for="review-customer-address">Address</label>
+    <p id="review-customer-address"></p>
 
     <label for="review-customer-phone">Phone</label>
     <p id="review-customer-phone"></p>
@@ -411,10 +470,15 @@
     <input type="hidden" name="start_time" value="">
     <input type="hidden" name="length" value="">
     <input type="hidden" name="amount" value="">
+    <input type="hidden" name="customer_name" value="">
+    <input type="hidden" name="customer_address" value="">
+    <input type="hidden" name="customer_city" value="">
+    <input type="hidden" name="customer_province" value="">
+    <input type="hidden" name="customer_country" value="">
+    <input type="hidden" name="customer_postal" value="">
+    <input type="hidden" name="customer_phone" value="">
+    <input type="hidden" name="customer_notes" value="">
     <input type="hidden" name="nav_date" value="">
-    <input type="hidden" name="name" value="">
-    <input type="hidden" name="phone" value="">
-    <input type="hidden" name="notes" value="">
     <input type="hidden" name="nav_postal" value="">
     <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
 </form>

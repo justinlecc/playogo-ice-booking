@@ -15,15 +15,16 @@
 
 <h3>Who</h3>
 <p>
-  Name:  <%= @customer_name %><br>
-  Phone: <%= @customer_phone %><br>
-  Email: <%= @customer_email %><br>
-  Notes: <%= @customer_notes %>
+  Name:    <%= @customer_name %><br>
+  Address: <%= @customer_address + " " + @customer_city + " " + @customer_province + " " + @customer_country + " " + @customer_postal %><br>
+  Phone:   <%= @customer_phone %><br>
+  Email:   <%= @customer_email %><br>
+  Notes:   <%= @customer_notes %>
 </p>
 
-<h3>Click <a href="playogo-v1.herokuapp.com/manager/confirm_booking/<%= @booking_id %>">here</a> to process this booking.</h3>
+<h3>Click <a href="playogo.com/manager/confirm_booking/<%= @booking_id %>">here</a> to process this booking.</h3>
 
-<p> If the above link fails, copy and paste the following address into your web browser: playogo-v1.heroku.com/manager/confirm_booking/<%= @booking_id %></p> 
+<p> If the above link fails, copy and paste the following address into your web browser: playogo.com/manager/confirm_booking/<%= @booking_id %></p> 
 
 <br>
 

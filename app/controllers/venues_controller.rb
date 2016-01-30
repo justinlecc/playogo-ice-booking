@@ -39,21 +39,27 @@ class VenuesController < ApplicationController
 
 
   # POST venues/payment
-  def ice_booking 
+  def ice_booking
+
     # Params
-    token        = params[:stripeToken]
-    email        = params[:stripeEmail]
-    venue_name   = params[:venue]
-    theatre_name = params[:theatre]
-    date         = params[:date]
-    start_time   = params[:start_time].to_i
-    length       = params[:length].to_i
-    amount       = params[:amount].to_i # needs to be verified to be the correct amount
-    name         = params[:name]
-    phone_number = params[:phone]
-    notes        = params[:notes]
-    nav_date     = params[:nav_date]
-    nav_postal   = params[:nav_postal]
+    token             = params[:stripeToken]
+    customer_email    = params[:stripeEmail]
+    venue_name        = params[:venue]
+    theatre_name      = params[:theatre]
+    date              = params[:date]
+    start_time        = params[:start_time].to_i
+    length            = params[:length].to_i
+    amount            = params[:amount].to_i # needs to be verified to be the correct amount
+    customer_name     = params[:customer_name]
+    customer_address  = params[:customer_address]
+    customer_city     = params[:customer_city]
+    customer_province = params[:customer_province]
+    customer_country  = params[:customer_country]
+    customer_postal   = params[:customer_postal]
+    customer_phone    = params[:customer_phone]
+    customer_notes    = params[:customer_notes]
+    nav_date          = params[:nav_date]
+    nav_postal        = params[:nav_postal]
 
     # Get the theatre
     theatre = Theatre.joins(:venue).where(venues: {"name" => venue_name}, :name => theatre_name)
@@ -75,46 +81,67 @@ class VenuesController < ApplicationController
     # if doesn't match: log values and send email to admin
 
     # Create "pending" booking
-    b = Booking.create({:start_time => start_time, 
-                        :length => length, 
-                        :date => date, 
-                        :theatre => theatre,
-                        :status => "pending",
-                        :name => name,
-                        :phone => phone_number,
-                        :email => email,
-                        :notes => notes
+    b = Booking.create({:start_time        => start_time, 
+                        :length            => length, 
+                        :date              => date, 
+                        :theatre           => theatre,
+                        :status            => "pending",
+                        :name              => customer_name,
+                        :customer_address  => customer_address,
+                        :customer_city     => customer_city,
+                        :customer_province => customer_province,
+                        :customer_country  => customer_country,
+                        :customer_postal   => customer_postal,
+                        :phone             => customer_phone,
+                        :email             => customer_email,
+                        :notes             => customer_notes
                         })
 
+    # Error creating the booking
     if (!b)
-      # Error creating the booking
-      ErrorLogging::log("payments#process_booking", \
-                        "Attempt to create a ~pending booking failed.")
-      flash[:notice] = "I'm sorry but there was a problem booking that icetime."
+
+      error_message  = "Attempt to create a ~pending booking failed." + "\n"
+      error_message += "name: " + customer_name + "\n"
+      error_message += "phone number: " + customer_phone + "\n"
+      error_message += "email: " + customer_email + "\n"
+      error_message += "venue: " + venue_name + "\n"
+      error_message += "theatre: " + theatre_name + "\n"
+      error_message += "date: " + params[:date] + "\n"
+      error_message += "start time: " + start_time.to_s + "\n"
+      error_message += "length: " + length.to_s + "\n"
+      ErrorLogging::log("payments#process_booking", error_message)
+
+      flash[:alert] = "I'm sorry but there was a problem booking that icetime."
+
       redirect_to '/venues/?date=' + params[:nav_date]
+
     else
-      # Charge card
+    
       Stripe.api_key = "sk_test_nEHfNS9vf7MqoUWM5KzRDf9M"
 
+      # Charge card
       begin
         charge = Stripe::Charge.create(
           :amount => amount,
           :currency => "cad",
           :source => token,
-          :description => name + ' | ' + \
-                          phone_number + ' | ' + \
+          :description => b.id.to_s + ' | ' + \
+                          customer_name + ' | ' + \
+                          customer_phone + ' | ' + \
                           venue_name + ', ' + \
                           theatre_name + ', ' + \
                           nav_date + ', ' + \
                           start_time.to_s + ', ' + \
                           length.to_s
         )
+
+      # Error the card has been declined
       rescue Stripe::CardError => e
-        # Error the card has been declined
+        
         error_message =  "Credit card was denied \n"
-        error_message += "name: " + name + "\n"
-        error_message += "phone number: " + phone_number + "\n"
-        error_message += "email: " + email + "\n"
+        error_message += "name: " + customer_name + "\n"
+        error_message += "phone number: " + customer_phone + "\n"
+        error_message += "email: " + customer_email + "\n"
         error_message += "venue: " + venue_name + "\n"
         error_message += "theatre: " + theatre_name + "\n"
         error_message += "date: " + params[:date] + "\n"
@@ -136,13 +163,14 @@ class VenuesController < ApplicationController
       # Update to "paid" booking
       u = b.update({:status => "paid"})
       
+      # Error updating the status
       if (!u)
-        # Error updating the status
+        
         # !important: payment taken without updating status
         error_message =  "Booking status not updated to paid \n"
-        error_message += "name: " + name + "\n"
-        error_message += "phone number: " + phone_number + "\n"
-        error_message += "email: " + email + "\n"
+        error_message += "name: " + customer_name + "\n"
+        error_message += "phone number: " + customer_phone + "\n"
+        error_message += "email: " + customer_email + "\n"
         error_message += "venue: " + venue_name + "\n"
         error_message += "theatre: " + theatre_name + "\n"
         error_message += "date: " + params[:date] + "\n"
@@ -163,6 +191,7 @@ class VenuesController < ApplicationController
     AdminMailer.notify_admin({:type => "BOOKING_REQUEST", :booking_id => b.id}).deliver_now
 
     redirect_to '/venues/?nav_date=' + nav_date + "&postal=" + CGI::escape(nav_postal)
+
   end
 
 

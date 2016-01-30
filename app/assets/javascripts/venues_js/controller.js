@@ -13,12 +13,12 @@ function createControllerModule () {
     /*
      * Controller states (explanation of each below)
      */
-    var SEARCH = 'SEARCH';
-    var TIME_SELECT = 'TIME_SELECT';
+    var SEARCH         = 'SEARCH';
+    var TIME_SELECT    = 'TIME_SELECT';
     var VENUE_POLICIES = 'VENUE_POLICIES';
-    var INPUT_INFO = 'INPUT_INFO';
-    var REVIEW_INFO = 'REVIEW_INFO';
-    var PAYMENT = 'PAYMENT';
+    var INPUT_INFO     = 'INPUT_INFO';
+    var REVIEW_INFO    = 'REVIEW_INFO';
+    var PAYMENT        = 'PAYMENT';
 
     /*
      * Event types
@@ -98,11 +98,18 @@ function createControllerModule () {
             this.page_state = SEARCH;
 
             // Customer info
+            // TODO: this needs to go into a model
             this.customer_name        = '';
+            this.customer_address     = '';
+            this.customer_city        = '';
+            this.customer_province    = '';
+            this.customer_country     = '';
+            this.customer_postal      = '';
             this.customer_phone       = '';
             this.customer_notes       = '';
 
             // Avail info
+            // TODO: this needs to go into a model
             this.selected_owner_id    = '';
             this.selected_venue       = '';
             this.selected_theatre     = '';
@@ -114,6 +121,7 @@ function createControllerModule () {
             this.selected_length      = '';
 
             // Booking info
+            // TODO: this needs to go into a model
             this.specified_start_time = '';
             this.specified_length     = '';
             this.specified_price      = '';
@@ -282,6 +290,11 @@ function createControllerModule () {
                                                                                                                 specified_tax:        this.specified_tax,
                                                                                                                 specified_total_cost: this.specified_total_cost,
                                                                                                                 customer_name:        this.customer_name,
+                                                                                                                customer_address:     this.customer_address,
+                                                                                                                customer_city:         this.customer_city,
+                                                                                                                customer_province:    this.customer_province,
+                                                                                                                customer_country:     this.customer_country,
+                                                                                                                customer_postal:      this.customer_postal,
                                                                                                                 customer_phone:       this.customer_phone,
                                                                                                                 customer_notes:       this.customer_notes});
 
@@ -305,10 +318,15 @@ function createControllerModule () {
                                                             specified_tax:        this.specified_tax,
                                                             specified_total_cost: this.specified_total_cost,
                                                             customer_name:        this.customer_name,
+                                                            customer_address:     this.customer_address,
+                                                            customer_city:        this.customer_city,
+                                                            customer_province:    this.customer_province,
+                                                            customer_country:     this.customer_country,
+                                                            customer_postal:      this.customer_postal,
                                                             customer_phone:       this.customer_phone,
                                                             customer_notes:       this.customer_notes,
                                                             navigation_date:      this.availsScheduleModel.getCurrentDate(),
-                                                            postal:               this.mapModel.getPostal()
+                                                            navigation_postal:    this.mapModel.getPostal()
                                                          });
             }
  

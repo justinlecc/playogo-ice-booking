@@ -91,9 +91,14 @@ function deployVenues () {
 
 
         // Get info
-        var customer_name = $( '#customer-name' ).val();
-        var customer_phone = $( '#customer-phone' ).val();
-        var customer_notes = $( '#customer-notes' ).val();
+        var customer_name     = $('#customer-name').val();
+        var customer_address  = $('#customer-address').val();
+        var customer_city     = $('#customer-city').val();
+        var customer_province = $('#customer-province').val();
+        var customer_country  = $('#customer-country').val();
+        var customer_postal   = $('#customer-postal').val();
+        var customer_phone    = $('#customer-phone').val();
+        var customer_notes    = $('#customer-notes').val();
 
         // Check form of input
         // TODO: Currently only checks if a string has been inputed
@@ -104,6 +109,41 @@ function deployVenues () {
             document.getElementById("input-info-name-error").style.display = "block";
         } else {
             document.getElementById("input-info-name-error").style.display = "none";
+        }
+
+        if (customer_address === "") {
+            invalid_input = true;
+            document.getElementById("input-info-address-error").style.display = "block";
+        } else {
+            document.getElementById("input-info-address-error").style.display = "none";
+        }
+
+        if (customer_city === "") {
+            invalid_input = true;
+            document.getElementById("input-info-city-error").style.display = "block";
+        } else {
+            document.getElementById("input-info-city-error").style.display = "none";
+        }
+
+        if (customer_province === "") {
+            invalid_input = true;
+            document.getElementById("input-info-province-error").style.display = "block";
+        } else {
+            document.getElementById("input-info-province-error").style.display = "none";
+        }
+
+        if (customer_country === "") {
+            invalid_input = true;
+            document.getElementById("input-info-country-error").style.display = "block";
+        } else {
+            document.getElementById("input-info-country-error").style.display = "none";
+        }
+
+        if (customer_postal === "") {
+            invalid_input = true;
+            document.getElementById("input-info-postal-error").style.display = "block";
+        } else {
+            document.getElementById("input-info-postal-error").style.display = "none";
         }
 
         if (customer_phone === "") {
@@ -127,9 +167,14 @@ function deployVenues () {
 
 
         // Update controller
-        venueController.customer_name = customer_name;
-        venueController.customer_phone = customer_phone;
-        venueController.customer_notes = customer_notes;
+        venueController.customer_name     = customer_name;
+        venueController.customer_address  = customer_address;
+        venueController.customer_city     = customer_city;
+        venueController.customer_province = customer_province;
+        venueController.customer_country  = customer_country;
+        venueController.customer_postal   = customer_postal;
+        venueController.customer_phone    = customer_phone;
+        venueController.customer_notes    = customer_notes;
 
         // Change the current page
         venueController.changePageState(null, REVIEW_INFO);
