@@ -346,6 +346,7 @@ function createControllerModule () {
         changeDateByOffset: function (offset) {
             var current_date = parseUTCDate(this.availsScheduleModel.getCurrentDate());
             var new_date = new Date();
+            new_date.setUTCDate(1); /* this ensures correct month when setting the month. coded by Ash */
             new_date.setUTCFullYear(current_date.getUTCFullYear());
             new_date.setUTCMonth(current_date.getUTCMonth());
             new_date.setUTCDate(current_date.getUTCDate() + offset);
