@@ -6,6 +6,7 @@ class ManagerController < ApplicationController
     booking = Booking.where({:id => @booking_id}).first
 
     if (booking == nil || booking.status != "paid")
+      flash[:alert] = "I'm sorry but hat booking page does not exist. Please contact PlayogoSports@gmail.com for support."
       redirect_to '/venues'
       return
     end

@@ -33,10 +33,15 @@ class ManagerMailer < ApplicationMailer
     @manager_email = owner.manager_email
 
     # Customer info
-    @customer_name  = booking.name
-    @customer_email = booking.email
-    @customer_phone = booking.phone
-    @customer_notes = booking.notes
+    @customer_name     = booking.name
+    @customer_address  = booking.customer_address
+    @customer_city     = booking.customer_city
+    @customer_province = booking.customer_province
+    @customer_country  = booking.customer_country
+    @customer_postal   = booking.customer_postal
+    @customer_email    = booking.email
+    @customer_phone    = booking.phone
+    @customer_notes    = booking.notes
 
     # Booking id
     @booking_id = booking.id
