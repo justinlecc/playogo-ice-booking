@@ -8,7 +8,7 @@
 <div id="nav-date"  style="display:none"><%= @date    %></div>
 <div id="schedule-tree" style="display:none"><%= @scheduleTree.to_json.html_safe %></div>
 <div id="owner-info" style="display:none"><%=    @ownerInfo.to_json.html_safe %></div>
-<div id="stripe-public-token" style="display:none"><%= StripeAccount.where(:account_name => "playogosports@gmail.com")[0].getPublic %></div>
+<div id="stripe-public-token" style="display:none"><%= ENV['STRIPE_PUBLIC_KEY'] %></div>
 
 <!-- Modal -->
 <div class="modal fade" id="booking-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
