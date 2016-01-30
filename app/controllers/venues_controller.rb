@@ -111,7 +111,7 @@ class VenuesController < ApplicationController
       error_message += "length: " + length.to_s + "\n"
       ErrorLogging::log("payments#process_booking", error_message)
 
-      flash[:notice] = "I'm sorry but there was a problem booking that icetime."
+      flash[:alert] = "I'm sorry but there was a problem booking that icetime."
 
       redirect_to '/venues/?date=' + params[:nav_date]
 
