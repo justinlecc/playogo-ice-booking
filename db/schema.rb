@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160130155031) do
+ActiveRecord::Schema.define(version: 20160130205826) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +69,16 @@ ActiveRecord::Schema.define(version: 20160130155031) do
   end
 
   add_index "prices", ["theatre_id"], name: "index_prices_on_theatre_id", using: :btree
+
+  create_table "stripe_accounts", force: :cascade do |t|
+    t.string   "account_name"
+    t.string   "live_public_token"
+    t.string   "live_private_token"
+    t.string   "test_public_token"
+    t.string   "test_private_token"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
 
   create_table "theatres", force: :cascade do |t|
     t.string   "name"

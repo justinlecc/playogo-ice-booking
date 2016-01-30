@@ -132,7 +132,7 @@ function createControllerModule () {
             this.payment_submitted = false;
 
             this.handler = StripeCheckout.configure({
-                    key: 'pk_test_1Di5chkNtgIMHyHZ6pbKLOrD',
+                    key: document.getElementById('stripe-public-token').innerHTML,
                     token: function(token) {
 
                             self.payment_submitted = true;

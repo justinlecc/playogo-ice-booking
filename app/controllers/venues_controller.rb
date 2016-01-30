@@ -117,7 +117,7 @@ class VenuesController < ApplicationController
 
     else
     
-      Stripe.api_key = "sk_test_nEHfNS9vf7MqoUWM5KzRDf9M"
+      Stripe.api_key = StripeAccount.where(:account_name => "playogosports@gmail.com")[0].getPrivate
 
       # Charge card
       begin

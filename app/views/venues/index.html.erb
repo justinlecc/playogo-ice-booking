@@ -8,6 +8,7 @@
 <div id="nav-date"  style="display:none"><%= @date    %></div>
 <div id="schedule-tree" style="display:none"><%= @scheduleTree.to_json.html_safe %></div>
 <div id="owner-info" style="display:none"><%=    @ownerInfo.to_json.html_safe %></div>
+<div id="stripe-public-token" style="display:none"><%= StripeAccount.where(:account_name => "playogosports@gmail.com")[0].getPublic %></div>
 
 <!-- Modal -->
 <div class="modal fade" id="booking-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -455,9 +456,6 @@
 
 <!--
     Stripe checkout form.
-        -change data-key for deployment
-        -can customize (https://stripe.com/docs/checkout#integration-custom)
-        -hidden input 'stripeToken'
 -->
 <script src="https://checkout.stripe.com/checkout.js"></script>
 
