@@ -3,9 +3,10 @@ FEATURES AND FIXES
 Bare Minimum To Sell Kitchener's Ice:
 
     Get rid of stripe token model and associated stripe files
-    Add local variables to local machine
 
     Transparent language
+
+    Traffic monitor
 
     Figure out why delete_all is working for waterloo but not kitchener
         which should I actually be using?
