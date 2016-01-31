@@ -2,7 +2,8 @@ FEATURES AND FIXES
 
 Bare Minimum To Sell Kitchener's Ice:
 
-    Get ready to switch into live mode
+    Get rid of stripe token model and associated stripe files
+    Add local variables to local machine
 
     Transparent language
 
