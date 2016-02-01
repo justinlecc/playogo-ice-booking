@@ -564,14 +564,14 @@ function createViewModule () {
 
                 // Modal title
                 var modal_title = document.getElementById('booking-modal-title');
-                modal_title.innerHTML = 'Booking an ice time with ' + info.name;
+                modal_title.innerHTML = 'Requesting an ice time with ' + info.name;
 
                 // Modal body
                 var modal_body = document.getElementById('booking-modal-body');
                 modal_body.innerHTML = '';
 
                 var top = document.createElement('p');
-                top.innerHTML = 'By booking this ice time with the ' + info.long_name + ' are you agreeing to the following policies:';
+                top.innerHTML = 'By requesting this ice time with the ' + info.long_name + ' are you agreeing to the following:';
                 modal_body.appendChild(top);
 
                 var list = document.createElement('ol');

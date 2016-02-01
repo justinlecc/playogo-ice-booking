@@ -6,7 +6,7 @@ class Theatre < ActiveRecord::Base
 
   def getPrice(date, startTime, length)
     primeStart      = 17 * 3600 # TODO: should be stored in Price model
-    tax             = 0.13     # TODO: should be stored in Price model
+    tax             = 0.13      # TODO: should be stored in Price model
     pricing         = self.price
     dayOfWeek       = Date.strptime(date, "%Y-%m-%d")
     primeSeconds    = 0

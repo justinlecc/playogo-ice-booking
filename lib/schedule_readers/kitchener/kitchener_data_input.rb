@@ -5,13 +5,20 @@ class KitchenerDataInput
 
     @owner_name      = "Kitchener"
     @owner_long_name = "City of Kitchener"
+
     @manager_name    = "Dan Walkling"
     @manager_email   = "info@theaud.ca"
+
+    @processing_hours = 8
+
+    @price_prime     = 20000
+    @price_non_prime = 15000
+    @price_insurance = 540
 
   end
 
   def getTheatreHash(theatre)
-    return {:prime => 20000, :non_prime => 15000, :insurance => 500, :name => theatre}
+    return {:prime => @price_prime, :non_prime => @price_non_prime, :insurance => @price_insurance, :name => theatre}
   end
 
   def getVenueLocationHash(venue) 
@@ -131,10 +138,11 @@ class KitchenerDataInput
 
     # Create the owner record if it is has been deleted (or hasn't existsed yet)
     if (!owner)
-      owner = Owner.create!({:name          => @owner_name,
-                             :long_name     => @owner_long_name,
-                             :manager_name  => @manager_name,
-                             :manager_email => @manager_email});
+      owner = Owner.create!({:name             => @owner_name,
+                             :long_name        => @owner_long_name,
+                             :manager_name     => @manager_name,
+                             :manager_email    => @manager_email,
+                             :processing_hours => @processing_hours});
     end
 
     # Create new avails
@@ -162,7 +170,7 @@ class KitchenerDataInput
 
           cur_theatre = Theatre.create!({:name => theatre.name, :venue => cur_venue})
 
-          Price.create!({:prime => 20000, :non_prime => 15000, :insurance => 533, :theatre => cur_theatre}) # TODO: make price models
+          Price.create!({:prime => @price_prime, :non_prime => @price_non_prime, :insurance => @price_insurance, :theatre => cur_theatre}) # TODO: make price models
 
         else
 

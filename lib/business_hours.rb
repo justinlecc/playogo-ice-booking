@@ -1,9 +1,11 @@
+# TODO: business hours should be a model of venue
+
 class BusinessHours
 
   def initialize
     @open  = 9
     @close = 17
-    @approvalBufferHours = 5
+    @approvalBufferHours = 8
   end
 
   def isHoliday(date)
