@@ -6,6 +6,9 @@ Bare Minimum To Sell Kitchener's Ice:
 
     Traffic monitor
 
+    Rework the 'about' page to have transparent language
+        include a faq page
+
     Figure out why delete_all is working for waterloo but not kitchener
         which should I actually be using?
     Make BusinessHours belown to the venue model

@@ -157,7 +157,7 @@ class VenuesController < ApplicationController
         redirect_to :back
       end
       
-      flash[:notice] = "Thank you for booking ice with us. Check your email inbox for further information."
+      flash[:notice] = "Thank you for requesting ice with us. Check your email inbox for further information."
 
 
       # Update to "paid" booking
