@@ -2,7 +2,6 @@ FEATURES AND FIXES
 
 Bare Minimum To Sell Kitchener's Ice:
 
-    Transparent language
 
     Traffic monitor
 
@@ -25,7 +24,8 @@ Bare Minimum To Sell Kitchener's Ice:
         How much is insurance on multiple hours?
         Number hours in advance
         Policies on site
-        Any holidays to denote that are not currently? 
+        Any holidays to denote that are not currently?
+        The card will be charged the new price of booking
 
     Push live
         Create playogosports@gmail.com stripe account and switch over system to that account
@@ -43,6 +43,7 @@ Bare Minimum To Sell Kitchener's Ice:
 
 
 Other Less Pressing Tasks
+    error logging to model
     Auto fill address
     Make customer model in js -> take out attributes in controller
     'Playogo' as the email 'from' field
