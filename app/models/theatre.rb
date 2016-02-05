@@ -8,7 +8,7 @@ class Theatre < ActiveRecord::Base
     primeStart      = 17 * 3600 # TODO: should be stored in Price model
     tax             = 0.13      # TODO: should be stored in Price model
     pricing         = self.price
-    dayOfWeek       = Date.strptime(date, "%Y-%m-%d")
+    dayOfWeek       = Date.strptime(date, "%Y-%m-%d").wday   
     primeSeconds    = 0
     nonPrimeSeconds = 0
 
@@ -29,11 +29,18 @@ class Theatre < ActiveRecord::Base
     primeHours    = (primeSeconds * 1.00000) / 3600
     nonPrimeHours = (nonPrimeSeconds * 1.00000) / 3600
 
-    puts "prime hours:     " + primeHours.to_s
-    puts "non prime hours: " + nonPrimeHours.to_s
+    # puts "prime hours:     " + primeHours.to_s
+    # puts "non prime hours: " + nonPrimeHours.to_s
+    # puts "prime price:     " + pricing.prime.to_s
+    # puts "non prime price: " + pricing.non_prime.to_s
 
-    cost = (primeHours * pricing.prime) + (nonPrimeHours * pricing.non_prime) + pricing.insurance
+    beforeTax = (primeHours * pricing.prime) + (nonPrimeHours * pricing.non_prime) + pricing.insurance
 
-    return ((cost + (cost * tax)) * 100).round / 100
+    afterTax  = ((beforeTax + (beforeTax * tax)) * 100).round / 100
+
+    # puts "beforeTax:       " + beforeTax.to_s
+    # puts "afterTax:        " + afterTax.to_s
+
+    return afterTax
   end
 end

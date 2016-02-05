@@ -5,7 +5,7 @@ class ManagerController < ApplicationController
     @booking_id = params[:booking_id]
     booking = Booking.where({:id => @booking_id}).first
 
-    if (booking == nil || booking.status != "paid")
+    if (booking == nil || booking.status != "pending")
       flash[:alert] = "I'm sorry but hat booking page does not exist. Please contact PlayogoSports@gmail.com for support."
       redirect_to '/venues'
       return
@@ -32,19 +32,20 @@ class ManagerController < ApplicationController
   # Manager confirmed the booking
   def confirm_request
     # TODO: make params safe
-    booking_id = params[:booking_id]
-    theatre_id = params[:theatre]
-    date_str = params[:date]
+    booking_id     = params[:booking_id]
+    theatre_id     = params[:theatre]
+    date_str       = params[:date]
     start_time_str = params[:start_time]
-    end_time_str = params[:end_time]
-    contract_id = params[:contract_id]
+    end_time_str   = params[:end_time]
+    contract_id    = params[:contract_id]
 
     # TO DO: verify form of date and time strings
 
     # Get booking
     booking = Booking.where(:id => booking_id).first
-    if (!booking || booking.status != "paid")
+    if (!booking || booking.status != "pending")
       # TO DO: handle this error
+      flash[:alert] = "This booking is no longer active. Please email playogosports@gmail.com for support."
       redirect_to '/venues'
       return
     end
@@ -87,8 +88,44 @@ class ManagerController < ApplicationController
                        :date => date_str,
                        :status => "confirmed",
                        :contract_id => contract_id
-                       })
+                      })
     end
+
+  
+    Stripe.api_key = ENV['STRIPE_SECRET_KEY']
+
+    begin
+
+      # Charge the customer
+      Stripe::Charge.create(
+          amount: booking.price,
+          currency: 'cad',
+          customer: booking.stripe_customer_id
+      )
+
+    # Error creating the customer
+    rescue => e
+      
+      error_message =  "Customer could not be charged \n"
+      error_message += "name: " + booking.name + "\n"
+      error_message += "phone number: " + booking.phone + "\n"
+      error_message += "email: " + booking.email + "\n"
+      error_message += "venue: " + booking.theatre.venue.name + "\n"
+      error_message += "theatre: " + booking.theatre.name + "\n"
+      error_message += "date: " + params[:date] + "\n"
+      error_message += "start time: " + booking.start_time.to_s + "\n"
+      error_message += "length: " + length.to_s + "\n" 
+      error_message += "amount: " + booking.getPrice + "\n" 
+      ErrorLogging::log("payments#process_booking", error_message)
+
+      # Redirect
+      flash[:alert] = "The customer's card could not be charged. Please email playogosports@gmail.com for support."
+      redirect_to '/venues'
+      return
+
+    end
+
+    booking.update!({:status => "paid"})
 
     # Notify the customer
     CustomerMailer.ice_confirmed(booking.id).deliver_now
@@ -96,7 +133,9 @@ class ManagerController < ApplicationController
     # Notify the admin of confirmation
     AdminMailer.notify_admin({:type => "BOOKING_CONFIRMATION", :booking_id => booking_id}).deliver_now
 
+    flash[:notice] = "Thank you for confirming the booking. The customer has been notified and is waiting for you to follow up with them."
     redirect_to '/venues'
+
   end
 
   # Manager cancels booking
