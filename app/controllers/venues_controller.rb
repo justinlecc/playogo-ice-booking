@@ -165,7 +165,7 @@ class VenuesController < ApplicationController
         # Update the booking status to 'pending'
         b.update({:status => "pending", :stripe_customer_id => customer.id})
 
-		flash[:notice] = "Thank you for requesting ice with us. " + theatre.venue.owner.name + " will be confirming your booking within the next 8 business hours. Check your email inbox for further information."
+		flash[:notice] = "Thank you for requesting ice with us. " + theatre.venue.owner.name + " will be confirming your booking within the next " + theatre.venue.owner.processing_hours + " business hours. Check your email inbox for further information."
 
 		# Send manager email
 		ManagerMailer.ice_request({:booking_id => b.id, :amount_paid => amount}).deliver_now
