@@ -11,8 +11,8 @@ class KitchenerDataInput
 
     @processing_hours = 8
 
-    @price_prime     = 20000
-    @price_non_prime = 15000
+    @price_prime     = 23673
+    @price_non_prime = 13421
     @price_insurance = 540
 
   end
