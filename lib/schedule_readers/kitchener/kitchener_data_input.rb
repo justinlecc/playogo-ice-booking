@@ -55,6 +55,52 @@ class KitchenerDataInput
     return {:name => venue, :lat => lat, :long => long, :address => address}
   end
 
+  def deleteOwnerFromDb()
+
+    owner = Owner.where({:name => @owner_name}).first;
+
+    # Delete the whole model
+    if (owner)
+
+      venues = owner.venues
+
+      if (venues.length > 0)
+
+        venues.each do |venue|
+
+          theatres = venue.theatres
+
+          if (theatres.length > 0)
+
+            theatres.each do |theatre| 
+
+              theatre.openings.delete_all
+
+              if (theatre.price)
+                theatre.price.delete
+              end
+
+              theatre.bookings.update_all({:theatre_id => nil})
+
+            end
+
+            # Delete the theatres
+            theatres.delete_all
+
+          end
+
+        end
+
+        # Delete the venues
+        venues.delete_all
+
+      end
+
+      owner.delete
+
+    end
+  end
+
   def load(xmlFile)
     treeToDatabase(xmlToTree(xmlFile))
   end
@@ -69,47 +115,11 @@ class KitchenerDataInput
 
     if (clear_data)
 
-      # Delete the whole model
+      # Delete the whole model from the database
+      # TODO: this is currently untested
       if (owner)
-
-        venues = owner.venues
-
-        if (venues.length > 0)
-
-          venues.each do |venue|
-
-            theatres = venue.theatres
-
-            if (theatres.length > 0)
-              puts "in here 1"
-              theatres.each do |theatre| 
-                puts "in here 2"
-                theatre.openings.destroy_all
-                theatre.bookings.destroy_all
-
-                if (theatre.price)
-                  puts "in here 3"
-                  theatre.price.destroy
-                end
-
-              end
-
-              # Delete the theatres
-              puts "in here 4"
-              theatres.destroy_all
-
-            end
-
-          end
-
-          # Delete the venues
-          venues.destroy_all
-
-        end
-
-        owner.destroy
+        self.deleteOwnerFromDb
         owner = nil
-
       end
 
     else

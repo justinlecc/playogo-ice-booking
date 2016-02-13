@@ -2,6 +2,12 @@ module Bookable
     
     # Remove any openings from the schedule tree that overlap with the booking
     def self.adjustOpenings(booking, scheduleTree)
+        
+        # Ignore bookings without a theatre
+        if booking.theatre == nil
+            return
+        end
+
         # Two cases (comparing booking b to opening a):
         #    1. b.start_time <= a.start_time
         #        i. delete a

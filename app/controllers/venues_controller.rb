@@ -67,61 +67,66 @@ class VenuesController < ApplicationController
 		if (theatre.length != 1)
 			ErrorLogging::log("payments#process_booking", \
 												"Selected: " + theatre.length.to_s + " theatres with query")
-			raise "ERROR: Invalid theatre query in venue controller"
+			flash[:alert] = "I'm sorry but there was a problem processing your request. Please email playogosports@gmail.com for support."
+			redirect_to :back
+			return
 		else
 			theatre = theatre.first
 		end
 
 		# TODO: verify booking is being made in place of an availability
 		# TODO: verify booking is not conflicting with another already made booking
-		# TODO: verify that 'amount' is the correct amount of money for the booking
 		# TODO: verify that booking has enough time to be approved by manager
-        # TODO: make sure two overlapping bookings are being made concurrently
+		# TODO: make sure two overlapping bookings are being made concurrently
 
-        price = theatre.getPrice(date, start_time, length)
+		price = theatre.getPrice(date, start_time, length)
 
 		if (price != amount)
-            flash[:alert] = "I'm sorry but there was a problem processing your request. Please email playogosports@gmail.com for support."
-            redirect_to :back
-        end
+			puts "price:  " + price.to_s
+			puts "amount: " + amount.to_s
+			flash[:alert] = "I'm sorry but there was a problem processing your request. Please email playogosports@gmail.com for support."
+			redirect_to :back
+			return
+		end
 		# if doesn't match: log values and send email to admin
 
-        # Create "pending" booking
-        b = Booking.create({:start_time         => start_time, 
-                            :length             => length, 
-                            :date               => date, 
-                            :theatre            => theatre,
-                            :status             => "no customer",
-                            :name               => customer_name,
-                            :customer_address   => customer_address,
-                            :customer_city      => customer_city,
-                            :customer_province  => customer_province,
-                            :customer_country   => customer_country,
-                            :customer_postal    => customer_postal,
-                            :phone              => customer_phone,
-                            :email              => customer_email,
-                            :notes              => customer_notes,
-                            :price              => price
-                            })
+		# Create "pending" booking
+		b = Booking.create({:start_time         => start_time, 
+							:length             => length, 
+							:date               => date, 
+							:theatre            => theatre,
+							:status             => "no customer",
+							:name               => customer_name,
+							:customer_address   => customer_address,
+							:customer_city      => customer_city,
+							:customer_province  => customer_province,
+							:customer_country   => customer_country,
+							:customer_postal    => customer_postal,
+							:phone              => customer_phone,
+							:email              => customer_email,
+							:notes              => customer_notes,
+							:price              => price
+							})
 
-        # Error creating the booking
-        if (!b)
+		# Error creating the booking
+		if (!b)
 
-            error_message  = "Attempt to create a 'no customer' booking failed." + "\n"
-            error_message += "name: " + customer_name + "\n"
-            error_message += "phone number: " + customer_phone + "\n"
-            error_message += "email: " + customer_email + "\n"
-            error_message += "venue: " + venue_name + "\n"
-            error_message += "theatre: " + theatre_name + "\n"
-            error_message += "date: " + params[:date] + "\n"
-            error_message += "start time: " + start_time.to_s + "\n"
-            error_message += "length: " + length.to_s + "\n"
-            ErrorLogging::log("payments#process_booking", error_message)
+			error_message  = "Attempt to create a 'no customer' booking failed." + "\n"
+			error_message += "name: " + customer_name + "\n"
+			error_message += "phone number: " + customer_phone + "\n"
+			error_message += "email: " + customer_email + "\n"
+			error_message += "venue: " + venue_name + "\n"
+			error_message += "theatre: " + theatre_name + "\n"
+			error_message += "date: " + params[:date] + "\n"
+			error_message += "start time: " + start_time.to_s + "\n"
+			error_message += "length: " + length.to_s + "\n"
+			ErrorLogging::log("payments#process_booking", error_message)
 
-                flash[:alert] = "I'm sorry but there was a problem requesting that icetime. Please email playogosports@gmail.com for support."
-                redirect_to :back
+			flash[:alert] = "I'm sorry but there was a problem requesting that icetime. Please email playogosports@gmail.com for support."
+			redirect_to :back
+			return
 
-        end
+		end
 
 
 		Stripe.api_key = ENV['STRIPE_SECRET_KEY']
@@ -158,12 +163,12 @@ class VenuesController < ApplicationController
 			# Redirect
 			flash[:alert] = "Your card has been declined."
 			redirect_to :back
-            return
+			return
 
 		end
 
-        # Update the booking status to 'pending'
-        b.update({:status => "pending", :stripe_customer_id => customer.id})
+		# Update the booking status to 'pending'
+		b.update({:status => "pending", :stripe_customer_id => customer.id})
 
 		flash[:notice] = "Thank you for requesting ice with us. " + theatre.venue.owner.name + " will be confirming your booking within the next " + theatre.venue.owner.processing_hours + " business hours. Check your email inbox for further information."
 
@@ -177,7 +182,7 @@ class VenuesController < ApplicationController
 		AdminMailer.notify_admin({:type => "BOOKING_REQUEST", :booking_id => b.id}).deliver_now
 
 		redirect_to '/venues/?nav_date=' + nav_date + "&postal=" + CGI::escape(nav_postal)
-
+		return
 	end
 
 end

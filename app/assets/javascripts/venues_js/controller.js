@@ -99,34 +99,35 @@ function createControllerModule () {
 
             // Customer info
             // TODO: this needs to go into a model
-            this.customer_name        = '';
-            this.customer_address     = '';
-            this.customer_city        = '';
-            this.customer_province    = '';
-            this.customer_country     = '';
-            this.customer_postal      = '';
-            this.customer_phone       = '';
-            this.customer_notes       = '';
+            this.customer_name            = '';
+            this.customer_address         = '';
+            this.customer_city            = '';
+            this.customer_province        = '';
+            this.customer_country         = '';
+            this.customer_postal          = '';
+            this.customer_phone           = '';
+            this.customer_notes           = '';
 
             // Avail info
             // TODO: this needs to go into a model
-            this.selected_owner_id    = '';
-            this.selected_venue       = '';
-            this.selected_theatre     = '';
-            this.selected_prime       = '';
-            this.selected_non_prime   = '';
-            this.selected_insurance   = '';
-            this.selected_date        = '';
-            this.selected_start_time  = '';
-            this.selected_length      = '';
+            this.selected_owner_id        = '';
+            this.selected_venue           = '';
+            this.selected_theatre         = '';
+            this.selected_prime           = '';
+            this.selected_non_prime       = '';
+            this.selected_insurance       = '';
+            this.selected_date            = '';
+            this.selected_start_time      = '';
+            this.selected_length          = '';
 
             // Booking info
             // TODO: this needs to go into a model
-            this.specified_start_time = '';
-            this.specified_length     = '';
-            this.specified_price      = '';
-            this.specified_tax        = '';
-            this.specified_total_cost = '';
+            this.specified_start_time     = '';
+            this.specified_length         = '';
+            this.specified_price          = '';
+            this.specified_insurance_cost = '';
+            this.specified_tax            = '';
+            this.specified_total_cost     = '';
 
             // Set up stripe handler
             this.payment_submitted = false;
@@ -266,8 +267,9 @@ function createControllerModule () {
                 if (this.page_state == INPUT_INFO) {
 
                     // Cacluate the insurance and total cost
-                    this.specified_tax        = Math.round((this.specified_price + this.selected_insurance) * TAX_RATE);
-                    this.specified_total_cost = Math.round(this.specified_price + this.selected_insurance + this.specified_tax);
+                    this.specified_insurance_cost = Math.round((this.selected_insurance * this.specified_length).toFixed(2)/3600);
+                    this.specified_tax            = Math.round((this.specified_price + this.specified_insurance_cost) * TAX_RATE);
+                    this.specified_total_cost     = Math.round(this.specified_price + this.specified_insurance_cost + this.specified_tax);
 
                 }
 
@@ -276,27 +278,28 @@ function createControllerModule () {
 
                 // Render the modal content
                 var self = this;
-                this.scheduleRenderer.renderModal(REVIEW_INFO, {selected_venue:       this.selected_venue,
-                                                                                                                selected_theatre:     this.selected_theatre,
-                                                                                                                selected_date:        this.selected_date,
-                                                                                                                selected_start_time:  this.selected_start_time,
-                                                                                                                selected_prime:       this.selected_prime,
-                                                                                                                selected_non_prime:   this.selected_non_prime,
-                                                                                                                selected_insurance:   this.selected_insurance,
-                                                                                                                selected_length:      this.selected_length,
-                                                                                                                specified_start_time: this.specified_start_time,
-                                                                                                                specified_length:     this.specified_length,
-                                                                                                                specified_price:      this.specified_price,
-                                                                                                                specified_tax:        this.specified_tax,
-                                                                                                                specified_total_cost: this.specified_total_cost,
-                                                                                                                customer_name:        this.customer_name,
-                                                                                                                customer_address:     this.customer_address,
-                                                                                                                customer_city:         this.customer_city,
-                                                                                                                customer_province:    this.customer_province,
-                                                                                                                customer_country:     this.customer_country,
-                                                                                                                customer_postal:      this.customer_postal,
-                                                                                                                customer_phone:       this.customer_phone,
-                                                                                                                customer_notes:       this.customer_notes});
+                this.scheduleRenderer.renderModal(REVIEW_INFO, {selected_venue:           this.selected_venue,
+                                                                selected_theatre:         this.selected_theatre,
+                                                                selected_date:            this.selected_date,
+                                                                selected_start_time:      this.selected_start_time,
+                                                                selected_prime:           this.selected_prime,
+                                                                selected_non_prime:       this.selected_non_prime,
+                                                                selected_insurance:       this.selected_insurance,
+                                                                selected_length:          this.selected_length,
+                                                                specified_start_time:     this.specified_start_time,
+                                                                specified_length:         this.specified_length,
+                                                                specified_price:          this.specified_price,
+                                                                specified_insurance_cost: this.specified_insurance_cost,
+                                                                specified_tax:            this.specified_tax,
+                                                                specified_total_cost:     this.specified_total_cost,
+                                                                customer_name:            this.customer_name,
+                                                                customer_address:         this.customer_address,
+                                                                customer_city:            this.customer_city,
+                                                                customer_province:        this.customer_province,
+                                                                customer_country:         this.customer_country,
+                                                                customer_postal:          this.customer_postal,
+                                                                customer_phone:           this.customer_phone,
+                                                                customer_notes:           this.customer_notes});
 
             } else if (PAYMENT == next_page_state) {
 

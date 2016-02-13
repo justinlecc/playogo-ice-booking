@@ -1,504 +1,518 @@
 class WaterlooDataInput
 
-  def initialize()
-    @search_to_day   = 31
-    @search_to_month = 3
-    @search_to_year  = 2016
+	def initialize()
+		@search_to_day   = 31
+		@search_to_month = 3
+		@search_to_year  = 2016
 
-    @month_name_to_digit = {"Jan" => 1, "Feb" => 2, "Mar" => 3, "Apr" => 4, 
-                            "May" => 5, "Jun" => 6, "Jul" => 7, "Aug" => 8, 
-                            "Sep" => 9, "Oct" => 10,"Nov" => 11,"Dec" => 12}
+		@month_name_to_digit = {"Jan" => 1, "Feb" => 2, "Mar" => 3, "Apr" => 4, 
+														"May" => 5, "Jun" => 6, "Jul" => 7, "Aug" => 8, 
+														"Sep" => 9, "Oct" => 10,"Nov" => 11,"Dec" => 12}
 
-    @owner_name      = "Waterloo"
-    @owner_long_name = "City of Waterloo"
-    @manager_name    = "Leta Bulgin"
-    @manager_email   = "Leta.Bulgin@waterloo.ca"
+		@owner_name      = "Waterloo"
+		@owner_long_name = "City of Waterloo"
+		@manager_name    = "Leta Bulgin"
+		@manager_email   = "Leta.Bulgin@waterloo.ca"
 
-  end
+	end
 
-  def getTheatreHash(theatre)
-    return {:prime => 20000, :non_prime => 15000, :insurance => 500, :name => theatre}
-  end
+	def getTheatreHash(theatre)
+		return {:prime => 20000, :non_prime => 15000, :insurance => 500, :name => theatre}
+	end
 
-  def getVenueLocationHash(venue) 
-    lat = nil
-    long = nil
-    address = nil
-    if (venue == "Waterloo Memorial Recreation Complex")
-      lat = 43.464093
-      long = -80.532588
-      address = "101 Father David Bauer Dr, Waterloo, ON N2J 4A8, Canada"
-    elsif (venue == "RIM Park")
-      lat = 43.519172
-      long = -80.502067
-      address = "2001 University Ave E, Waterloo, ON N2K 4K4, Canada"
-    elsif (venue == "Moses Springer Community Centre")
-      lat = 43.473331
-      long = -80.511332
-      address = "150 Lincoln Rd, Waterloo, ON N2J 4A8, Canada"
-    elsif (venue == "Albert McCormick C.C.")
-      lat = 43.488927
-      long = -80.544575
-      address = "500 Parkside Dr, Waterloo, ON N2L 5J4, Canada"
-    else
-      throw "ERROR: Invalid venue name in getVenueLocationHash()"
-    end
-    return {:name => venue, :lat => lat, :long => long, :address => address}
-  end
+	def getVenueLocationHash(venue) 
+		lat = nil
+		long = nil
+		address = nil
+		if (venue == "Waterloo Memorial Recreation Complex")
+			lat = 43.464093
+			long = -80.532588
+			address = "101 Father David Bauer Dr, Waterloo, ON N2J 4A8, Canada"
+		elsif (venue == "RIM Park")
+			lat = 43.519172
+			long = -80.502067
+			address = "2001 University Ave E, Waterloo, ON N2K 4K4, Canada"
+		elsif (venue == "Moses Springer Community Centre")
+			lat = 43.473331
+			long = -80.511332
+			address = "150 Lincoln Rd, Waterloo, ON N2J 4A8, Canada"
+		elsif (venue == "Albert McCormick C.C.")
+			lat = 43.488927
+			long = -80.544575
+			address = "500 Parkside Dr, Waterloo, ON N2L 5J4, Canada"
+		else
+			throw "ERROR: Invalid venue name in getVenueLocationHash()"
+		end
+		return {:name => venue, :lat => lat, :long => long, :address => address}
+	end
 
-  def load()
-    fetchHtml()
-    loadLocal()
-  end
+	def deleteOwnerFromDb()
 
-  def loadLocal()
-    treeToDatabase(htmlToTree('output.html'))
-  end
+		owner = Owner.where({:name => @owner_name}).first;
 
-  def treeToDatabase (availTree) # method should be in a superclass
+		# Delete the whole model
+		if (owner)
 
-    owner = Owner.where(name: @owner_name).first
+			venues = owner.venues
 
-    # 'clear_data' is set to if we want to delete the model we have and start fresh.
-    # Should be false in production because we only want to update openings.
-    clear_data = true
+			if (venues.length > 0)
 
-    if (clear_data)
+				venues.each do |venue|
 
-      # Delete the whole model
-      if (owner)
+					theatres = venue.theatres
 
-        venues = owner.venues
+					if (theatres.length > 0)
 
-        if (venues.length > 0)
+						theatres.each do |theatre| 
 
-          venues.each do |venue|
+							theatre.openings.delete_all
 
-            theatres = venue.theatres
+							if (theatre.price)
+								theatre.price.delete
+							end
 
-            if (theatres.length > 0)
+							theatre.bookings.update_all({:theatre_id => nil})
 
-              theatres.each do |theatre| 
+						end
 
-                theatre.openings.delete_all
+						# Delete the theatres
+						theatres.delete_all
 
-                if (theatre.price)
-                  theatre.price.delete
-                end
+					end
 
-              end
+				end
 
-              # Delete the theatres
-              theatres.delete_all
+				# Delete the venues
+				venues.delete_all
 
-            end
+			end
 
-          end
+			owner.delete
 
-          # Delete the venues
-          venues.delete_all
+		end
+	end
 
-        end
+	def load()
+		fetchHtml()
+		loadLocal()
+	end
 
-        owner.delete
-        owner = nil
+	def loadLocal()
+		treeToDatabase(htmlToTree('output.html'))
+	end
 
-      end
+	def treeToDatabase (availTree) # method should be in a superclass
 
-    else
+		owner = Owner.where(name: @owner_name).first
 
-      # Delete only the openings
-      if (owner)
+		# 'clear_data' is set to if we want to delete the model we have and start fresh.
+		# Should be false in production because we only want to update openings.
+		clear_data = true
 
-        venues = owner.venues
+		if (clear_data)
 
-        venues.each do |venue|
+			# Delete the whole model
+			if (owner)
+				self.deleteOwnerFromDb
+				owner = nil
+			end
 
-          theatres = venue.theatres
+		else
 
-          theatres.each do |theatre| 
+			# Delete only the openings
+			if (owner)
 
-            # Clear the current openings
-            theatre.openings.delete_all
+				venues = owner.venues
 
-          end
+				venues.each do |venue|
 
-        end
+					theatres = venue.theatres
 
-      end
+					theatres.each do |theatre| 
 
-    end
+						# Clear the current openings
+						theatre.openings.delete_all
 
-    # Create the owner record if it is has been deleted (or hasn't existsed yet)
-    if (!owner)
-      owner = Owner.create!({:name            => @owner_name,
-                             :long_name => @owner_long_name,
-                             :manager_name    => @manager_name,
-                             :manager_email   => @manager_email});
-    end
+					end
 
-    # Create new avails
-    availTree.venues.each do |venue|
+				end
 
-      if (clear_data)
+			end
 
-        locationHash = getVenueLocationHash(venue.name) 
+		end
 
-        cur_venue = Venue.create!({:name     => venue.name, 
-                                    :owner   => owner,
-                                    :lat     => venue.lat,
-                                    :long    => venue.long, #locationHash[:long],
-                                    :address => venue.address}) #locationHash[:address]});
+		# Create the owner record if it is has been deleted (or hasn't existsed yet)
+		if (!owner)
+			owner = Owner.create!({:name            => @owner_name,
+														 :long_name => @owner_long_name,
+														 :manager_name    => @manager_name,
+														 :manager_email   => @manager_email});
+		end
 
-      else
+		# Create new avails
+		availTree.venues.each do |venue|
 
-        cur_venue = Venue.find({:name => venue.name}).first;
+			if (clear_data)
 
-      end
+				locationHash = getVenueLocationHash(venue.name) 
 
-      venue.theatres.each do |theatre|
+				cur_venue = Venue.create!({:name     => venue.name, 
+																		:owner   => owner,
+																		:lat     => venue.lat,
+																		:long    => venue.long, #locationHash[:long],
+																		:address => venue.address}) #locationHash[:address]});
 
-        if (clear_data) 
+			else
 
-          cur_theatre = Theatre.create!({:name => theatre.name, :venue => cur_venue})
+				cur_venue = Venue.find({:name => venue.name}).first;
 
-          Price.create!({:prime => 20000, :non_prime => 15000, :insurance => 533, :theatre => cur_theatre}) # TODO: make price models
+			end
 
-        else
+			venue.theatres.each do |theatre|
 
-          cur_theatre = Theatre.find({:name => theatre.name, :venue => cur_venue})
+				if (clear_data) 
 
-        end
+					cur_theatre = Theatre.create!({:name => theatre.name, :venue => cur_venue})
 
-        theatre.days.each do |day|
+					Price.create!({:prime => 20000, :non_prime => 15000, :insurance => 533, :theatre => cur_theatre}) # TODO: make price models
 
-          day.blocks.each do |block|
+				else
 
-            Opening.create!({:start_time => block.start, 
-                             :length     => block.length, 
-                             :date       => day.date,
-                             :theatre    => cur_theatre})
-          end
+					cur_theatre = Theatre.find({:name => theatre.name, :venue => cur_venue})
 
-        end
+				end
 
-      end
+				theatre.days.each do |day|
 
-    end
+					day.blocks.each do |block|
 
-  end
-  
-  def htmlToTree(htmlFile)
+						Opening.create!({:start_time => block.start, 
+														 :length     => block.length, 
+														 :date       => day.date,
+														 :theatre    => cur_theatre})
+					end
 
-    # Structure to hold availabilities
-    availTree = ScheduleTree.new("Waterloo")
+				end
 
-    # File name of doc to be parsed should be param 
-    doc_path = Rails.root.join('lib', 'schedule_readers', 'waterloo', htmlFile)
-    
-    # Get xml into Nokogiri format
-    doc = Nokogiri::XML(File.read(doc_path))
+			end
 
-    # Iterate through each page
-    pages = doc.css("body")
-    page_number = 1
+		end
 
-    pages.each do |page|
+	end
+	
+	def htmlToTree(htmlFile)
 
-      table = page.css("table")
+		# Structure to hold availabilities
+		availTree = ScheduleTree.new("Waterloo")
 
-      # Check if its the first page which has a table and header
-      if (table.length != 0)
+		# File name of doc to be parsed should be param 
+		doc_path = Rails.root.join('lib', 'schedule_readers', 'waterloo', htmlFile)
+		
+		# Get xml into Nokogiri format
+		doc = Nokogiri::XML(File.read(doc_path))
 
-        # Get rows we want from the first page
-        rows = page.css("table > tbody > tr")
+		# Iterate through each page
+		pages = doc.css("body")
+		page_number = 1
 
-      else
+		pages.each do |page|
 
-        # Get rows we want from subsequent pages
-        rows = page.css("tr")
+			table = page.css("table")
 
-      end
+			# Check if its the first page which has a table and header
+			if (table.length != 0)
 
-      page_number += 1
+				# Get rows we want from the first page
+				rows = page.css("table > tbody > tr")
 
-      rows.each do |row|
+			else
 
-        # Get cells
-        cells = row.css("td")
+				# Get rows we want from subsequent pages
+				rows = page.css("tr")
 
-        # Get venue
-        venue = cells[0].inner_text
+			end
 
-        # Get theatre
-        theatre = cells[1].css("li")[0].inner_text
+			page_number += 1
 
-        # Get date (dd-mm-yyyy)
-        date = cells[3].css("a")[0].inner_text.split("-")
-        month = date[0]
-        day = date[1]
-        year = date[2]
-        date = year + "-" + month + "-" + day
+			rows.each do |row|
 
-        # Get start and end time
-        timeslot = cells[4].inner_text.split("-")
-        start_time = timeslot[0]
-        end_time = timeslot[2]
+				# Get cells
+				cells = row.css("td")
 
-        # Create datetimes
-        start_datetime = DateTime.strptime(date + " " + start_time, "%Y-%b-%d %H:%M%p")
-        end_datetime   = DateTime.strptime(date + " " + end_time, "%Y-%b-%d %H:%M%p")
+				# Get venue
+				venue = cells[0].inner_text
 
-        # Get date string
-        date_string = start_datetime.strftime("%Y-%m-%d")
+				# Get theatre
+				theatre = cells[1].css("li")[0].inner_text
 
-        # Assert that start_datetime is before end_datetime
-        if (start_datetime >= end_datetime)
-          raise "ERROR: start_datetime is later than end_datetime"
-        end
+				# Get date (dd-mm-yyyy)
+				date = cells[3].css("a")[0].inner_text.split("-")
+				month = date[0]
+				day = date[1]
+				year = date[2]
+				date = year + "-" + month + "-" + day
 
-        # Get Icetime fields
-        length = ((end_datetime - start_datetime)*24*60*60).to_i # multiplies fraction of day by 24, 60 and 60
-        start_seconds = ((start_datetime - start_datetime.beginning_of_day)*24*60*60).to_i
+				# Get start and end time
+				timeslot = cells[4].inner_text.split("-")
+				start_time = timeslot[0]
+				end_time = timeslot[2]
 
-        # Length should be a multiple of a half hour
-        remainder = length % (30 * 60)
-        if (remainder != 0)
+				# Create datetimes
+				start_datetime = DateTime.strptime(date + " " + start_time, "%Y-%b-%d %H:%M%p")
+				end_datetime   = DateTime.strptime(date + " " + end_time, "%Y-%b-%d %H:%M%p")
 
-          # Seems to be only a few thursday mornings in January... keep and eye on this
-          puts "============================================================================"
-          puts "NOT HALF HOUR:"
-          puts venue + " -> " + theatre
-          puts "Start time: " + start_datetime.to_s
-          puts "Length in hours: " + (length / (3600.00)).to_s
-          puts "============================================================================"
+				# Get date string
+				date_string = start_datetime.strftime("%Y-%m-%d")
 
-          # Make correct length
-          start_seconds += remainder
-          length -= remainder
+				# Assert that start_datetime is before end_datetime
+				if (start_datetime >= end_datetime)
+					raise "ERROR: start_datetime is later than end_datetime"
+				end
 
-          if (length < 3600)
-            raise "ERROR: shortening the length made the booking too short!"
-          end
+				# Get Icetime fields
+				length = ((end_datetime - start_datetime)*24*60*60).to_i # multiplies fraction of day by 24, 60 and 60
+				start_seconds = ((start_datetime - start_datetime.beginning_of_day)*24*60*60).to_i
 
-        end
+				# Length should be a multiple of a half hour
+				remainder = length % (30 * 60)
+				if (remainder != 0)
 
-        puts venue + " | " + theatre
+					# Seems to be only a few thursday mornings in January... keep and eye on this
+					puts "============================================================================"
+					puts "NOT HALF HOUR:"
+					puts venue + " -> " + theatre
+					puts "Start time: " + start_datetime.to_s
+					puts "Length in hours: " + (length / (3600.00)).to_s
+					puts "============================================================================"
 
-        # Add the availability to the Avail Tree
-        availTree.addAvail(getVenueLocationHash(venue), getTheatreHash(theatre), date_string, start_seconds, length)
+					# Make correct length
+					start_seconds += remainder
+					length -= remainder
 
-      end
+					if (length < 3600)
+						raise "ERROR: shortening the length made the booking too short!"
+					end
 
-    end
+				end
 
-    return availTree
+				puts venue + " | " + theatre
 
-  end
+				# Add the availability to the Avail Tree
+				availTree.addAvail(getVenueLocationHash(venue), getTheatreHash(theatre), date_string, start_seconds, length)
 
-  def fetchHtml()
+			end
 
-    # The file we are writing the data to
-    output_file = Rails.root.join('lib', 'schedule_readers', 'waterloo', 'output.html')
+		end
 
-    # ============================================================
-    # Step 1
-    # Gets link for online facilities schedule with updated params
-    # ============================================================
+		return availTree
 
-    # Get web page
-    response = HTTParty.get('http://www.waterloo.ca/en/gettingactive/facilitiesandrooms.asp',
-      :headers => {
-        'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-        'Accept-Encoding' => 'gzip, deflate, sdch',
-        'Accept-Language' => 'en-US,en;q=0.8', 
-        'Cache-Control' => 'max-age=0',
-        'Connection' => 'keep-alive',
-        'Host' => 'www.waterloo.ca',
-        'Upgrade-Insecure-Requests' => '1',
-        'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36'
-      },
-      :limit => 1
-    )
+	end
 
-    # Parse web page
-    parsed_page = Nokogiri::HTML(response)
+	def fetchHtml()
 
-    # Grab correct link from page
-    possible_links = parsed_page.css('#printAreaContent .PlainText a')
+		# The file we are writing the data to
+		output_file = Rails.root.join('lib', 'schedule_readers', 'waterloo', 'output.html')
 
-    link = ''
+		# ============================================================
+		# Step 1
+		# Gets link for online facilities schedule with updated params
+		# ============================================================
 
-    possible_links.each do |possible_link|
+		# Get web page
+		response = HTTParty.get('http://www.waterloo.ca/en/gettingactive/facilitiesandrooms.asp',
+			:headers => {
+				'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+				'Accept-Encoding' => 'gzip, deflate, sdch',
+				'Accept-Language' => 'en-US,en;q=0.8', 
+				'Cache-Control' => 'max-age=0',
+				'Connection' => 'keep-alive',
+				'Host' => 'www.waterloo.ca',
+				'Upgrade-Insecure-Requests' => '1',
+				'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36'
+			},
+			:limit => 1
+		)
 
-      if (possible_link.text == 'availability')
+		# Parse web page
+		parsed_page = Nokogiri::HTML(response)
 
-        link = possible_link['href']
+		# Grab correct link from page
+		possible_links = parsed_page.css('#printAreaContent .PlainText a')
 
-      end
+		link = ''
 
-    end
+		possible_links.each do |possible_link|
 
-    # =====================================================================
-    # Step 2
-    # Navige to facility availability schedule while collecting the cookies
-    # =====================================================================
+			if (possible_link.text == 'availability')
 
-    # Get page
-    response = HTTParty.get(link, 
-      :headers => {
-        'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Accept-Encoding' => 'gzip, deflate',
-        'Accept-Language' => 'en-US,en;q=0.5',
-        'Connection' => 'keep-alive',
-        'Host' => 'expressreg.city.waterloo.on.ca',
-        'Referer' => 'http://www.waterloo.ca/en/gettingactive/facilitiesandrooms.asp',
-        'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:41.0) Gecko/20100101 Firefox/41.0'
-      },
-      :limit => 3
-    )
+				link = possible_link['href']
 
-    # Collect the cookies
-    cookies = HTTParty::CookieHash.new
-    if (response.request.options[:headers]["Cookie"])
-      cookies.add_cookies response.request.options[:headers]["Cookie"]
-    end
+			end
 
-    # Parse the web page
-    parsed_page = Nokogiri::HTML(response)
+		end
 
-    # Get the session variables
-    scheck = parsed_page.css('#SCheck')[0]['value']
-    sdt    = parsed_page.css('#SDT')[0]['value']
+		# =====================================================================
+		# Step 2
+		# Navige to facility availability schedule while collecting the cookies
+		# =====================================================================
 
-    # ====================================
-    # Step 3
-    # Get the first page of availabilities
-    # ====================================
-
-    # Get the current date information
-    Time.zone = 'Eastern Time (US & Canada)'
-    current_day = Time.zone.now.day
-    current_month = Time.zone.now.month
-    current_year = Time.zone.now.year
-    current_date = DateTime.parse(Time.zone.now.to_s).strftime("%d-%m-%Y")
-
-    # Get the date we are searching to
-    search_to_date = DateTime.new(@search_to_year, @search_to_month, @search_to_day).strftime("%d-%m-%Y")
-
-    # Get the webpage
-    response = HTTParty.post("https://expressreg.city.waterloo.on.ca/facilities/FacilitiesSearchResult.asp",
-        :query => { :SCheck => scheck, :SDT => sdt, :ajax => 1},
-        :body => {
-          'SearchFor' => 'A',
-          'DayFrom' => current_day,
-          'MonthFrom' => current_month,
-          'YearFrom' => current_year,
-          'DateFrom' => current_date,
-          'DayTo' => @search_to_day,
-          'MonthTo' => @search_to_month,
-          'YearTo' => @search_to_year,
-          'DateTo' => @search_to_date,
-          'TimeFrom' => 6,
-          'AMPMFrom' => 0,
-          'TimeTo' => 11, # wloo online avails search doesn't allow any later
-          'AMPMTo' => 1,
-          'FacilityLengthHours' => 1,
-          'FacilityLengthMinutes' => 0,
-          'chkWeekDay8' => 7,
-          'FacilityFunctions' => 686,
-          'CapacityPieces' => nil,
-          'FacilitySpots' => nil,
-          'FacilityTypes' => nil,
-          'FacilityComplexs' => nil,
-          'ajax' => true,
-        },
-        :headers => {
-          'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:41.0) Gecko/20100101 Firefox/41.0',
-          'Cookie' => cookies.to_cookie_string,
-          'Accept' => 'text/html, */*',
-          'Accept-Encoding' => 'gzip, deflate',
-          'Accept-Language' => 'en-US,en;q=0.5',
-          'Cache-Control' => 'no-cache',
-          'Connection'  => 'keep-alive',
-          'Content-Length' =>  '77',
-          'Content-Type' => 'application/x-www-form-urlencoded; charset=UTF-8',
-          'Host' => 'expressreg.city.waterloo.on.ca',
-          'Pragma' => 'no-cache',
-          'Referer' => link,
-          'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:41.0) Gecko/20100101 Firefox/41.0',
-          'X-Requested-With' => 'XMLHttpRequest'
-        }
-    )
+		# Get page
+		response = HTTParty.get(link, 
+			:headers => {
+				'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+				'Accept-Encoding' => 'gzip, deflate',
+				'Accept-Language' => 'en-US,en;q=0.5',
+				'Connection' => 'keep-alive',
+				'Host' => 'expressreg.city.waterloo.on.ca',
+				'Referer' => 'http://www.waterloo.ca/en/gettingactive/facilitiesandrooms.asp',
+				'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:41.0) Gecko/20100101 Firefox/41.0'
+			},
+			:limit => 3
+		)
 
-    # Parse the page and write it to file
-    parsed_page = Nokogiri::HTML(response)
-    File.write(output_file, parsed_page)
+		# Collect the cookies
+		cookies = HTTParty::CookieHash.new
+		if (response.request.options[:headers]["Cookie"])
+			cookies.add_cookies response.request.options[:headers]["Cookie"]
+		end
 
-    # ====================================
-    # Step 4
-    # Get the rest of the availabilities
-    # ====================================
+		# Parse the web page
+		parsed_page = Nokogiri::HTML(response)
 
-    page_number = 2 # Got page 1 above
+		# Get the session variables
+		scheck = parsed_page.css('#SCheck')[0]['value']
+		sdt    = parsed_page.css('#SDT')[0]['value']
 
-    while (true)
+		# ====================================
+		# Step 3
+		# Get the first page of availabilities
+		# ====================================
 
-      # Calculate the values we need to send to Waterloo's server
-      i_display_start = ((page_number - 1) * 10) + 1
-      i_display_length = 10
+		# Get the current date information
+		Time.zone = 'Eastern Time (US & Canada)'
+		current_day = Time.zone.now.day
+		current_month = Time.zone.now.month
+		current_year = Time.zone.now.year
+		current_date = DateTime.parse(Time.zone.now.to_s).strftime("%d-%m-%Y")
 
-      # Get the webpage
-      response = HTTParty.post("https://expressreg.city.waterloo.on.ca/facilities/FacilitiesSearchResult.asp",
-          :query => { :SCheck => scheck, :SDT => sdt, :ajax => 1},
-          :body => {
-            'SearchFor' => 'A',
-            'iDisplayStart' => i_display_start,
-            'iDisplayLength' => i_display_length,
-            'iCurrentPageNumber' => page_number,
-            'ajax' => true,
-          },
-          :headers => {
-            'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:41.0) Gecko/20100101 Firefox/41.0',
-            'Cookie' => cookies.to_cookie_string,
-            'Accept' => 'text/html, */*',
-            'Accept-Encoding' => 'gzip, deflate',
-            'Accept-Language' => 'en-US,en;q=0.5',
-            'Cache-Control' => 'no-cache',
-            'Connection'  => 'keep-alive',
-            'Content-Length' =>  '77',
-            'Content-Type' => 'application/x-www-form-urlencoded; charset=UTF-8',
-            'Host' => 'expressreg.city.waterloo.on.ca',
-            'Pragma' => 'no-cache',
-            'Referer' => link,
-            'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:41.0) Gecko/20100101 Firefox/41.0',
-            'X-Requested-With' => 'XMLHttpRequest'
-          }
-      )
+		# Get the date we are searching to
+		search_to_date = DateTime.new(@search_to_year, @search_to_month, @search_to_day).strftime("%d-%m-%Y")
+
+		# Get the webpage
+		response = HTTParty.post("https://expressreg.city.waterloo.on.ca/facilities/FacilitiesSearchResult.asp",
+				:query => { :SCheck => scheck, :SDT => sdt, :ajax => 1},
+				:body => {
+					'SearchFor' => 'A',
+					'DayFrom' => current_day,
+					'MonthFrom' => current_month,
+					'YearFrom' => current_year,
+					'DateFrom' => current_date,
+					'DayTo' => @search_to_day,
+					'MonthTo' => @search_to_month,
+					'YearTo' => @search_to_year,
+					'DateTo' => @search_to_date,
+					'TimeFrom' => 6,
+					'AMPMFrom' => 0,
+					'TimeTo' => 11, # wloo online avails search doesn't allow any later
+					'AMPMTo' => 1,
+					'FacilityLengthHours' => 1,
+					'FacilityLengthMinutes' => 0,
+					'chkWeekDay8' => 7,
+					'FacilityFunctions' => 686,
+					'CapacityPieces' => nil,
+					'FacilitySpots' => nil,
+					'FacilityTypes' => nil,
+					'FacilityComplexs' => nil,
+					'ajax' => true,
+				},
+				:headers => {
+					'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:41.0) Gecko/20100101 Firefox/41.0',
+					'Cookie' => cookies.to_cookie_string,
+					'Accept' => 'text/html, */*',
+					'Accept-Encoding' => 'gzip, deflate',
+					'Accept-Language' => 'en-US,en;q=0.5',
+					'Cache-Control' => 'no-cache',
+					'Connection'  => 'keep-alive',
+					'Content-Length' =>  '77',
+					'Content-Type' => 'application/x-www-form-urlencoded; charset=UTF-8',
+					'Host' => 'expressreg.city.waterloo.on.ca',
+					'Pragma' => 'no-cache',
+					'Referer' => link,
+					'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:41.0) Gecko/20100101 Firefox/41.0',
+					'X-Requested-With' => 'XMLHttpRequest'
+				}
+		)
 
-      # Parse the webpage
-      parsed_page = Nokogiri::HTML(response)
+		# Parse the page and write it to file
+		parsed_page = Nokogiri::HTML(response)
+		File.write(output_file, parsed_page)
 
-      # Check if the webpage is empty (stop requesting)
-      if (parsed_page.css('html').length == 0)
-        puts "No more pages to fetch."
-        break
-      else
-        puts "Page: " + page_number.to_s
-      end
+		# ====================================
+		# Step 4
+		# Get the rest of the availabilities
+		# ====================================
 
-      # Append the page to file
-      open(output_file, 'a') do |f|
-        f.puts parsed_page
-      end
+		page_number = 2 # Got page 1 above
 
-      # Goto the next page
-      page_number += 1
+		while (true)
 
-    end
+			# Calculate the values we need to send to Waterloo's server
+			i_display_start = ((page_number - 1) * 10) + 1
+			i_display_length = 10
 
-    puts "Done."
+			# Get the webpage
+			response = HTTParty.post("https://expressreg.city.waterloo.on.ca/facilities/FacilitiesSearchResult.asp",
+					:query => { :SCheck => scheck, :SDT => sdt, :ajax => 1},
+					:body => {
+						'SearchFor' => 'A',
+						'iDisplayStart' => i_display_start,
+						'iDisplayLength' => i_display_length,
+						'iCurrentPageNumber' => page_number,
+						'ajax' => true,
+					},
+					:headers => {
+						'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:41.0) Gecko/20100101 Firefox/41.0',
+						'Cookie' => cookies.to_cookie_string,
+						'Accept' => 'text/html, */*',
+						'Accept-Encoding' => 'gzip, deflate',
+						'Accept-Language' => 'en-US,en;q=0.5',
+						'Cache-Control' => 'no-cache',
+						'Connection'  => 'keep-alive',
+						'Content-Length' =>  '77',
+						'Content-Type' => 'application/x-www-form-urlencoded; charset=UTF-8',
+						'Host' => 'expressreg.city.waterloo.on.ca',
+						'Pragma' => 'no-cache',
+						'Referer' => link,
+						'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:41.0) Gecko/20100101 Firefox/41.0',
+						'X-Requested-With' => 'XMLHttpRequest'
+					}
+			)
 
-  end
+			# Parse the webpage
+			parsed_page = Nokogiri::HTML(response)
+
+			# Check if the webpage is empty (stop requesting)
+			if (parsed_page.css('html').length == 0)
+				puts "No more pages to fetch."
+				break
+			else
+				puts "Page: " + page_number.to_s
+			end
+
+			# Append the page to file
+			open(output_file, 'a') do |f|
+				f.puts parsed_page
+			end
+
+			# Goto the next page
+			page_number += 1
+
+		end
+
+		puts "Done."
+
+	end
+
+
 
 end

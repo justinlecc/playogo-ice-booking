@@ -641,7 +641,7 @@ function createViewModule () {
                 var priceStr = getDollarStr(info.specified_price) + " (" + getHoursString(getHoursFromSeconds(info.specified_length)) + " @ " + getDollarStr(info.selected_prime) + "/hr prime and " + getDollarStr(info.selected_non_prime) + "/hr non prime)"; 
                 modal_body.children('#review-price').html(priceStr);
 
-                var insuranceStr = getDollarStr(info.selected_insurance) + " (manditory by municipality policy)";
+                var insuranceStr = getDollarStr(info.specified_insurance_cost) + " (2.5 hrs @ " + getDollarStr(info.selected_insurance) + "/hr; manditory by municipality policy)";
                 modal_body.children('#review-insurance').html(insuranceStr);
 
                 var taxStr   = getDollarStr(info.specified_tax) + " (13% HST)";
