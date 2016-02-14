@@ -261,7 +261,12 @@ function createViewModule () {
                 // Name column
                 var venue_name_col = document.createElement('div');
                 venue_name_col.className = 'venue-name-col col-xs-12 col-same-height';
-                venue_name_col.innerHTML = venue.name + " (" + venue.duration.text + ")";
+                var name_span = document.createElement('span');
+                name_span.innerHTML = venue.name;
+                venue_name_col.appendChild(name_span);
+                var drive_time_span = document.createElement('span');
+                drive_time_span.innerHTML = ' (<%= image_tag("car.png", :class => "car-glyph") %>' + venue.duration.text + '  )'; //"
+                venue_name_col.appendChild(drive_time_span);
                 same_height.appendChild(venue_name_col);
 
                 // Extra space (for future venue attributes; not currently used)
@@ -571,7 +576,7 @@ function createViewModule () {
                 modal_body.innerHTML = '';
 
                 var top = document.createElement('p');
-                top.innerHTML = 'By requesting this ice time with the ' + info.long_name + ' are you agreeing to the following:';
+                top.innerHTML = 'By requesting this ice time with the ' + info.long_name + ' you are agreeing to the following:';
                 modal_body.appendChild(top);
 
                 var list = document.createElement('ol');

@@ -214,10 +214,10 @@ function createControllerModule () {
                     this.specified_start_time = this.selected_start_time;
                     this.specified_length     = 60*60;
                     this.specified_price      = getBookingPrice(this.selected_date, 
-                                                                                                            this.specified_start_time,
-                                                                                                            this.specified_length,
-                                                                                                            this.selected_prime,
-                                                                                                            this.selected_non_prime);
+                                                                this.specified_start_time,
+                                                                this.specified_length,
+                                                                this.selected_prime,
+                                                                this.selected_non_prime);
                 }
 
                 // Set the page state
@@ -267,9 +267,11 @@ function createControllerModule () {
                 if (this.page_state == INPUT_INFO) {
 
                     // Cacluate the insurance and total cost
-                    this.specified_insurance_cost = Math.round((this.selected_insurance * this.specified_length).toFixed(2)/3600);
-                    this.specified_tax            = Math.round((this.specified_price + this.specified_insurance_cost) * TAX_RATE);
-                    this.specified_total_cost     = Math.round(this.specified_price + this.specified_insurance_cost + this.specified_tax);
+                    var accurate_insurance        = (this.selected_insurance * this.specified_length).toFixed(3)/3600;
+                    this.specified_insurance_cost = Math.round(accurate_insurance);
+                    var accurate_tax              = (this.specified_price + this.specified_insurance_cost).toFixed(3) * TAX_RATE
+                    this.specified_tax            = Math.round(accurate_tax);
+                    this.specified_total_cost     = Math.round(this.specified_price + this.specified_insurance_cost + accurate_tax);
 
                 }
 

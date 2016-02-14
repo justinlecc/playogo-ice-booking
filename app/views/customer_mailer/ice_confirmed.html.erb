@@ -1,8 +1,12 @@
 <p>Hi <%= @name %>,</p>
 
 <p>
-  <%= @owner %> has confirmed your ice time. They will be contacting you shortly.
+  <%= @owner %> has confirmed your ice time. They will be sending you an ice contract shortly.
 </p>
+
+<p>Here are the booking details:</p>
+<p><b>Where:</b> <%= @venue %> - <%= @theatre %> </p>
+<p><b>When:</b> <%= @start_time %> - <%= @end_time %> on <%= @date %> </p>
 
 <p>
   If you have a minute, we would love to hear your thoughts about Playogo. You can provide us with feedback by replying to this email.

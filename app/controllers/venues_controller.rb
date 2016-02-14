@@ -91,7 +91,7 @@ class VenuesController < ApplicationController
 		# if doesn't match: log values and send email to admin
 
 		# Create "pending" booking
-		b = Booking.create({:start_time         => start_time, 
+		b = Booking.create({:start_time => start_time, 
 							:length             => length, 
 							:date               => date, 
 							:theatre            => theatre,
@@ -169,8 +169,8 @@ class VenuesController < ApplicationController
 
 		# Update the booking status to 'pending'
 		b.update({:status => "pending", :stripe_customer_id => customer.id})
-
-		flash[:notice] = "Thank you for requesting ice with us. " + theatre.venue.owner.name + " will be confirming your booking within the next " + theatre.venue.owner.processing_hours + " business hours. Check your email inbox for further information."
+		
+		flash[:notice] = "Thank you for requesting ice with us. " + theatre.venue.owner.name + " will be confirming your booking during business hours (Monday to Friday, between 9 a.m. and 4 p.m.). Check your email inbox for further information."
 
 		# Send manager email
 		ManagerMailer.ice_request({:booking_id => b.id, :amount_paid => amount}).deliver_now

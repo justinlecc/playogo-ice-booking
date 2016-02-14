@@ -9,7 +9,7 @@ class KitchenerDataInput
     @manager_name    = "Dan Walkling"
     @manager_email   = "info@theaud.ca"
 
-    @processing_hours = 8
+    @processing_hours = 9
 
     @price_prime     = 23673
     @price_non_prime = 13421

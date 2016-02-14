@@ -6,7 +6,7 @@ class ManagerController < ApplicationController
     booking = Booking.where({:id => @booking_id}).first
 
     if (booking == nil || booking.status != "pending")
-      flash[:alert] = "I'm sorry but hat booking page does not exist. Please contact PlayogoSports@gmail.com for support."
+      flash[:alert] = "I'm sorry but that booking page does not exist. Please contact PlayogoSports@gmail.com for support."
       redirect_to '/venues'
       return
     end
@@ -45,7 +45,7 @@ class ManagerController < ApplicationController
     booking = Booking.where(:id => booking_id).first
     if (!booking || booking.status != "pending")
       # TO DO: handle this error
-      flash[:alert] = "This booking is no longer active. Please email playogosports@gmail.com for support."
+      flash[:alert] = "This booking is no longer pending. Please email playogosports@gmail.com for support."
       redirect_to '/venues'
       return
     end
@@ -67,7 +67,9 @@ class ManagerController < ApplicationController
     end
 
     if (new_end_time <= new_start_time)
-      throw "ERROR: start_time isn't before endtime"
+      flash[:alert] = "The specified start time of the booking was not before the end time. Please try again or email playogosports@gmail.com for support."
+      redirect_to '/venues'
+      return
     end
 
     new_length = new_end_time - new_start_time
@@ -77,9 +79,12 @@ class ManagerController < ApplicationController
      && new_start_time == booking.start_time \
      && new_length == booking.length \
      && theatre_id == booking.theatre.id)
+
       # If all fields match, update status
       booking.update!({:status => "confirmed", :contract_id => contract_id})
+
     else
+
       # Else update fields
       theatre = Theatre.where({:id => theatre_id}).first
       booking.update!({:start_time => new_start_time,
@@ -89,6 +94,9 @@ class ManagerController < ApplicationController
                        :status => "confirmed",
                        :contract_id => contract_id
                       })
+      new_price = booking.getPrice
+      booking.update!({:price => new_price})
+
     end
 
   
@@ -151,6 +159,7 @@ class ManagerController < ApplicationController
     # Notify admin of cancellation
     AdminMailer.notify_admin({:type => "BOOKING_CANCELLATION", :booking_id => booking_id}).deliver_now
 
+    flash[:notice] = "Thank you for processing the booking request. Please be sure you have followed up with the customer. If you did not mean to cancel this booking, please email playogosports@gmail.com for support."
     redirect_to '/venues'
   end 
 end

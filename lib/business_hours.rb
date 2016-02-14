@@ -2,9 +2,11 @@
 
 class BusinessHours
 
+  # |1 .2 .3 .4 .5 .6 .7 .8 .  .  .  |
+  # 9  10 11 12 1  2  3  4  5  6  7  8 
   def initialize
     @open  = 9
-    @close = 17
+    @close = 16
     @approvalBufferHours = 8
   end
 
@@ -24,7 +26,7 @@ class BusinessHours
 
         if (date_time.hour < @open)
           date_time = date_time + (@open - date_time.hour).hours
-        elsif (date_time.hour > @close)
+        elsif (date_time.hour >= @close)
           date_time = date_time - date_time.hour.hours + 1.days + @open.hours
         else
           date_time = date_time + 1.hours
