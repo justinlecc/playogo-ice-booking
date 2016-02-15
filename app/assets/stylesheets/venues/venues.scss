@@ -152,6 +152,13 @@ fieldset[disabled] .btn-default.active {
   height:100%;
   overflow:scroll;
   padding: 0;
+  background-image: image-url("schedulepagebg.jpg");
+  background-repeat: no-repeat;
+  background-position: 50% 50%; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 
@@ -302,11 +309,12 @@ div.hours-col {
 */
 /* columns of same height styles */
 #tablet-container-outer {
+  background: white;
   border-radius: 35px;
-  /* Drop shadow */
-  -webkit-box-shadow: 2px 5px 3px 1px $dark-grey;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
-  -moz-box-shadow:    2px 5px 3px 1px $dark-grey;  /* Firefox 3.5 - 3.6 */
-  box-shadow:         2px 5px 3px 1px $dark-grey;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+  /* Drop shadow: JL: with a white background this was $dark-grey */
+  -webkit-box-shadow: 2px 5px 3px 1px rgb(58, 56, 56);  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  -moz-box-shadow:    2px 5px 3px 1px rgb(58, 56, 56);  /* Firefox 3.5 - 3.6 */
+  box-shadow:         2px 5px 3px 1px rgb(58, 56, 56);  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
 /*box-shadow: [horizontal offset] [vertical offset] [blur radius] [optional spread radius] [color];*/
 }
 

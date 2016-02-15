@@ -193,31 +193,49 @@ function createControllerModule () {
          *  so 'this' may refer to the controller.
          *  'el' is the element that was clicked, ie. the avail block that was clicked.
          */
-        changePageState: function (el, next_page_state) {
+        changePageState: function (eventInfo, next_page_state) {
             if (TIME_SELECT == next_page_state) {
 
                 // Set the selected booking if opening was clicked
-                if (el != null) {
+                if (eventInfo.el != null) {
 
                     // Selected fields
-                    this.selected_owner_id    = parseInt(el.getAttribute("owner_id"));
-                    this.selected_venue       = el.getAttribute("venue");
-                    this.selected_theatre     = el.getAttribute("theatre");
-                    this.selected_date        = el.getAttribute("date");
-                    this.selected_start_time  = parseInt(el.getAttribute("start_time"));
-                    this.selected_length      = parseInt(el.getAttribute("length")); /* need to get size from selection */
+                    this.selected_owner_id    = parseInt(eventInfo.el.getAttribute("owner_id"));
+                    this.selected_venue       = eventInfo.el.getAttribute("venue");
+                    this.selected_theatre     = eventInfo.el.getAttribute("theatre");
+                    this.selected_date        = eventInfo.el.getAttribute("date");
+                    this.selected_start_time  = parseInt(eventInfo.el.getAttribute("start_time"));
+                    this.selected_length      = parseInt(eventInfo.el.getAttribute("length")); /* need to get size from selection */
                     this.selected_prime       = parseInt(getFromScheduleTree(this.availsCollectionModel.getAvails(), 'prime', this.selected_venue, this.selected_theatre));
                     this.selected_non_prime   = parseInt(getFromScheduleTree(this.availsCollectionModel.getAvails(), 'non_prime', this.selected_venue, this.selected_theatre));
                     this.selected_insurance   = parseInt(getFromScheduleTree(this.availsCollectionModel.getAvails(), 'insurance', this.selected_venue, this.selected_theatre));
  
+                    // Get the relative location of the click
+                    var $el = $(eventInfo.el);
+                    var x = eventInfo.clickEvent.pageX - $el.offset().left;
+                    // Cacluate the ratio: click distance from left / right distance from left
+                    var clickPositionRatio = x/$el.width();
+                    // Get the actual length from the left side of block to click
+                    var clickedLength = (clickPositionRatio*this.selected_length).toFixed();
+                    // Get the offset for the slider handles
+                    var lower = Math.floor(clickedLength / (30*60))*(30*60);
+                    var upper = Math.ceil(clickedLength / (30*60))*(30*60);
+                    if (upper < clickedLength || lower > clickedLength) throw "ERROR: Bounds not calculated correctly in VenueController:changePageState";
+                    var selectionOffset = Math.abs(upper - clickedLength) < Math.abs(lower - clickedLength) ? upper : lower;
+                    // Make sure the selection gives atleast an hour long block of time
+                    if (selectionOffset > this.selected_length - (3600)) {
+                        selectionOffset = this.selected_length - (3600);
+                    }
+
                     // Default specified values
-                    this.specified_start_time = this.selected_start_time;
+                    this.specified_start_time = this.selected_start_time + selectionOffset;
                     this.specified_length     = 60*60;
                     this.specified_price      = getBookingPrice(this.selected_date, 
                                                                 this.specified_start_time,
                                                                 this.specified_length,
                                                                 this.selected_prime,
                                                                 this.selected_non_prime);
+
                 }
 
                 // Set the page state
@@ -236,7 +254,8 @@ function createControllerModule () {
                                                                 specified_start_time: this.specified_start_time,
                                                                 specified_length:     this.specified_length,
                                                                 specified_price:      this.specified_price,
-                                                                controller:           self
+                                                                controller:           self,
+                                                                clickPositionRatio:   clickPositionRatio
                                                                 });
 
                 // Activate the modal

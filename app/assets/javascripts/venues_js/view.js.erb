@@ -14,12 +14,12 @@ var NAME_COL_WIDTH_PCT = 33;
 /*
  * Controller states (explanation of each below)
  */
-var SEARCH = 'SEARCH';
-var TIME_SELECT = 'TIME_SELECT';
+var SEARCH         = 'SEARCH';
+var TIME_SELECT    = 'TIME_SELECT';
 var VENUE_POLICIES = 'VENUE_POLICIES';
-var INPUT_INFO = 'INPUT_INFO';
-var REVIEW_INFO = 'REVIEW_INFO';
-var PAYMENT = 'PAYMENT';
+var INPUT_INFO     = 'INPUT_INFO';
+var REVIEW_INFO    = 'REVIEW_INFO';
+var PAYMENT        = 'PAYMENT';
 
 /*
  * Event types
@@ -403,8 +403,8 @@ function createViewModule () {
                                 avail_block.setAttribute('length', avail.length);
 
                                 // Set event listener
-                                avail_block.addEventListener('click', function () {
-                                    controller.changePageState(this, TIME_SELECT);
+                                avail_block.addEventListener('click', function (e) {
+                                    controller.changePageState({el: this, clickEvent: e}, TIME_SELECT);
                                 });
 
                                 // Append
@@ -481,6 +481,7 @@ function createViewModule () {
                 // Get the initial positions of the handles
                 var startHandle  = (info.specified_start_time - info.selected_start_time) / (30*60);
                 var finishHandle = ((info.specified_start_time + info.specified_length) - info.selected_start_time) / (30*60);
+
                 if (startHandle < 0 || finishHandle < 0) {
                     throw "ERROR: slider handles initialized to an index less than 0";
                 } else if (startHandle > finishHandle - 2) {
