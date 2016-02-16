@@ -9,39 +9,22 @@ Bare Minimum To Sell Kitchener's Ice:
 
     put stripe tokens as production
 
+    migrate the production db
+
+    Set loading bit to false so we don't delete bookings
+
+
+
+Other Less Pressing Tasks
     Figure out why delete_all is working for waterloo but not kitchener
         which should I actually be using?
     Make BusinessHours belown to the venue model
         keep BusinessHours methods
         fix getBookable to trim avails according to the venue they belong to
-
+    Ask jeremy about days office is closed
     Test on windows browsers
     Test on samsung phones
     Test we can load data without deleting bookings
-
-    Confirm with Jeremy
-        How much is insurance on multiple hours?
-        Number hours in advance
-        Policies on site
-        Any holidays to denote that are not currently?
-        The card will be charged the new price of booking
-
-    Push live
-        Create playogosports@gmail.com stripe account and switch over system to that account
-        put the how many business hours it will take into the policy section
-        Put stripe non-test mode
-        Change links (manager email) to website
-        Set loading bit to false so we don't delete bookings
-        Have a play about trying stripe payments to bookings
-        Hide error reporting
-
-    Need devel app
-        get another stripe account for testing
-
-
-
-
-Other Less Pressing Tasks
     validate address field (and other fields)
     putting selection slider to the position where you clicked
     error logging to model
