@@ -329,7 +329,7 @@ function createControllerModule () {
 
 
                 // Render the modal content
-                this.scheduleRenderer.renderModal(PAYMENT, {element:              el,
+                this.scheduleRenderer.renderModal(PAYMENT, {element:              eventInfo.el,
                                                             handler:              this.handler,
                                                             selected_venue:       this.selected_venue,
                                                             selected_theatre:     this.selected_theatre,

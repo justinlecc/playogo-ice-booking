@@ -74,6 +74,10 @@ div.welcome-display {
   }
 }
 
+#search-input {
+  font-size: 12px;
+}
+
 #search-input-errors {
   margin-top: 5px;
   display: none;
@@ -105,13 +109,15 @@ div.welcome-display {
       font-size: 14pt;
       margin-bottom: 8px;
     }
+    #search-input {
+      font-size: 14px;
+    }
   }
 }
 /* Large desktop */
 @media (min-width:1200px){
-
+  #search-input {
+    font-size: 18px;
+  }
 }
 
-#search-input {
-  font-size: 12px;
-}
