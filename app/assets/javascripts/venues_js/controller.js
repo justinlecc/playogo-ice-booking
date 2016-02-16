@@ -197,7 +197,7 @@ function createControllerModule () {
             if (TIME_SELECT == next_page_state) {
 
                 // Set the selected booking if opening was clicked
-                if (eventInfo.el != null) {
+                if (eventInfo != null) {
 
                     // Selected fields
                     this.selected_owner_id    = parseInt(eventInfo.el.getAttribute("owner_id"));

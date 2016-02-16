@@ -16,6 +16,7 @@ Bare Minimum To Sell Kitchener's Ice:
 
 
 Other Less Pressing Tasks
+    Calendar not closing when clicking away on iphone
     Figure out why delete_all is working for waterloo but not kitchener
         which should I actually be using?
     Make BusinessHours belown to the venue model
