@@ -2,16 +2,20 @@ FEATURES AND FIXES
 
 Bare Minimum To Sell Kitchener's Ice:
 
-    Rework the 'about' page to have transparent language
-        include a faq page
+    Set loading bit to false so we don't delete bookings
 
-    put back kitchener manager email
-
-    put stripe tokens as production
+    upload schedule to production
 
     migrate the production db
 
-    Set loading bit to false so we don't delete bookings
+    Test production
+
+    put stripe tokens as production
+
+    put back kitchener manager email
+
+    Rework the 'about' page to have transparent language
+        include a faq page
 
 
 

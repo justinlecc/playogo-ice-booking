@@ -111,12 +111,10 @@ class KitchenerDataInput
 
     # 'clear_data' is set to if we want to delete the model we have and start fresh.
     # Should be false in production because we only want to update openings.
-    clear_data = true
+    clear_data = false
 
     if (clear_data)
-
       # Delete the whole model from the database
-      # TODO: this is currently untested
       if (owner)
         self.deleteOwnerFromDb
         owner = nil
@@ -170,7 +168,7 @@ class KitchenerDataInput
 
       else
 
-        cur_venue = Venue.find({:name => venue.name}).first;
+        cur_venue = Venue.where({:name => venue.name}).first; # TODO: should use .find(venue.id)
 
       end
 
@@ -184,7 +182,7 @@ class KitchenerDataInput
 
         else
 
-          cur_theatre = Theatre.find({:name => theatre.name, :venue => cur_venue})
+          cur_theatre = Theatre.where({:name => theatre.name, :venue => cur_venue}).first # TODO: should use .find(theatre.id)
 
         end
 
