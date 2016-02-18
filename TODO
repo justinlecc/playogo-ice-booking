@@ -2,15 +2,9 @@ FEATURES AND FIXES
 
 Bare Minimum To Sell Kitchener's Ice:
 
-    Set loading bit to false so we don't delete bookings
-
-    upload schedule to production
-
-    migrate the production db
-
-    Test production
-
     put stripe tokens as production
+
+    delete test bookings
 
     put back kitchener manager email
 
