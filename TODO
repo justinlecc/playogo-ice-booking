@@ -1,18 +1,5 @@
 FEATURES AND FIXES
 
-Bare Minimum To Sell Kitchener's Ice:
-
-    put stripe tokens as production
-
-    delete test bookings
-
-    put back kitchener manager email
-
-    Rework the 'about' page to have transparent language
-        include a faq page
-
-
-
 Other Less Pressing Tasks
     Calendar not closing when clicking away on iphone
     Figure out why delete_all is working for waterloo but not kitchener
