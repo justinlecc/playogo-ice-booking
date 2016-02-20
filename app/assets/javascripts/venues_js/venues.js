@@ -193,7 +193,7 @@ function deployVenues () {
     // REVIEW_INFO payment button
     var reviewinfo_continue_btn = document.getElementById('booking-modal-btn-reviewinfo').children[1];
     reviewinfo_continue_btn.addEventListener('click', function (e) {
-        venueController.changePageState(e, PAYMENT);
+        venueController.changePageState({el: e}, PAYMENT);
     });
 
 };

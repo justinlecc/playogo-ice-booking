@@ -267,7 +267,12 @@ class KitchenerDataInput
           odd_length = length % (30*60);
           if (odd_length != 0)
             if odd_length != 15*60
-              raise "ERROR: Invalid availability length was not off by 15 mins"
+              puts "====================================================="  
+              puts "\n\n\n\n\n\n\n"
+              puts "WARNING! The following booking had an unusual length:"
+              puts venue + " | " + theatre + " | " + start_seconds.to_s + " | " + length.to_s
+              puts "\n\n\n\n\n\n\n"
+              puts "====================================================="
             end
 
             # Cut off begining of morning availabilities
