@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  viewer_id: 
+  source: MyString
+  page: MyString
+
+two:
+  viewer_id: 
+  source: MyString
+  page: MyString

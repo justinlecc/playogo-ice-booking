@@ -29,7 +29,7 @@ function createControllerModule () {
     /*
      * Controller for the venues page
      */
-    var VenueController = function (availsCollectionModel, availsScheduleModel, mapModel, scheduleRenderer) {
+    var VenueController = function (availsCollectionModel, availsScheduleModel, mapModel, scheduleRenderer, useTracker) {
 
         // Initialize controller listeners
         this.listeners = [];
@@ -38,6 +38,7 @@ function createControllerModule () {
         this.availsCollectionModel = availsCollectionModel;
         this.availsScheduleModel   = availsScheduleModel;
         this.mapModel              = mapModel;
+        this.useTracker            = useTracker;
 
         // Initialize renderers
         this.scheduleRenderer      = scheduleRenderer;
@@ -368,6 +369,7 @@ function createControllerModule () {
          * Change the date of the schedule model by offset
          */
         changeDateByOffset: function (offset) {
+            this.useTracker.submitAction('CHANGE_DATE_BY_OFFSET');
             var current_date = parseUTCDate(this.availsScheduleModel.getCurrentDate());
             var new_date = new Date();
             new_date.setUTCDate(1); /* this ensures correct month when setting the month. coded by Ash */
@@ -381,6 +383,7 @@ function createControllerModule () {
          * Change the date of the schedule model by offset
          */
         changeDateByValue: function (date) {
+            this.useTracker.submitAction('CHANGE_DATE_BY_VALUE');
             this.availsScheduleModel.setCurrentDate(date);
         }
 
@@ -390,8 +393,8 @@ function createControllerModule () {
     /*
      * Returns an instance of the venue controller
      */
-    var loadVenueController = function (availsCollectionModel, availsScheduleModel, mapModel, scheduleRenderer) {
-        return new VenueController(availsCollectionModel, availsScheduleModel, mapModel, scheduleRenderer);
+    var loadVenueController = function (availsCollectionModel, availsScheduleModel, mapModel, scheduleRenderer, useTracker) {
+        return new VenueController(availsCollectionModel, availsScheduleModel, mapModel, scheduleRenderer, useTracker);
     };
 
     /*

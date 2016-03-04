@@ -40,9 +40,14 @@ function deployVenues () {
     var scheduleRenderer = viewModule.loadScheduleRenderer();
 
     /*
+     * Initialize the UseTracker
+     */
+    var useTracker = new UseTracker();
+
+    /*
      * Initialize the VenueController
      */
-    var venueController = controllerModule.loadVenueController(availsCollectionModel, availsScheduleModel, mapModel, scheduleRenderer);
+    var venueController = controllerModule.loadVenueController(availsCollectionModel, availsScheduleModel, mapModel, scheduleRenderer, useTracker);
     venueController.initializePage();
     availsScheduleModel.controller = venueController;
 

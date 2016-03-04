@@ -1,5 +1,10 @@
 FEATURES AND FIXES
 
+    Track viewers as they navigate website
+        Create viewer if no cookie
+        Create page view
+        Create page action
+
 Other Less Pressing Tasks
     Calendar not closing when clicking away on iphone
     Figure out why delete_all is working for waterloo but not kitchener

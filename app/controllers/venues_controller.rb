@@ -7,6 +7,12 @@ class VenuesController < ApplicationController
 	# GET /venues.json
 	# POST /venues
 	def index
+		# Track page view
+		source = params[:src] # TODO: Escape src
+		v = Viewer.new
+		info = v.pageView('/venues', source, cookies)
+		cookies[:viewer_id]    = info[:viewer_id]
+		cookies[:page_view_id] = info[:page_view_id]
 
 		@scheduleTree = Bookable::getBookable
 
@@ -40,6 +46,12 @@ class VenuesController < ApplicationController
 
 	# POST venues/payment
 	def ice_booking
+		# Track page view
+		source = params[:src] # TODO: Escape src
+		v = Viewer.new
+		info = v.pageView('/venues/ice_booking', source, cookies)
+		cookies[:viewer_id]    = info[:viewer_id]
+		cookies[:page_view_id] = info[:page_view_id]
 
 		# Params
 		token             = params[:stripeToken]
