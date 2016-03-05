@@ -201,4 +201,12 @@ function deployVenues () {
         venueController.changePageState({el: e}, PAYMENT);
     });
 
+    /*
+     * Track google maps clicks.
+     */
+    var map = document.getElementById('map');
+    map.addEventListener('click', function () {
+        useTracker.submitAction("GOOGLE_MAP_MARKER_CLICK");
+    });
+    
 };

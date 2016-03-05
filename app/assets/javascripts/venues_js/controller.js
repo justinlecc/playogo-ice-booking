@@ -195,6 +195,7 @@ function createControllerModule () {
          *  'el' is the element that was clicked, ie. the avail block that was clicked.
          */
         changePageState: function (eventInfo, next_page_state) {
+            this.useTracker.submitAction('CHANGE_PAGE_STATE: ' + next_page_state);
             if (TIME_SELECT == next_page_state) {
 
                 // Set the selected booking if opening was clicked
@@ -363,13 +364,13 @@ function createControllerModule () {
         updateSpecifiedTimes: function (start_time, length) {
             this.specified_start_time = start_time;
             this.specified_length = length;
+            this.useTracker.submitAction('UPDATE_SPECIFIED_TIMES: start: ' + start_time.toString() + " length: " + length.toString());
         },
 
         /*
          * Change the date of the schedule model by offset
          */
         changeDateByOffset: function (offset) {
-            this.useTracker.submitAction('CHANGE_DATE_BY_OFFSET');
             var current_date = parseUTCDate(this.availsScheduleModel.getCurrentDate());
             var new_date = new Date();
             new_date.setUTCDate(1); /* this ensures correct month when setting the month. coded by Ash */
@@ -377,14 +378,15 @@ function createControllerModule () {
             new_date.setUTCMonth(current_date.getUTCMonth());
             new_date.setUTCDate(current_date.getUTCDate() + offset);
             this.availsScheduleModel.setCurrentDate(datelessString(new_date));
+            this.useTracker.submitAction('CHANGE_DATE_BY_OFFSET: ' + datelessString(new_date));
         },
 
         /*
          * Change the date of the schedule model by offset
          */
         changeDateByValue: function (date) {
-            this.useTracker.submitAction('CHANGE_DATE_BY_VALUE');
             this.availsScheduleModel.setCurrentDate(date);
+            this.useTracker.submitAction('CHANGE_DATE_BY_VALUE: ' + date);
         }
 
     });
