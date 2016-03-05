@@ -1,0 +1,8 @@
+function UseTracker () {
+  this.submitAction = function (action) {
+    var url = '<% puts ENV['DOMAIN_URL'] %>/use_tracking';
+    $.post(url, {
+      action_type: action
+    });
+  };
+};

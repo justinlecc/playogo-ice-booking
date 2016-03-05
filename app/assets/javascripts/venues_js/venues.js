@@ -40,9 +40,14 @@ function deployVenues () {
     var scheduleRenderer = viewModule.loadScheduleRenderer();
 
     /*
+     * Initialize the UseTracker
+     */
+    var useTracker = new UseTracker();
+
+    /*
      * Initialize the VenueController
      */
-    var venueController = controllerModule.loadVenueController(availsCollectionModel, availsScheduleModel, mapModel, scheduleRenderer);
+    var venueController = controllerModule.loadVenueController(availsCollectionModel, availsScheduleModel, mapModel, scheduleRenderer, useTracker);
     venueController.initializePage();
     availsScheduleModel.controller = venueController;
 
@@ -196,4 +201,12 @@ function deployVenues () {
         venueController.changePageState({el: e}, PAYMENT);
     });
 
+    /*
+     * Track google maps clicks.
+     */
+    var map = document.getElementById('map');
+    map.addEventListener('click', function () {
+        useTracker.submitAction("GOOGLE_MAP_MARKER_CLICK");
+    });
+    
 };

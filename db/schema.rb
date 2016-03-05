@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160204123400) do
+ActiveRecord::Schema.define(version: 20160229125958) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,6 +62,25 @@ ActiveRecord::Schema.define(version: 20160204123400) do
     t.string   "processing_hours"
   end
 
+  create_table "page_actions", force: :cascade do |t|
+    t.integer  "page_view_id"
+    t.string   "action"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "page_actions", ["page_view_id"], name: "index_page_actions_on_page_view_id", using: :btree
+
+  create_table "page_views", force: :cascade do |t|
+    t.integer  "viewer_id"
+    t.string   "source"
+    t.string   "page"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "page_views", ["viewer_id"], name: "index_page_views_on_viewer_id", using: :btree
+
   create_table "prices", force: :cascade do |t|
     t.integer  "prime"
     t.integer  "non_prime"
@@ -102,8 +121,15 @@ ActiveRecord::Schema.define(version: 20160204123400) do
     t.string   "address"
   end
 
+  create_table "viewers", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   add_foreign_key "bookings", "theatres"
   add_foreign_key "openings", "theatres"
+  add_foreign_key "page_actions", "page_views"
+  add_foreign_key "page_views", "viewers"
   add_foreign_key "prices", "theatres"
   add_foreign_key "theatres", "venues"
 end

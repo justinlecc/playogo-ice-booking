@@ -20,6 +20,9 @@ Rails.application.routes.draw do
   # Contact
   get '/contact', to: 'contact#index'
 
+  # Tracking
+  post '/use_tracking', to: 'use_tracking#page_action'
+
 
   resources :venues # <- probably want to remove
   
