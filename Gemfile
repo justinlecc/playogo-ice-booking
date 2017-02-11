@@ -37,6 +37,9 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # gem 'rails_stdout_logging'
 # gem 'rails_12factor', group: :production # https://devcenter.heroku.com/articles/rails-4-asset-pipeline
  
+# Cross-origin requests
+gem 'rack-cors', '~> 0.4.0'
+
 # Nokogiri (JL added)
 gem 'nokogiri', '~> 1.6.6.2'
 

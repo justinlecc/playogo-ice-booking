@@ -32,14 +32,44 @@ $card-background:    #F2F2F2;
   }
 }
 
+p{
+  font-family: "source sans pro", verdana, arial, helvetica, sans-serif;
+}
+
 .orange-text {
   color: $pogo-orange;
 }
  
 .direction-text {
-  font-family: tahoma, "source sans pro", verdana, arial, helvetica, sans-serif;
-  color: white;
+  font-family: "source sans pro", verdana, arial, helvetica, sans-serif;
+  font-weight: 100;
+  color: black;
 }
+
+/*
+ * Header
+ */
+.playogo-logo {
+  height: 32px; /* was 22px for non beta logo */
+}
+
+.pogo-navbar {
+  background: none;
+  margin-bottom: 0px;
+  border-bottom-width: 0px;
+  /*border-bottom-style: solid;
+  border-bottom-color: $pogo-blue;*/
+
+  * {
+    font-family: "source sans pro", verdana, arial, helvetica, sans-serif;
+    color: black;
+  }
+}
+
+.navbar-brand {
+  height: 22px!important;
+}
+
 
 /*
  * Footer

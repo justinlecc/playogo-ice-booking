@@ -22,7 +22,7 @@ $card-border:        #E4E4E4;
 $card-background:    #F2F2F2;
 
 /**
-* Globals (shoud go to application.css)
+* Globals (should go to application.css)
 */
 html {
   height: 100%;
@@ -37,29 +37,6 @@ body {
 
 #notice {
 
-}
-
-p{
-  font-family: "source sans pro", verdana, arial, helvetica, sans-serif;
-}
-
-.playogo-logo {
-  height: 32px; /* was 22px for non beta logo */
-}
-
-.navbar {
-  margin-bottom: 0px;
-  border-bottom-width: 2px;
-  border-bottom-style: solid;
-  border-bottom-color: $pogo-blue;
-
-  * {
-    font-family: "source sans pro", verdana, arial, helvetica, sans-serif;
-  }
-}
-
-.navbar-brand {
-  height: 22px!important;
 }
 
 #notice {
@@ -117,6 +94,23 @@ fieldset[disabled] .btn-default.active {
 }
 
 /**
+* Venue background
+*/
+div.venues-background {
+  position:fixed;
+  top:0;
+  z-index: -1;
+  height:100%;
+  width:100%;
+ 
+  background: image-url("welcomebgwhite95.jpg") no-repeat left center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+/**
 * Step
 */
 .step-container {
@@ -152,13 +146,13 @@ fieldset[disabled] .btn-default.active {
   height:100%;
   overflow:scroll;
   padding: 0;
-  background-image: image-url("schedulepagebg6.jpg");
+/*  background-image: image-url("welcomebgwhite.jpg");
   background-repeat: no-repeat;
   background-position: 50% 50%; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
-  background-size: cover;
+  background-size: cover;*/
 }
 
 
@@ -309,24 +303,24 @@ div.hours-col {
 */
 /* columns of same height styles */
 #tablet-container-outer {
-  background: white;
-  border-radius: 35px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 2px;
   /* Drop shadow: JL: with a white background this was $dark-grey */
-  -webkit-box-shadow: 2px 5px 3px 1px rgb(58, 56, 56);  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
-  -moz-box-shadow:    2px 5px 3px 1px rgb(58, 56, 56);  /* Firefox 3.5 - 3.6 */
-  box-shadow:         2px 5px 3px 1px rgb(58, 56, 56);  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+  /*-webkit-box-shadow: 2px 5px 3px 1px rgb(58, 56, 56);*/  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  /*-moz-box-shadow:    2px 5px 3px 1px rgb(58, 56, 56);*/  /* Firefox 3.5 - 3.6 */
+  /*box-shadow:         2px 5px 3px 1px rgb(58, 56, 56);*/  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
 /*box-shadow: [horizontal offset] [vertical offset] [blur radius] [optional spread radius] [color];*/
 }
 
 #tablet-container-inner {
   text-align: center;
-  border-radius: 35px;
-  padding: 25px;
+  border-radius: 2px;
+  /*padding: 25px;*/
 
   /* Curved edges */
-  -moz-box-shadow:    inset -2px -5px 30px #838383;
-  -webkit-box-shadow: inset -2px -5px 30px #838383;
-  box-shadow:         inset -2px -5px 30px #838383;
+  /*-moz-box-shadow:    inset -2px -5px 30px #838383;*/
+  /*-webkit-box-shadow: inset -2px -5px 30px #838383;*/
+  /*box-shadow:         inset -2px -5px 30px #838383;*/
 
 /*$dark-grey: #D8D8D8;
   $mid-grey: #E8E8E8; 
@@ -399,7 +393,7 @@ div.divider {
 div.avail-block {
   position:absolute;
   z-index: 101;
-  background: $pogo-orange;
+  background: #0d4d88;
   height: 12px;
   cursor: pointer;
 }

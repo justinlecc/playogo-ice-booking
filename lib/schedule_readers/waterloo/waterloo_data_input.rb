@@ -3,7 +3,7 @@ class WaterlooDataInput
 	def initialize()
 		@search_to_day   = 31
 		@search_to_month = 3
-		@search_to_year  = 2016
+		@search_to_year  = 2017
 
 		@month_name_to_digit = {"Jan" => 1, "Feb" => 2, "Mar" => 3, "Apr" => 4, 
 														"May" => 5, "Jun" => 6, "Jul" => 7, "Aug" => 8, 
