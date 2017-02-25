@@ -181,10 +181,12 @@ function createControllerModule () {
 
         notify: function (event_type, params) {
             if (DATE_UPDATE == event_type) {
-                params.controller.notifyListeners(event_type, {controller:       params.controller,
-                                                                                                             schedule_tree:    params.controller.availsCollectionModel.getAvails(),
-                                                                                                             current_date:     params.controller.availsScheduleModel.getCurrentDate(),
-                                                                                                             scheduleRenderer: params.controller.scheduleRenderer});
+                params.controller.notifyListeners(event_type, {
+                    controller:       params.controller,
+                    schedule_tree:    params.controller.availsCollectionModel.getAvails(),
+                    current_date:     params.controller.availsScheduleModel.getCurrentDate(),
+                    scheduleRenderer: params.controller.scheduleRenderer
+                });
             }
         },
 
@@ -387,6 +389,24 @@ function createControllerModule () {
         changeDateByValue: function (date) {
             this.availsScheduleModel.setCurrentDate(date);
             this.useTracker.submitAction('CHANGE_DATE_BY_VALUE: ' + date);
+        },
+
+        /*
+         * Get more venues for the avails schedule to display
+         */
+        getMoreVenues: function () {
+
+            var self = this;
+            $.get( "api/venues/openings.json", {
+                "venue_index": self.availsCollectionModel.avails.venues.length,
+                "num_venues": 5,
+                "from_date": self.availsScheduleModel.earliest_date,
+                "to_date": self.availsScheduleModel.latest_date
+            }, function (data) {
+                self.availsCollectionModel.addAvails(data);
+                self.scheduleRenderer.renderAll(self.availsScheduleModel.getCurrentDate(), self.mapModel.getPostal(), self.availsCollectionModel.getAvails(), self);
+            });
+
         }
 
     });

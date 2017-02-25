@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   # Welcome
   root 'welcome#index'
 
+  # API
+  get 'api/venues/openings.json' => 'venues#api_venues_openings'
+
   # Venues
   get '/venues/:nav_date' => 'venues#index'
   get '/venues' => 'venues#index'

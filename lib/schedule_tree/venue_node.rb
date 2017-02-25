@@ -1,10 +1,12 @@
 class VenueNode
-  attr_accessor :name, :lat, :long, :address, :theatres, :owner_id
+  attr_accessor :name, :lat, :long, :address, :theatres, :owner_id, :duration_text, :duration_value
 
   def initialize (name, lat, long, address, owner_id)
     @name = name
     @lat = lat
     @long = long
+    @duration_text = nil
+    @duration_value = nil
     @address = address
     @theatres = []
     @owner_id = owner_id

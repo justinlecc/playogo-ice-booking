@@ -71,32 +71,22 @@
 <div class="row sched-row">
     <div id="schedule" class="col-sm-8">
 
-        <h2 class="direction-text" >Select an orange block of available ice time.</h2>
+        <!-- <h2 class="direction-text" >Select an orange block of available ice time.</h2> -->
 
         <div id="tablet-container-outer">
         <div id="tablet-container-inner">
 
-            <div id="month-nav-container">
-
-            </div>
-
-            <div class="row" style="display:none">
-                <div class="col-xs-1">
-                    <span class="glyphicon glyphicon-backward"></span>
+            <form id="month-nav-container" class="row">
+                <div class="form-group col-md-6">
+                    <label for="date-picker">Date</label>
+                    <!-- <input type="text" class="form-control" id="exampleInputName2" placeholder="Jane Doe"> -->
+                    <input type="text" id="date-picker" class="form-control" state="closed">
                 </div>
-                <div class="col-xs-1">
-                    <span class="glyphicon glyphicon-triangle-left"></span>
+                <div class="form-group col-md-6">
+                    <label for="location-picker">Location</label>
+                    <input type="text" class="form-control" id="location-picker" placeholder="eg. Toronto">
                 </div>
-                <div class="form-group col-xs-8">
-                    <!-- <input id="datepicker" class="form-control" type="text" size="30" date=""> -->
-                </div>
-                <div class="col-xs-1">
-                    <span class="glyphicon glyphicon-triangle-right"></span>
-                </div>
-                <div class="col-xs-1">
-                    <span class="glyphicon glyphicon-forward"></span>
-                </div>
-            </div>
+            </form>
 
             <div id="day-nav-container">
                 <ul class="day-tabs">
@@ -146,6 +136,10 @@
                 </div>
             </div>
 
+            <div id="more-rinks-btn">
+                <button type="button" class="btn btn-primary btn-lg more-btn">More Rinks</button>
+            </div>
+
         </div><!-- End of tablet container inner -->
         </div><!-- End of tablet container outer -->
 
@@ -174,8 +168,9 @@
     Avails Schedule Month Navigation Template
 -->
 <script id="avails-month-template" type="text/template">
-        <input type="hidden" id="datepicker" state="closed">
-        <div id="month" class="btn btn-default"></div>
+        <input type="" id="datepicker" state="closed">
+        <!-- <input type="hidden" id="datepicker" state="closed"> -->
+        <!-- <div id="month" class="btn btn-default"></div> -->
 </script>
 
 <!--

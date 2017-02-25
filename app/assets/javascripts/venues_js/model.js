@@ -26,6 +26,14 @@ function createModelModule() {
             this.avails = schedule_json;
         },
 
+        /* Adds avails to the collection model */
+        addAvails: function (schedule_json) {
+            console.log("AvailsCollectionModel::addAvails called!", schedule_json);
+            for (var i=0; i<schedule_json.venues.length; i++) {
+                this.avails.venues.push(schedule_json.venues[i]);
+            }
+        },
+
         /* Gets the collection model's avails c*/
         getAvails: function () {
             return this.avails;

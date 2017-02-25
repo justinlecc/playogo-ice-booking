@@ -6,6 +6,7 @@
 * Colors
 */
 $pogo-blue:          #169EF1;
+$pogo-dark-blue:     #2a4058;
 $pogo-orange:        #F9A146;
 $pogo-orange-border: #FF982E;
 $pogo-orange-active: #FFAC57;
@@ -161,28 +162,7 @@ div.venues-background {
 * Month nav
 */
 
-#month-nav-container{
-  position:relative;
-  display: inline;
-  text-align: center;
-  /*display: none;*/
-  #month {
-    /*text-align: center;*/
-    font-family: "source sans pro", verdana, arial, helvetica, sans-serif;
-    font-weight: 200;
-    font-size: 18pt;
-    /*background-color: $light-grey;*/
-    /*border-color: $dark-grey;*/
-    padding-top: 0px;
-    padding-bottom: 2px;
-    margin-bottom: 20px;
-    /*font-size: 18pt;*/
-    .calendar-icon {
-      padding: 10px;
-      padding-right: 0px;
-    }
-  }
-}
+
 
 /**
 * Day Navigation
@@ -221,7 +201,7 @@ div.venues-background {
       p {
         font-weight: 400;
         /*display:inline-block;*/
-        font-size: 14px;
+        font-size: 10pt;
         color:#4c4c4c;
         border-radius: 3px 3px 0px 0px;
         margin-bottom: 0px;
@@ -393,7 +373,7 @@ div.divider {
 div.avail-block {
   position:absolute;
   z-index: 101;
-  background: #0d4d88;
+  background: $pogo-blue;
   height: 12px;
   cursor: pointer;
 }
@@ -429,12 +409,12 @@ div.hour {
 }
 
 .venue-name-col {
-  font-size: 14pt;
+  font-size: 10pt;
   color: white;
   font-weight: 200;
   padding-top: 10px;
   padding-bottom: 10px;
-  background: $pogo-blue;
+  background: $pogo-dark-blue;
 }
 
 .theatre-row:nth-child(2n) {
@@ -443,6 +423,12 @@ div.hour {
 
 .theatre-row:nth-child(2n+1) {
   background-color: $mid-grey;
+}
+
+.more-btn {
+  width: 100%;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 
 /**

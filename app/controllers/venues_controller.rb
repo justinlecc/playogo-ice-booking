@@ -7,14 +7,34 @@ class VenuesController < ApplicationController
 	# GET /venues.json
 	# POST /venues
 	def index
-		# Track page view
+
+		# Page view tracking logic
 		source = params[:src] # TODO: Escape src
 		v = Viewer.new
 		info = v.pageView('/venues', source, cookies)
 		cookies[:viewer_id]    = info[:viewer_id]
 		cookies[:page_view_id] = info[:page_view_id]
 
-		@scheduleTree = Bookable::getBookable
+		# Location and schedule logic
+		@postal = params[:postal]
+
+		if @postal == nil
+			@postal = 'N2G 4G7' # city of kitchener's postal code
+		end
+
+		location_service = LocationService.new
+
+		@origin = location_service.get_lat_long(@postal)
+
+		schedule_tree = Venue::getOpeningsByProxyAndDate(
+			0,
+			20,
+			@origin,
+			Time.current.to_date.strftime("%Y-%m-%d"), 
+			(Time.current + 15.days).to_date.strftime("%Y-%m-%d")
+		)
+
+		@scheduleTree = location_service.get_schedule_tree_with_driving_distances(@origin, schedule_tree)
 
 		@ownerInfo = []
 		
@@ -32,16 +52,31 @@ class VenuesController < ApplicationController
 
 		end
 
-		@postal = params[:postal]
-
-		if @postal == nil
-
-			@postal = 'N2G 4G7' # city of kitchener's postal code
-
-		end
-
 	end
 
+	# POST /api/venues.json
+	# Returns the schedule_tree with 10 venues sorted by proximity
+	def api_venues_openings
+
+		venues_index = params['venue_index'].to_i
+		venues_limit = params['num_venues'].to_i
+
+		openings_from_date = params['from_date']
+		openings_to_date = params['to_date']
+
+		origin = location_service.get_lat_long(params['postal'])
+
+		schedule_tree = Venue::getOpeningsByProxyAndDate(
+			venues_index, 
+			venues_limit,
+			origin,
+			openings_from_date, 
+			openings_to_date
+		)
+
+		render :json => schedule_tree
+
+	end
 
 
 	# POST venues/payment

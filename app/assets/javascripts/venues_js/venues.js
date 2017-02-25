@@ -209,4 +209,11 @@ function deployVenues () {
         useTracker.submitAction("GOOGLE_MAP_MARKER_CLICK");
     });
     
+    /*
+     * More rinks button
+     */
+    var moreRinksBtn = document.getElementById('more-rinks-btn');
+    moreRinksBtn.addEventListener('click', function () {
+        venueController.getMoreVenues();
+    });
 };

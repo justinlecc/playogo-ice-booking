@@ -46,26 +46,30 @@ function createViewModule () {
          * Renders the month nav
          */ 
         renderMonthNav: function (current_date, controller) {
-            var container = document.getElementById('month-nav-container');
-            var template = document.getElementById('avails-month-template');
+            // var container = document.getElementById('month-nav-container');
+            // var template = document.getElementById('avails-month-template');
 
             // Put template into container
-            container.innerHTML = template.innerHTML;
+            // container.innerHTML = template.innerHTML;
+
+            // var date_input = container.children[0];
+            var date_picker = document.getElementById("date-picker");
+            date_picker.value = current_date;
 
             // Get month button
-            var month_button = container.children[1];
+            // var month_button = container.children[1];
 
             // Add month to month button
-            month_button.innerHTML = MONTH_NAMES[parseUTCDate(current_date).getUTCMonth()];
+            // month_button.innerHTML = MONTH_NAMES[parseUTCDate(current_date).getUTCMonth()];
 
             // Add icon to month button
-            var calendar_icon = document.createElement('span');
-            calendar_icon.className = 'glyphicon glyphicon-calendar calendar-icon';
-            month_button.appendChild(calendar_icon);
+            // var calendar_icon = document.createElement('span');
+            // calendar_icon.className = 'glyphicon glyphicon-calendar calendar-icon';
+            // month_button.appendChild(calendar_icon);
 
             // Add datepicker
-            $(month_button).click(function () {
-                var datepicker = $(document.getElementById("datepicker"));
+            $(date_picker).click(function () {
+                var datepicker = $(document.getElementById("date-picker"));
 
                 if (datepicker.attr("state") === "closed") {
                     console.log("in closed case");
@@ -74,11 +78,11 @@ function createViewModule () {
                         beforeShow: function(input, obj) {
                             var widget = $(input).datepicker('widget');
                             $(input).after(widget);
-                            widget.css("top", "0px");
-                            widget.css("left", "0px");
+                            // widget.css("top", "0px");
+                            // widget.css("left", "0px");
                         },
                         onClose: function(dateText, inst) {
-                            console.log("onClose");
+                            // console.log("onClose");
                             this.setAttribute("state", "closed");
                         }
                     });
@@ -92,14 +96,15 @@ function createViewModule () {
 
                     datepicker.datepicker("show");
                     var widget = datepicker.datepicker('widget');
-                    widget.css("top", "24px");
-                    widget.css("left", "0px");
+                    widget.css("top", "57px");
+                    widget.css("z-index", "110");
+                    // widget.css("left", "0px");
                     datepicker.attr("state", "open");
-                    console.log("should be open")
+                    // console.log("should be open")
 
                 } else if (datepicker.attr("state") === "open") {
-                    console.log("in open case");
-                    datepicker.datepicker("hide");
+                    // console.log("in open case");
+                    // datepicker.datepicker("hide");
 
                 } else {
                     throw "ERROR: Unidentified state in datepicker input";
