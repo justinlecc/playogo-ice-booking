@@ -1,0 +1,18 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  host: db
+  username: postgres
+  password: postgres
+  min_messages: warning
+  client_min_messages: warning
+
+development:
+  <<: *default
+  database: playogo_development
+
+test:
+  <<: *default
+  database: playogo_test
+

@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:12
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+
+  web:
+    build: .
+    depends_on:
+      - db
+    environment:
+      RAILS_ENV: development
+      # DATABASE_URL works with ActiveRecord; if the app uses config/database.yml explicitly, see the note below
+      DATABASE_URL: postgres://postgres:postgres@db:5432/playogo_development
+      # Runs config/force_no_panic.rb to overcome pg issue with panic error levels
+      RUBYOPT: "-r./config/force_no_panic"
+    volumes:
+      - .:/app
+      - ./config/database.yml.docker:/app/config/database.yml:ro
+    ports:
+      - "3000:3000"
+    command: bundle exec rails s -b 0.0.0.0 -p 3000

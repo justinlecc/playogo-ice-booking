@@ -1,3 +1,19 @@
 == README
 
 
+# Commands
+
+Start DB in background
+docker compose up -d db
+
+(Re)create & seed DB
+docker compose run web bundle exec rake db:setup
+# or if you want to force a clean slate
+# docker compose run web bundle exec rake db:drop db:create db:schema:load db:seed
+
+Boot the app
+docker compose up
+# open http://localhost:3000
+
+Start rails console
+docker compose run web bundle exec rails console
